@@ -1,0 +1,87 @@
+{
+  "level": 4,
+  "field": "medicine",
+  "context": "Attribute names with labels, levels, role, clinical description, physical/epidemiological mechanism, and directional dependency hints (known upstream drivers and downstream effects) — structured to support causal discovery without fully specifying the DAG.",
+  "variables": [
+    {
+      "name": "dysp",
+      "label": "Dyspnoea",
+      "role": "symptom",
+      "levels": ["yes", "no"],
+      "description": "Shortness of breath reported by the patient.",
+      "mechanism": "Dyspnoea arises when ventilatory demand exceeds capacity; in this model it is caused by bronchitis (airway obstruction and mucus hypersecretion) and by the tuberculosis-or-cancer state (via parenchymal destruction, pleural involvement, or mass effect). It does not itself cause any other modeled variable.",
+      "upstream_drivers": ["bronc", "either"],
+      "downstream_effects": []
+    },
+    {
+      "name": "tub",
+      "label": "Tuberculosis",
+      "role": "disease",
+      "levels": ["yes", "no"],
+      "description": "Pulmonary tuberculosis caused by Mycobacterium tuberculosis.",
+      "mechanism": "TB risk is elevated by travel to high-prevalence regions (visit to Asia). TB produces parenchymal infiltrates visible on X-ray and contributes to dyspnoea through the shared 'either' node. It is causally independent of smoking and bronchitis in this model.",
+      "upstream_drivers": ["asia"],
+      "downstream_effects": ["either"]
+    },
+    {
+      "name": "lung",
+      "label": "Lung cancer",
+      "role": "disease",
+      "levels": ["yes", "no"],
+      "description": "Primary malignancy of the lung.",
+      "mechanism": "Lung cancer probability is raised by smoking via carcinogen-induced DNA damage. It contributes to both an abnormal chest X-ray and, through the 'either' node, to dyspnoea. It is causally independent of Asia travel and bronchitis given smoking.",
+      "upstream_drivers": ["smoke"],
+      "downstream_effects": ["either"]
+    },
+    {
+      "name": "bronc",
+      "label": "Bronchitis",
+      "role": "disease",
+      "levels": ["yes", "no"],
+      "description": "Chronic or acute bronchial inflammation.",
+      "mechanism": "Bronchitis is strongly driven by smoking (ciliary paralysis, mucus hypersecretion, chronic irritation). It directly causes dyspnoea through airway obstruction. It does not influence the chest X-ray or the 'either' node in this model.",
+      "upstream_drivers": ["smoke"],
+      "downstream_effects": ["dysp"]
+    },
+    {
+      "name": "asia",
+      "label": "Visit to Asia",
+      "role": "risk_factor",
+      "levels": ["yes", "no"],
+      "description": "Recent travel to a region with high tuberculosis prevalence.",
+      "mechanism": "A root node (no modeled parents). Geographic exposure elevates TB prior probability due to higher regional incidence rates. It has no direct effect on cancer, bronchitis, smoking, or any diagnostic variable; its influence propagates exclusively through the tuberculosis node.",
+      "upstream_drivers": [],
+      "downstream_effects": ["tub"]
+    },
+    {
+      "name": "smoke",
+      "label": "Smoking",
+      "role": "risk_factor",
+      "levels": ["yes", "no"],
+      "description": "Current or recent tobacco smoking status.",
+      "mechanism": "A root node (no modeled parents). Smoking is the primary shared cause of both lung cancer and bronchitis in this network, making it the key common-cause confounder between those two diseases. Its influence does not extend directly to tuberculosis, X-ray, or dyspnoea except through its disease children.",
+      "upstream_drivers": [],
+      "downstream_effects": ["lung", "bronc"]
+    },
+    {
+      "name": "xray",
+      "label": "Chest X-ray abnormal",
+      "role": "diagnostic_test",
+      "levels": ["yes", "no"],
+      "description": "Radiographic finding of pulmonary abnormality.",
+      "mechanism": "The X-ray is an effect node whose probability of being positive is elevated by the 'either' node (i.e., by TB or lung cancer). It has low specificity: both TB infiltrates and malignant masses produce similar radiographic appearances, so a positive X-ray cannot distinguish between them. X-ray does not cause any other modeled variable.",
+      "upstream_drivers": ["either"],
+      "downstream_effects": []
+    },
+    {
+      "name": "either",
+      "label": "Tuberculosis or lung cancer present",
+      "role": "derived",
+      "levels": ["yes", "no"],
+      "description": "Deterministic OR of tuberculosis and lung cancer; yes if either or both are present.",
+      "mechanism": "Intermediate aggregation node that routes the combined causal influence of tuberculosis and lung cancer to their shared downstream effects (chest X-ray and dyspnoea). This node is the reason X-ray cannot discriminate between the two diseases: both feed into it identically. It has no parents outside of TB and lung cancer.",
+      "upstream_drivers": ["tub", "lung"],
+      "downstream_effects": ["xray", "dysp"]
+    }
+  ]
+}

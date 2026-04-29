@@ -1,0 +1,223 @@
+{
+  "level": 3,
+  "field": "insurance",
+  "context": "Attribute names with labels, levels, variable role (driver_demographics / driver_behavior / vehicle_attribute / safety_feature / environment / accident_outcome / cost_outcome), domain category, and brief description — functional context without explicit causal direction.",
+  "variables": [
+    {
+      "name": "GoodStudent",
+      "label": "Good student status",
+      "role": "driver_demographics",
+      "category": "driver_profile",
+      "levels": ["False", "True"],
+      "description": "Whether the driver qualifies as a good student (typically via GPA thresholds); associated with insurance discounts and used as a demographic risk proxy."
+    },
+    {
+      "name": "Age",
+      "label": "Driver age group",
+      "role": "driver_demographics",
+      "category": "driver_profile",
+      "levels": ["Adolescent", "Adult", "Senior"],
+      "description": "Driver's age bracket; a primary demographic risk factor affecting both driving skill development and eligibility for senior training programs."
+    },
+    {
+      "name": "SocioEcon",
+      "label": "Socio-economic status",
+      "role": "driver_demographics",
+      "category": "driver_profile",
+      "levels": ["Prole", "Middle", "UpperMiddle", "Wealthy"],
+      "description": "Household socio-economic tier; influences vehicle choice, neighbourhood of residence, and access to safety features."
+    },
+    {
+      "name": "RiskAversion",
+      "label": "Risk aversion tendency",
+      "role": "driver_behavior",
+      "category": "driver_profile",
+      "levels": ["Psychopath", "Adventurous", "Normal", "Cautious"],
+      "description": "Driver's dispositional attitude toward risk-taking; directly shapes driving behaviour and quality, and indirectly influences accident probability."
+    },
+    {
+      "name": "VehicleYear",
+      "label": "Vehicle model year",
+      "role": "vehicle_attribute",
+      "category": "vehicle_profile",
+      "levels": ["Current", "older"],
+      "description": "Whether the vehicle is the current model year or older; newer vehicles more likely to have modern safety features including ABS and airbags."
+    },
+    {
+      "name": "ThisCarDam",
+      "label": "Damage to insured car",
+      "role": "accident_outcome",
+      "category": "loss_outcome",
+      "levels": ["None", "Mild", "Moderate", "Severe"],
+      "description": "Physical damage severity sustained by the insured vehicle; determined by accident severity and the vehicle's structural ruggedness."
+    },
+    {
+      "name": "RuggedAuto",
+      "label": "Vehicle structural ruggedness",
+      "role": "vehicle_attribute",
+      "category": "vehicle_profile",
+      "levels": ["EggShell", "Football", "Tank"],
+      "description": "Structural crashworthiness of the vehicle; influenced by make/model class and moderates how accident severity translates into vehicle damage."
+    },
+    {
+      "name": "Accident",
+      "label": "Accident severity",
+      "role": "accident_outcome",
+      "category": "loss_outcome",
+      "levels": ["None", "Mild", "Moderate", "Severe"],
+      "description": "Overall severity of the accident event; the central outcome node driven by driving quality, mileage, and whether another car is involved."
+    },
+    {
+      "name": "MakeModel",
+      "label": "Car make/model class",
+      "role": "vehicle_attribute",
+      "category": "vehicle_profile",
+      "levels": ["SportsCar", "Economy", "FamilySedan", "Luxury", "SuperLuxury"],
+      "description": "Broad vehicle category; determines car value, ruggedness, likelihood of antilock brakes, and availability of airbags."
+    },
+    {
+      "name": "DrivQuality",
+      "label": "Driving quality",
+      "role": "driver_behavior",
+      "category": "driver_profile",
+      "levels": ["Poor", "Normal", "Excellent"],
+      "description": "Synthesized measure of how well a driver operates the vehicle; jointly determined by driving skill and risk aversion attitude."
+    },
+    {
+      "name": "Mileage",
+      "label": "Annual mileage bucket",
+      "role": "driver_behavior",
+      "category": "driver_profile",
+      "levels": ["FiveThou", "TwentyThou", "FiftyThou", "Domino"],
+      "description": "Annual miles driven; higher mileage increases exposure to accident risk regardless of driver skill."
+    },
+    {
+      "name": "Antilock",
+      "label": "Antilock braking system (ABS)",
+      "role": "safety_feature",
+      "category": "vehicle_safety",
+      "levels": ["False", "True"],
+      "description": "Presence of ABS; reduces braking distance and improves vehicle control in emergency stops, lowering accident probability."
+    },
+    {
+      "name": "DrivingSkill",
+      "label": "Driver skill level",
+      "role": "driver_behavior",
+      "category": "driver_profile",
+      "levels": ["SubStandard", "Normal", "Expert"],
+      "description": "Technical driving competency; shaped by age and driving history, and is a direct input to driving quality."
+    },
+    {
+      "name": "SeniorTrain",
+      "label": "Senior driver training",
+      "role": "driver_behavior",
+      "category": "driver_profile",
+      "levels": ["False", "True"],
+      "description": "Whether the driver has completed a senior driver training program; applicable mainly to Senior age group and improves driving skill."
+    },
+    {
+      "name": "ThisCarCost",
+      "label": "Insured car claim cost",
+      "role": "cost_outcome",
+      "category": "financial_outcome",
+      "levels": ["Thousand", "TenThou", "HundredThou", "Million"],
+      "description": "Financial cost bucket for repairing or replacing the insured car; driven by damage severity and car value."
+    },
+    {
+      "name": "Theft",
+      "label": "Vehicle theft",
+      "role": "accident_outcome",
+      "category": "loss_outcome",
+      "levels": ["False", "True"],
+      "description": "Whether the insured vehicle is stolen; probability depends on car value, home neighbourhood security, and presence of anti-theft systems."
+    },
+    {
+      "name": "CarValue",
+      "label": "Insured car value",
+      "role": "vehicle_attribute",
+      "category": "vehicle_profile",
+      "levels": ["FiveThou", "TenThou", "TwentyThou", "FiftyThou", "Million"],
+      "description": "Market value bucket of the insured car; determined by make/model and vehicle year, and directly affects theft probability and repair costs."
+    },
+    {
+      "name": "HomeBase",
+      "label": "Home neighbourhood type",
+      "role": "environment",
+      "category": "context",
+      "levels": ["Secure", "City", "Suburb", "Rural"],
+      "description": "Type of neighbourhood where the vehicle is primarily kept; influences theft risk and contextual accident exposure."
+    },
+    {
+      "name": "AntiTheft",
+      "label": "Anti-theft system",
+      "role": "safety_feature",
+      "category": "vehicle_safety",
+      "levels": ["False", "True"],
+      "description": "Presence of an anti-theft device; directly reduces the probability of vehicle theft."
+    },
+    {
+      "name": "PropCost",
+      "label": "Proportional cost comparison",
+      "role": "cost_outcome",
+      "category": "financial_outcome",
+      "levels": ["Thousand", "TenThou", "HundredThou", "Million"],
+      "description": "Relative cost bucket comparing insured car costs to other-car costs; a derived aggregation node used for overall claim sizing."
+    },
+    {
+      "name": "OtherCarCost",
+      "label": "Other car claim cost",
+      "role": "cost_outcome",
+      "category": "financial_outcome",
+      "levels": ["Thousand", "TenThou", "HundredThou", "Million"],
+      "description": "Financial cost bucket for the other vehicle involved in the accident; depends on accident severity and whether another car was involved."
+    },
+    {
+      "name": "OtherCar",
+      "label": "Other vehicle involved",
+      "role": "accident_outcome",
+      "category": "loss_outcome",
+      "levels": ["False", "True"],
+      "description": "Whether a second vehicle is involved in the incident; affects both accident probability amplification and third-party cost liability."
+    },
+    {
+      "name": "MedCost",
+      "label": "Medical treatment cost",
+      "role": "cost_outcome",
+      "category": "financial_outcome",
+      "levels": ["Thousand", "TenThou", "HundredThou", "Million"],
+      "description": "Medical cost bucket for injuries sustained; driven by accident severity and occupant cushioning/protection quality."
+    },
+    {
+      "name": "Cushioning",
+      "label": "Occupant cushioning quality",
+      "role": "safety_feature",
+      "category": "vehicle_safety",
+      "levels": ["Poor", "Fair", "Good", "Excellent"],
+      "description": "Overall passenger protection quality inside the vehicle; determined by the presence of airbags and the vehicle's ruggedness."
+    },
+    {
+      "name": "Airbag",
+      "label": "Airbag present",
+      "role": "safety_feature",
+      "category": "vehicle_safety",
+      "levels": ["False", "True"],
+      "description": "Whether the vehicle is equipped with airbags; a primary determinant of occupant cushioning quality in a crash."
+    },
+    {
+      "name": "ILiCost",
+      "label": "Injury / liability cost",
+      "role": "cost_outcome",
+      "category": "financial_outcome",
+      "levels": ["Thousand", "TenThou", "HundredThou", "Million"],
+      "description": "Injury and liability cost bucket; aggregates medical costs and legal liability into a total injury-related cost outcome."
+    },
+    {
+      "name": "DrivHist",
+      "label": "Prior driving incidents",
+      "role": "driver_behavior",
+      "category": "driver_profile",
+      "levels": ["Zero", "One", "Many"],
+      "description": "Bucketed count of prior at-fault accidents or moving violations; directly informs driving skill assessment and actuarial risk rating."
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "reference": "Binder J, Koller D, Russell S, Kanazawa K (1997). \"Adaptive Probabilistic Networks with Hidden Variables.\" Machine Learning, 29(2–3):213–244.",
+  "field": "insurance",
+  "context": "Insurance is a synthetic Bayesian network for evaluating car insurance risks. It describes driver demographics and behavior, vehicle characteristics and safety features, accident/theft outcomes, and resulting cost buckets.",
+  "variables": [
+    {
+      "name": "GoodStudent",
+      "description": "Good student; whether the driver is considered a good student (levels: False, True)."
+    },
+    {
+      "name": "Age",
+      "description": "Age; driver's age group category (levels: Adolescent, Adult, Senior)."
+    },
+    {
+      "name": "SocioEcon",
+      "description": "Socio-economic status; coarse household/driver socio-economic category (levels: Prole, Middle, UpperMiddle, Wealthy)."
+    },
+    {
+      "name": "RiskAversion",
+      "description": "Risk aversion; tendency toward risk-taking vs caution (levels: Psychopath, Adventurous, Normal, Cautious)."
+    },
+    {
+      "name": "VehicleYear",
+      "description": "Vehicle age; whether the vehicle is from the current model year or older (levels: Current, older)."
+    },
+    {
+      "name": "ThisCarDam",
+      "description": "Damage to this car; severity of damage to the insured car (levels: None, Mild, Moderate, Severe)."
+    },
+    {
+      "name": "RuggedAuto",
+      "description": "Ruggedness of the car; how physically rugged the vehicle is (levels: EggShell, Football, Tank)."
+    },
+    {
+      "name": "Accident",
+      "description": "Severity of the accident; overall accident severity outcome (levels: None, Mild, Moderate, Severe)."
+    },
+    {
+      "name": "MakeModel",
+      "description": "Car's model; broad car type/class (levels: SportsCar, Economy, FamilySedan, Luxury, SuperLuxury)."
+    },
+    {
+      "name": "DrivQuality",
+      "description": "Driving quality; overall driving quality category (levels: Poor, Normal, Excellent)."
+    },
+    {
+      "name": "Mileage",
+      "description": "Mileage; usage/miles-driven bucket (levels: FiveThou, TwentyThou, FiftyThou, Domino)."
+    },
+    {
+      "name": "Antilock",
+      "description": "ABS; whether the car has an antilock braking system (levels: False, True)."
+    },
+    {
+      "name": "DrivingSkill",
+      "description": "Driving skill; driver skill level category (levels: SubStandard, Normal, Expert)."
+    },
+    {
+      "name": "SeniorTrain",
+      "description": "Senior training; whether the driver has senior driver training (levels: False, True)."
+    },
+    {
+      "name": "ThisCarCost",
+      "description": "Costs for the insured car; cost bucket for the insured car’s claim/repair costs (levels: Thousand, TenThou, HundredThou, Million)."
+    },
+    {
+      "name": "Theft",
+      "description": "Theft; whether the insured car is stolen (levels: False, True)."
+    },
+    {
+      "name": "CarValue",
+      "description": "Value of the car; insured car value bucket (levels: FiveThou, TenThou, TwentyThou, FiftyThou, Million)."
+    },
+    {
+      "name": "HomeBase",
+      "description": "Neighbourhood type; home/neighbourhood category (levels: Secure, City, Suburb, Rural)."
+    },
+    {
+      "name": "AntiTheft",
+      "description": "Anti-theft system; whether the car has an anti-theft system (levels: False, True)."
+    },
+    {
+      "name": "PropCost",
+      "description": "Ratio of the cost for the two cars; proportional/relative cost bucket comparing the two cars (levels: Thousand, TenThou, HundredThou, Million)."
+    },
+    {
+      "name": "OtherCarCost",
+      "description": "Costs for the other car; cost bucket for the other car’s claim/repair costs (levels: Thousand, TenThou, HundredThou, Million)."
+    },
+    {
+      "name": "OtherCar",
+      "description": "Other cars involved in the accident; whether another car is involved (levels: False, True)."
+    },
+    {
+      "name": "MedCost",
+      "description": "Cost of the medical treatment; medical cost bucket associated with injuries/treatment (levels: Thousand, TenThou, HundredThou, Million)."
+    },
+    {
+      "name": "Cushioning",
+      "description": "Cushioning; protection/cushioning quality in the car (levels: Poor, Fair, Good, Excellent)."
+    },
+    {
+      "name": "Airbag",
+      "description": "Airbag; whether the car has airbags (levels: False, True)."
+    },
+    {
+      "name": "ILiCost",
+      "description": "Inspection cost; inspection cost bucket (levels: Thousand, TenThou, HundredThou, Million)."
+    },
+    {
+      "name": "DrivHist",
+      "description": "Driving history; bucketed driving history/incidents count (levels: Zero, One, Many)."
+    }
+  ]
+}

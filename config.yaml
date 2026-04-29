@@ -1,0 +1,91 @@
+# Models to query for every dataset listed below.
+# Use current OpenRouter model IDs.
+models:
+  # OpenAI small models
+  - openai/gpt-4.1-mini
+
+  # OpenAI mid-size models
+  - openai/gpt-4.1
+
+  # OpenAI large models
+  - openai/gpt-4o
+
+  # Additional frontier baselines
+  - openai/gpt-5.2
+
+  # MoE comparison
+  - openai/gpt-oss-20b
+
+# Base dataset folders.
+datasets:
+  # - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/asia
+  - data/DiscreteBayesianNetworks/mediumNewteorks-20-50nodes/insurance
+
+# Root folder where raw and evaluated outputs are written.
+out_root: outputs
+
+# Max response length ladder used per model retry attempt.
+# The run starts at the smallest value and only increases on truncation-style failures.
+max_tokens:
+  - 40000
+  - 60000
+  - 70000
+  - 90000
+  - 120000
+# Sampling temperature for the model.
+temperature: 0.0
+
+# Optional custom run name.
+# Leave empty to auto-generate run_<timestamp>.
+run_tag: ""
+
+experiment:
+  # Choose which prompt folder family to use.
+  # metaData -> metadata-only prompts
+  # dataMetaData -> metadata + sampled-data prompts
+  prompt_family: metaData
+
+  # Choose the prompt style inside that family.
+  prompt_style: vanilla
+
+  # Set to 1 to run inference.
+  run_inference: 0
+
+  # Set to 1 to run evaluation.
+  run_evaluation: 1
+
+# Run IDs to evaluate when experiment.run_evaluation = 1.
+eval_run_ids:
+  - run_1775000063
+evaluation:
+  # Shared threshold for ternary voting.
+  threshold: 0.7
+
+  # Penalty weights for UN = uncertain prediction on a true no-edge.
+  # Evaluation will run for every alpha/beta combination.
+  alpha:
+    - 0.0
+    - 0.1
+    - 0.2
+    - 0.3
+    - 0.4
+    - 0.5
+    - 0.6
+    - 0.7
+    - 0.8
+    - 0.9
+    - 1.0
+
+  # Penalty weights for UE = uncertain prediction on a true edge.
+  beta:
+    - 0.0
+    - 0.1
+    - 0.2
+    - 0.3
+    - 0.4
+    - 0.5
+    - 0.6
+    - 0.7
+    - 0.8
+    - 0.9
+    - 1.0

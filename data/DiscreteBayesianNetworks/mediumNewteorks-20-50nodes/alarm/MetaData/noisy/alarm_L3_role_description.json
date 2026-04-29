@@ -1,0 +1,303 @@
+{
+  "level": 3,
+  "field": "medicine",
+  "context": "Attribute names with labels, levels, variable role (root_cause / pathophysiology / hemodynamic_measurement / oxygenation / ventilation_measurement / ventilator_setting / device_state / derived_monitor / alarm_flag), subsystem, and brief clinical description — functional context without explicit causal direction.",
+  "variables": [
+    {
+      "name": "CVP",
+      "label": "Central venous pressure",
+      "role": "hemodynamic_measurement",
+      "subsystem": "cardiovascular",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Pressure measured in the right atrium or superior vena cava; reflects right-heart preload and overall venous volume status."
+    },
+    {
+      "name": "PCWP",
+      "label": "Pulmonary capillary wedge pressure",
+      "role": "hemodynamic_measurement",
+      "subsystem": "cardiovascular",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Occlusion pressure in a pulmonary artery branch; approximates left atrial pressure and left-heart preload."
+    },
+    {
+      "name": "HIST",
+      "label": "Patient history flag",
+      "role": "root_cause",
+      "subsystem": "clinical_context",
+      "levels": ["TRUE", "FALSE"],
+      "description": "Binary indicator encoding whether clinically relevant patient history (e.g., prior cardiac disease) is present; used as a baseline risk modifier."
+    },
+    {
+      "name": "TPR",
+      "label": "Total peripheral resistance",
+      "role": "hemodynamic_measurement",
+      "subsystem": "cardiovascular",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Systemic vascular resistance reflecting arteriolar tone; a key determinant of afterload and arterial blood pressure."
+    },
+    {
+      "name": "BP",
+      "label": "Blood pressure",
+      "role": "hemodynamic_measurement",
+      "subsystem": "cardiovascular",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Systemic arterial pressure; the product of cardiac output and total peripheral resistance."
+    },
+    {
+      "name": "CO",
+      "label": "Cardiac output",
+      "role": "hemodynamic_measurement",
+      "subsystem": "cardiovascular",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Volume of blood pumped by the heart per minute; equal to heart rate multiplied by stroke volume."
+    },
+    {
+      "name": "HRBP",
+      "label": "Heart rate / blood pressure index",
+      "role": "derived_monitor",
+      "subsystem": "cardiovascular",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Derived monitoring index combining HR and BP signals; used to detect haemodynamically significant HR abnormalities."
+    },
+    {
+      "name": "HREK",
+      "label": "Heart rate from EKG",
+      "role": "derived_monitor",
+      "subsystem": "cardiovascular",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Heart rate as read from the EKG monitor; an electrophysiological observation of true underlying HR."
+    },
+    {
+      "name": "HRSA",
+      "label": "Heart rate / oxygen saturation index",
+      "role": "derived_monitor",
+      "subsystem": "cardiovascular_oxygenation",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Derived monitoring index combining HR and SAO2 signals; flags HR abnormalities in the context of oxygenation status."
+    },
+    {
+      "name": "PAP",
+      "label": "Pulmonary artery pressure",
+      "role": "hemodynamic_measurement",
+      "subsystem": "cardiovascular",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Pressure in the pulmonary arterial circulation; elevated by pulmonary embolus or left-heart failure."
+    },
+    {
+      "name": "SAO2",
+      "label": "Arterial oxygen saturation",
+      "role": "oxygenation",
+      "subsystem": "oxygenation",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Percentage of haemoglobin saturated with oxygen in arterial blood; determined by alveolar ventilation, FIO2, and intrapulmonary shunting."
+    },
+    {
+      "name": "FIO2",
+      "label": "Fraction of inspired oxygen",
+      "role": "ventilator_setting",
+      "subsystem": "ventilation",
+      "levels": ["LOW", "NORMAL"],
+      "description": "Fraction of oxygen in the gas delivered to the patient; a ventilator-controlled input that directly determines oxygen availability."
+    },
+    {
+      "name": "PRSS",
+      "label": "Breathing circuit pressure",
+      "role": "ventilation_measurement",
+      "subsystem": "ventilation",
+      "levels": ["ZERO", "LOW", "NORMAL", "HIGH"],
+      "description": "Observed airway/circuit pressure during ventilation; affected by tube kinking, disconnection, and machine output."
+    },
+    {
+      "name": "ECO2",
+      "label": "Expired CO2",
+      "role": "ventilation_measurement",
+      "subsystem": "ventilation",
+      "levels": ["ZERO", "LOW", "NORMAL", "HIGH"],
+      "description": "End-tidal or mixed expired CO2 concentration; reflects alveolar ventilation and CO2 production."
+    },
+    {
+      "name": "MINV",
+      "label": "Minute ventilation (observed)",
+      "role": "ventilation_measurement",
+      "subsystem": "ventilation",
+      "levels": ["ZERO", "LOW", "NORMAL", "HIGH"],
+      "description": "Measured total ventilation per minute; can deviate from the set target due to tube or circuit problems."
+    },
+    {
+      "name": "MVS",
+      "label": "Minute ventilation set (target)",
+      "role": "ventilator_setting",
+      "subsystem": "ventilation",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Clinician-set target for minute ventilation; a root input variable representing the intended ventilation prescription."
+    },
+    {
+      "name": "HYP",
+      "label": "Hypovolemia",
+      "role": "root_cause",
+      "subsystem": "cardiovascular",
+      "levels": ["TRUE", "FALSE"],
+      "description": "Reduced circulating blood volume; a primary cause of decreased cardiac preload and output."
+    },
+    {
+      "name": "LVF",
+      "label": "Left ventricular failure",
+      "role": "root_cause",
+      "subsystem": "cardiovascular",
+      "levels": ["TRUE", "FALSE"],
+      "description": "Impaired left ventricular contractility; reduces stroke volume and cardiac output while raising left-sided filling pressures."
+    },
+    {
+      "name": "APL",
+      "label": "Anaphylaxis",
+      "role": "root_cause",
+      "subsystem": "cardiovascular",
+      "levels": ["TRUE", "FALSE"],
+      "description": "Severe systemic allergic reaction causing massive vasodilation and reduced peripheral resistance."
+    },
+    {
+      "name": "ANES",
+      "label": "Insufficient anesthesia / analgesia",
+      "role": "root_cause",
+      "subsystem": "clinical_context",
+      "levels": ["TRUE", "FALSE"],
+      "description": "Inadequate anaesthetic depth or analgesia; triggers sympathetic activation and elevated catecholamine release."
+    },
+    {
+      "name": "PMB",
+      "label": "Pulmonary embolus",
+      "role": "root_cause",
+      "subsystem": "cardiovascular_oxygenation",
+      "levels": ["TRUE", "FALSE"],
+      "description": "Obstruction of pulmonary vasculature by thrombus; raises pulmonary artery pressure and creates ventilation-perfusion mismatch."
+    },
+    {
+      "name": "INT",
+      "label": "Intubation status",
+      "role": "device_state",
+      "subsystem": "ventilation",
+      "levels": ["NORMAL", "ESOPHAGEAL", "ONESIDED"],
+      "description": "Position of the endotracheal tube; ESOPHAGEAL means the tube is misplaced in the oesophagus; ONESIDED means right or left mainstem bronchus intubation."
+    },
+    {
+      "name": "KINK",
+      "label": "Kinked breathing tube",
+      "role": "device_state",
+      "subsystem": "ventilation",
+      "levels": ["TRUE", "FALSE"],
+      "description": "Obstruction of the endotracheal or breathing tube by kinking; reduces or eliminates ventilation delivery."
+    },
+    {
+      "name": "DISC",
+      "label": "Circuit disconnection",
+      "role": "device_state",
+      "subsystem": "ventilation",
+      "levels": ["TRUE", "FALSE"],
+      "description": "Separation of the breathing circuit from the patient or ventilator; results in zero ventilation delivery."
+    },
+    {
+      "name": "LVV",
+      "label": "Left ventricular end-diastolic volume",
+      "role": "pathophysiology",
+      "subsystem": "cardiovascular",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Volume of blood in the left ventricle at end of diastole; the primary preload determinant of stroke volume."
+    },
+    {
+      "name": "STKV",
+      "label": "Stroke volume",
+      "role": "pathophysiology",
+      "subsystem": "cardiovascular",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Blood volume ejected per heartbeat; determined by preload (LVV), contractility (LVF), and afterload (TPR)."
+    },
+    {
+      "name": "CCHL",
+      "label": "Catecholamine level",
+      "role": "pathophysiology",
+      "subsystem": "cardiovascular",
+      "levels": ["NORMAL", "HIGH"],
+      "description": "Circulating catecholamines (adrenaline/noradrenaline); elevated by insufficient anaesthesia and low cardiac output states; drives heart rate and vascular tone."
+    },
+    {
+      "name": "ERLO",
+      "label": "Error / low output flag",
+      "role": "alarm_flag",
+      "subsystem": "monitoring",
+      "levels": ["TRUE", "FALSE"],
+      "description": "Monitoring alarm flag triggered by a low cardiac output or low-output error condition."
+    },
+    {
+      "name": "HR",
+      "label": "Heart rate",
+      "role": "pathophysiology",
+      "subsystem": "cardiovascular",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Intrinsic heart rate state driven by catecholamine level and autonomic tone; one multiplicative factor in cardiac output."
+    },
+    {
+      "name": "ERCA",
+      "label": "Electrocautery in use",
+      "role": "device_state",
+      "subsystem": "monitoring",
+      "levels": ["TRUE", "FALSE"],
+      "description": "Use of electrosurgical cautery; introduces electrical artefact that can corrupt EKG-based heart rate readings."
+    },
+    {
+      "name": "SHNT",
+      "label": "Intrapulmonary shunt",
+      "role": "oxygenation",
+      "subsystem": "oxygenation",
+      "levels": ["NORMAL", "HIGH"],
+      "description": "Fraction of cardiac output bypassing ventilated alveoli; elevated shunt causes hypoxaemia refractory to supplemental oxygen."
+    },
+    {
+      "name": "PVS",
+      "label": "Pulmonary venous oxygen saturation",
+      "role": "oxygenation",
+      "subsystem": "oxygenation",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Oxygen saturation of blood returning from the lungs to the left heart; determined by alveolar ventilation and shunt."
+    },
+    {
+      "name": "ACO2",
+      "label": "Arterial CO2",
+      "role": "oxygenation",
+      "subsystem": "oxygenation",
+      "levels": ["LOW", "NORMAL", "HIGH"],
+      "description": "Arterial partial pressure of CO2; determined by alveolar ventilation and metabolic CO2 production."
+    },
+    {
+      "name": "VALV",
+      "label": "Alveolar ventilation",
+      "role": "ventilation_measurement",
+      "subsystem": "ventilation",
+      "levels": ["ZERO", "LOW", "NORMAL", "HIGH"],
+      "description": "Gas exchange occurring at the alveolar level; determined by lung ventilation minus anatomical dead space."
+    },
+    {
+      "name": "VLNG",
+      "label": "Lung ventilation",
+      "role": "ventilation_measurement",
+      "subsystem": "ventilation",
+      "levels": ["ZERO", "LOW", "NORMAL", "HIGH"],
+      "description": "Total ventilation reaching the lungs; reduced by intubation misplacement, kinking, or disconnection."
+    },
+    {
+      "name": "VTUB",
+      "label": "Tube ventilation",
+      "role": "ventilation_measurement",
+      "subsystem": "ventilation",
+      "levels": ["ZERO", "LOW", "NORMAL", "HIGH"],
+      "description": "Ventilation passing through the endotracheal tube; affected by tube position, kinking, and circuit integrity."
+    },
+    {
+      "name": "VMCH",
+      "label": "Ventilator machine output",
+      "role": "ventilation_measurement",
+      "subsystem": "ventilation",
+      "levels": ["ZERO", "LOW", "NORMAL", "HIGH"],
+      "description": "Volume output delivered by the mechanical ventilator; determined by the set minute volume target."
+    }
+  ]
+}
