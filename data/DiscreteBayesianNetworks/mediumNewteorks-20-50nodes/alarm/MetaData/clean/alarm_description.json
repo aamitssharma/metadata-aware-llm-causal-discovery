@@ -150,7 +150,8 @@
     {
       "name": "VMCH",
       "description": "Ventilation machine; ventilation level/output attributed to the ventilator machine (levels: ZERO, LOW, NORMAL, HIGH)."
-   
+    },
+    {
       "name": "PAP",
       "description": "Pulmonary artery pressure; pressure in the pulmonary artery circulation (levels: LOW, NORMAL, HIGH)."
     },

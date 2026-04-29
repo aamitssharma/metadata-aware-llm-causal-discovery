@@ -26,8 +26,8 @@ def load_dataset(dataset_dir: str):
     """Load dataset description and ground truth graph."""
     dataset_path = _resolve_dataset_dir(dataset_dir)
     name = dataset_path.name
-    desc_path = dataset_path / f"{name}_description.json"
-    graph_path = dataset_path / f"{name}_graph.json"
+    desc_path = _find_dataset_file(dataset_path, name, "description", "json")
+    graph_path = _find_dataset_file(dataset_path, name, "graph", "json")
 
     with open(desc_path, "r") as f:
         desc = json.load(f)
@@ -73,6 +73,9 @@ def resolve_experiment_variants(dataset_dir: str, prompt_family: str) -> List[Di
     sampled_clean_files = sorted(sampled_clean_dir.glob("*.csv"))
     sampled_corrupt_files = sorted(sampled_corrupt_dir.glob("*.csv"))
 
+    if not metadata_clean_files:
+        metadata_clean_files = [_find_dataset_file(dataset_path, dataset_name, "description", "json")]
+
     if prompt_family == "metaData":
         variants = [
             _build_variant(
@@ -110,6 +113,24 @@ def resolve_experiment_variants(dataset_dir: str, prompt_family: str) -> List[Di
         return variants
 
     raise ValueError(f"Unsupported prompt_family: {prompt_family}")
+
+
+def _find_dataset_file(dataset_path: Path, dataset_name: str, suffix: str, extension: str) -> Path:
+    exact_path = dataset_path / f"{dataset_name}_{suffix}.{extension}"
+    if exact_path.is_file():
+        return exact_path
+
+    matches = sorted(dataset_path.glob(f"*_{suffix}.{extension}"))
+    if len(matches) == 1:
+        return matches[0]
+    if matches:
+        match_list = ", ".join(str(path) for path in matches)
+        raise FileNotFoundError(
+            f"Multiple '*_{suffix}.{extension}' files found for dataset '{dataset_name}': {match_list}"
+        )
+    raise FileNotFoundError(
+        f"Could not find '{dataset_name}_{suffix}.{extension}' or '*_{suffix}.{extension}' in {dataset_path}"
+    )
 
 
 def _build_variant(
@@ -158,9 +179,12 @@ def _resolve_dataset_dir(dataset_dir: str) -> Path:
     for candidate in REPO_ROOT.rglob(dataset_name):
         if not candidate.is_dir():
             continue
-        desc_path = candidate / f"{dataset_name}_description.json"
-        graph_path = candidate / f"{dataset_name}_graph.json"
-        if desc_path.is_file() and graph_path.is_file():
+        try:
+            _find_dataset_file(candidate, dataset_name, "description", "json")
+            _find_dataset_file(candidate, dataset_name, "graph", "json")
+        except FileNotFoundError:
+            continue
+        else:
             return candidate.resolve()
 
     checked = ", ".join(str(path) for path in candidates)
