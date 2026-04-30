@@ -18,12 +18,12 @@ models:
 # Base dataset folders.
 datasets:
   # Dummy dataset for smoke-test experiments.
-  # - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/tiny
-  - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/asia
-  - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/sach
-  - data/DiscreteBayesianNetworks/mediumNewteorks-20-50nodes/alarm
-  - data/DiscreteBayesianNetworks/mediumNewteorks-20-50nodes/insurance
-  - data/DiscreteBayesianNetworks/LargeNetworks-50–100nodes/hailfinder
+  - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/tiny
+  # - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/asia
+  # - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/sach
+  # - data/DiscreteBayesianNetworks/mediumNewteorks-20-50nodes/alarm
+  # - data/DiscreteBayesianNetworks/mediumNewteorks-20-50nodes/insurance
+  # - data/DiscreteBayesianNetworks/LargeNetworks-50–100nodes/hailfinder
 
 # Root folder where raw and evaluated outputs are written.
 out_root: outputs
@@ -40,10 +40,10 @@ max_tokens:
 # Low values are recommended for causal labeling; higher values are useful as robustness checks.
 temperature:
   - 0.0
-  - 0.25
-  - 0.5
-  - 0.75
-  - 1.0
+  # - 0.25
+  # # - 0.5
+  # # - 0.75
+  # # - 1.0
 
 # Optional custom run name.
 # Leave empty to auto-generate run_<timestamp>.

@@ -9,6 +9,7 @@ from utils import (
     append_csv,
     load_csv_text,
     load_dataset,
+    load_dotenv_file,
     load_metadata_schema,
     load_project_config,
     resolve_experiment_variants,
@@ -456,6 +457,7 @@ def run_dataset(
 
 
 def main() -> None:
+    load_dotenv_file()
     config = load_project_config()
     experiment = config.get("experiment", {})
 

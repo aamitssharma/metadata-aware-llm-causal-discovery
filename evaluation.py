@@ -6,7 +6,7 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
-from utils import append_csv, load_dataset, load_project_config, save_json
+from utils import append_csv, load_dataset, load_dotenv_file, load_project_config, save_json
 
 
 def _safe_div(numerator: float, denominator: float) -> float:
@@ -511,6 +511,7 @@ def evaluate_run(
 
 
 def main() -> None:
+    load_dotenv_file()
     # evaluation.py is evaluation-only: it reads config.yaml and evaluates the listed run ids.
     config = load_project_config()
     experiment = config.get("experiment", {})

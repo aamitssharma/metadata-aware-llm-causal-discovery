@@ -22,6 +22,24 @@ def load_project_config() -> Dict[str, Any]:
     return data if isinstance(data, dict) else {}
 
 
+def load_dotenv_file(path: str | Path | None = None) -> None:
+    """Load simple KEY=VALUE pairs into os.environ without overriding existing values."""
+    env_path = Path(path) if path is not None else PROJECT_DIR / ".env"
+    if not env_path.exists():
+        return
+
+    with env_path.open("r") as f:
+        for raw_line in f:
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            value = value.strip().strip("\"'")
+            if key and key not in os.environ:
+                os.environ[key] = value
+
+
 def load_dataset(dataset_dir: str):
     """Load dataset description and ground truth graph."""
     dataset_path = _resolve_dataset_dir(dataset_dir)
