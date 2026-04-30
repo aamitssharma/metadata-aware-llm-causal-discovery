@@ -22,6 +22,14 @@ PROMPT_FILE_MAP = {
 }
 
 
+def available_prompt_styles(prompt_family: str) -> list[str]:
+    return [
+        prompt_style
+        for family, prompt_style in PROMPT_FILE_MAP
+        if family == prompt_family
+    ]
+
+
 def build_prompt(
     *,
     query_mode: str,

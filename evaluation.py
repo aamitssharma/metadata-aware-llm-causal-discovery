@@ -4,6 +4,8 @@ from itertools import product
 from pathlib import Path
 from typing import Any, Dict, List
 
+import pandas as pd
+
 from utils import append_csv, load_dataset, load_project_config, save_json
 
 
@@ -27,6 +29,10 @@ def _normalize_float_list(raw_value: Any, default: float) -> List[float]:
     if not cleaned:
         raise ValueError("Evaluation hyperparameter list cannot be empty.")
     return cleaned
+
+
+def _float_slug(value: float) -> str:
+    return f"{float(value):g}".replace("-", "neg").replace(".", "p")
 
 
 def _iter_run_dirs(raw_root: Path, run_ids: List[str]) -> List[Path]:
@@ -142,6 +148,26 @@ def _adjusted_metrics(counts: Dict[str, int], alpha: float, beta: float) -> Dict
     }
 
 
+def _adjusted_counts_from_frame(frame: pd.DataFrame) -> Dict[str, int]:
+    if frame.empty:
+        return {"tp": 0, "fp": 0, "fn": 0, "tn": 0, "ue": 0, "un": 0}
+
+    gt_edge = frame["ground_truth"].eq("edge")
+    gt_no_edge = frame["ground_truth"].eq("no_edge")
+    pred_edge = frame["final_prediction"].eq("edge")
+    pred_no_edge = frame["final_prediction"].eq("no_edge")
+    pred_uncertain = frame["final_prediction"].eq("uncertain")
+
+    return {
+        "tp": int((gt_edge & pred_edge).sum()),
+        "fp": int((gt_no_edge & pred_edge).sum()),
+        "fn": int((gt_edge & pred_no_edge).sum()),
+        "tn": int((gt_no_edge & pred_no_edge).sum()),
+        "ue": int((gt_edge & pred_uncertain).sum()),
+        "un": int((gt_no_edge & pred_uncertain).sum()),
+    }
+
+
 def _print_metrics_summary(
     *,
     dataset_name: str,
@@ -163,6 +189,7 @@ def _evaluation_summary_row(
     dataset_dir: str,
     run_id: str,
     model_name: str,
+    temperature: float,
     prompt_family: str,
     prompt_style: str,
     variant_type: str,
@@ -179,6 +206,7 @@ def _evaluation_summary_row(
         "dataset_dir": dataset_dir,
         "run_id": run_id,
         "model_name": model_name,
+        "temperature": temperature,
         "prompt_family": prompt_family,
         "prompt_style": prompt_style,
         "variant_type": variant_type,
@@ -203,62 +231,62 @@ def _evaluation_summary_row(
 
 def _evaluate_model(
     *,
-    edge_file: Path,
-    no_edge_file: Path,
+    raw_frame: pd.DataFrame,
     model_name: str,
     gt_edges: set,
-    alpha: float,
-    beta: float,
     threshold: float,
 ) -> Dict[str, Any]:
-    # Merge the two raw result files for one model into one per-edge ternary decision table.
-    edge_results = _load_json(edge_file)
-    no_edge_results = _load_json(no_edge_file)
-
-    all_edge_keys = sorted(
-        edge_key for edge_key in set(edge_results) | set(no_edge_results) if "->" in edge_key
+    # Merge edge/no-edge query rows into one per-edge ternary decision table.
+    edge_frame = (
+        raw_frame[raw_frame["query_mode"].eq("edge")]
+        [["edge_key", "source", "target", "confidence", "notes"]]
+        .rename(columns={"confidence": "p_edge", "notes": "edge_notes"})
     )
-    per_edge_rows: List[Dict[str, Any]] = []
+    no_edge_frame = (
+        raw_frame[raw_frame["query_mode"].eq("no_edge")]
+        [["edge_key", "source", "target", "confidence", "notes"]]
+        .rename(columns={"confidence": "p_no_edge", "notes": "no_edge_notes"})
+    )
+    per_edge_frame = edge_frame.merge(
+        no_edge_frame,
+        on=["edge_key", "source", "target"],
+        how="outer",
+    )
+    if not per_edge_frame.empty:
+        per_edge_frame["p_edge"] = per_edge_frame["p_edge"].fillna(0.0).clip(0.0, 1.0)
+        per_edge_frame["p_no_edge"] = per_edge_frame["p_no_edge"].fillna(0.0).clip(0.0, 1.0)
+        per_edge_frame["edge_notes"] = per_edge_frame["edge_notes"].fillna("")
+        per_edge_frame["no_edge_notes"] = per_edge_frame["no_edge_notes"].fillna("")
+        per_edge_frame["model_name"] = model_name
+        per_edge_frame["ground_truth"] = [
+            "edge" if (source, target) in gt_edges else "no_edge"
+            for source, target in zip(per_edge_frame["source"], per_edge_frame["target"])
+        ]
+        per_edge_frame["edge_vote"] = "uncertain"
+        per_edge_frame.loc[per_edge_frame["p_edge"] > threshold, "edge_vote"] = "edge"
+        per_edge_frame["no_edge_vote"] = "uncertain"
+        per_edge_frame.loc[per_edge_frame["p_no_edge"] > threshold, "no_edge_vote"] = "no_edge"
 
-    for edge_key in all_edge_keys:
-        source, target = edge_key.split("->", 1)
-        edge_entry = edge_results.get(edge_key, {})
-        no_edge_entry = no_edge_results.get(edge_key, {})
+        decision_map = {
+            ("edge", "uncertain"): "edge",
+            ("edge", "no_edge"): "uncertain",
+            ("uncertain", "uncertain"): "uncertain",
+            ("uncertain", "no_edge"): "no_edge",
+        }
+        per_edge_frame["final_prediction"] = [
+            decision_map[(edge_vote, no_edge_vote)]
+            for edge_vote, no_edge_vote in zip(per_edge_frame["edge_vote"], per_edge_frame["no_edge_vote"])
+        ]
+        per_edge_rows = per_edge_frame.to_dict(orient="records")
+    else:
+        per_edge_rows = []
 
-        p_edge = _statement_confidence(edge_entry)
-        p_no_edge = _statement_confidence(no_edge_entry)
-        edge_vote = _edge_label(edge_entry, threshold)
-        no_edge_vote = _no_edge_label(no_edge_entry, threshold)
-        final_prediction = _final_decision(edge_vote, no_edge_vote)
-        ground_truth = "edge" if (source, target) in gt_edges else "no_edge"
-
-        per_edge_rows.append(
-            {
-                "edge_key": edge_key,
-                "source": source,
-                "target": target,
-                "ground_truth": ground_truth,
-                "model_name": model_name,
-                "p_edge": p_edge,
-                "p_no_edge": p_no_edge,
-                "edge_vote": edge_vote,
-                "no_edge_vote": no_edge_vote,
-                "final_prediction": final_prediction,
-                "edge_notes": edge_entry.get("notes", []),
-                "no_edge_notes": no_edge_entry.get("notes", []),
-            }
-        )
-
-    adjusted = _adjusted_metrics(_adjusted_counts(per_edge_rows), alpha=alpha, beta=beta)
+    counts = _adjusted_counts_from_frame(per_edge_frame)
     return {
         "model_name": model_name,
         "edge_positive_class": "edge",
         "threshold": threshold,
-        "hyperparameters": {
-            "alpha": alpha,
-            "beta": beta,
-        },
-        "adjusted_metrics": adjusted,
+        "counts": counts,
         "per_edge_results": per_edge_rows,
     }
 
@@ -275,6 +303,7 @@ def _upsert_manifest_entry(manifest_path: Path, new_entry: Dict[str, Any]) -> No
             item.get("run_id") == new_entry["run_id"]
             and item.get("dataset_name") == new_entry["dataset_name"]
             and item.get("model_name") == new_entry["model_name"]
+            and item.get("temperature") == new_entry["temperature"]
             and item.get("prompt_family") == new_entry["prompt_family"]
             and item.get("prompt_style") == new_entry["prompt_style"]
             and item.get("variant_type") == new_entry["variant_type"]
@@ -295,6 +324,7 @@ def _upsert_manifest_entry(manifest_path: Path, new_entry: Dict[str, Any]) -> No
             item["variant_name"],
             item["run_id"],
             item["model_name"],
+            item.get("temperature", 0.0),
             item.get("threshold", 0.0),
             item.get("alpha", 0.0),
             item.get("beta", 0.0),
@@ -313,144 +343,171 @@ def evaluate_run(
     *,
     run_dir: Path,
     out_root: Path,
-    alpha: float,
-    beta: float,
-    threshold: float,
+    alpha_values: List[float],
+    beta_values: List[float],
+    threshold_values: List[float],
 ) -> None:
-    # One run folder may contain multiple models; evaluate each model pair separately.
+    # One run folder represents one model + prompt style and contains all temperatures/variants.
     raw_config = _load_json(run_dir / "config.json")
     dataset_name = raw_config["dataset_name"]
     run_id = raw_config["run_id"]
     dataset_dir = raw_config["dataset_dir"]
     _, _, gt_edges = load_dataset(dataset_dir)
 
-    raw_root = out_root / "RawLLMResults"
+    raw_root = out_root / raw_config.get("prompt_family", "")
     relative_run_dir = run_dir.relative_to(raw_root)
-    eval_dir = out_root / "EvaluatedResults" / relative_run_dir / f"thr_{threshold:g}__a_{alpha:g}__b_{beta:g}"
+    eval_dir = out_root / "EvaluatedResults" / raw_config.get("prompt_family", "") / relative_run_dir
     eval_config = {
         "dataset_name": dataset_name,
         "dataset_dir": dataset_dir,
         "run_id": run_id,
         "raw_run_dir": str(run_dir),
+        "temperatures": raw_config.get("temperatures", []),
         "prompt_family": raw_config.get("prompt_family", ""),
         "prompt_style": raw_config.get("prompt_style", ""),
-        "variant_type": raw_config.get("variant_type", ""),
-        "variant_name": raw_config.get("variant_name", ""),
-        "metadata_file": raw_config.get("metadata_file", ""),
-        "sampled_data_file": raw_config.get("sampled_data_file"),
-        "threshold": threshold,
+        "variants": raw_config.get("variants", []),
+        "thresholds": threshold_values,
         "hyperparameters": {
-            "alpha": alpha,
-            "beta": beta,
+            "alpha": alpha_values,
+            "beta": beta_values,
         },
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
     }
     save_json(str(eval_dir / "config.json"), eval_config)
 
     slug_to_model = _model_lookup(raw_config.get("models", []))
-    model_pairs = _pair_model_files(run_dir)
+    model_slug = next(iter(slug_to_model), run_dir.parent.name)
+    model_name = slug_to_model.get(model_slug, model_slug)
+    raw_predictions_path = run_dir / "raw_predictions.csv"
+    if not raw_predictions_path.exists():
+        return
 
-    for model_slug, pair in sorted(model_pairs.items()):
-        edge_file = pair.get("edge")
-        no_edge_file = pair.get("no_edge")
-        if not edge_file or not no_edge_file:
-            continue
-
-        model_name = slug_to_model.get(model_slug, model_slug)
-        evaluated = _evaluate_model(
-            edge_file=edge_file,
-            no_edge_file=no_edge_file,
-            model_name=model_name,
-            gt_edges=gt_edges,
-            alpha=alpha,
-            beta=beta,
-            threshold=threshold,
-        )
-        evaluated.update(
-            {
-                "dataset_name": dataset_name,
-                "run_id": run_id,
-                "prompt_family": raw_config.get("prompt_family", ""),
-                "prompt_style": raw_config.get("prompt_style", ""),
-                "variant_type": raw_config.get("variant_type", ""),
-                "variant_name": raw_config.get("variant_name", ""),
-                "metadata_file": raw_config.get("metadata_file", ""),
-                "sampled_data_file": raw_config.get("sampled_data_file"),
-                "source_raw_files": {
-                    "edge": str(edge_file),
-                    "no_edge": str(no_edge_file),
-                },
-                "evaluated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
-            }
-        )
-
-        eval_path = eval_dir / f"ternaryEval__{model_slug}.json"
-        save_json(str(eval_path), evaluated)
-        edge_rows = []
-        for row in evaluated["per_edge_results"]:
-            edge_rows.append(
+    raw_predictions = pd.read_csv(raw_predictions_path)
+    grouping_columns = [
+        "temperature",
+        "variant_type",
+        "variant_name",
+        "metadata_file",
+        "sampled_data_file",
+    ]
+    for group_values, raw_group in raw_predictions.groupby(grouping_columns, dropna=False, sort=True):
+        temperature, variant_type, variant_name, metadata_file, sampled_data_file = group_values
+        sampled_data_file = "" if pd.isna(sampled_data_file) else sampled_data_file
+        slice_slug = f"temp_{_float_slug(temperature)}__{variant_type}__{variant_name}"
+        for threshold in threshold_values:
+            evaluated = _evaluate_model(
+                raw_frame=raw_group,
+                model_name=model_name,
+                gt_edges=gt_edges,
+                threshold=threshold,
+            )
+            evaluated_at = time.strftime("%Y-%m-%d %H:%M:%S")
+            evaluated.update(
                 {
                     "dataset_name": dataset_name,
-                    "dataset_dir": dataset_dir,
                     "run_id": run_id,
-                    "model_name": model_name,
+                    "temperature": temperature,
                     "prompt_family": raw_config.get("prompt_family", ""),
                     "prompt_style": raw_config.get("prompt_style", ""),
-                    "variant_type": raw_config.get("variant_type", ""),
-                    "variant_name": raw_config.get("variant_name", ""),
-                    "metadata_file": raw_config.get("metadata_file", ""),
-                    "sampled_data_file": raw_config.get("sampled_data_file") or "",
-                    "threshold": threshold,
-                    **row,
-                    "edge_notes": "|".join(str(note) for note in row.get("edge_notes", [])),
-                    "no_edge_notes": "|".join(str(note) for note in row.get("no_edge_notes", [])),
+                    "variant_type": variant_type,
+                    "variant_name": variant_name,
+                    "metadata_file": metadata_file,
+                    "sampled_data_file": sampled_data_file,
+                    "source_raw_files": {
+                        "raw_predictions": str(raw_predictions_path),
+                    },
+                    "evaluated_at": evaluated_at,
                 }
             )
-        append_csv(edge_rows, str(eval_dir / "evaluated_edges.csv"))
-        append_csv(edge_rows, str(out_root / "all_evaluated_edges.csv"))
 
-        summary_row = _evaluation_summary_row(
-            dataset_name=dataset_name,
-            dataset_dir=dataset_dir,
-            run_id=run_id,
-            model_name=model_name,
-            prompt_family=raw_config.get("prompt_family", ""),
-            prompt_style=raw_config.get("prompt_style", ""),
-            variant_type=raw_config.get("variant_type", ""),
-            variant_name=raw_config.get("variant_name", ""),
-            metadata_file=raw_config.get("metadata_file", ""),
-            sampled_data_file=raw_config.get("sampled_data_file"),
-            threshold=threshold,
-            alpha=alpha,
-            beta=beta,
-            metrics=evaluated["adjusted_metrics"],
-        )
-        append_csv([summary_row], str(eval_dir / "evaluation_summary.csv"))
-        append_csv([summary_row], str(out_root / "all_evaluation_summary.csv"))
-        _upsert_manifest_entry(
-            out_root / "all_evaluations.json",
-            {
-                "run_id": run_id,
-                "dataset_name": dataset_name,
-                "model_name": model_name,
-                "prompt_family": raw_config.get("prompt_family", ""),
-                "prompt_style": raw_config.get("prompt_style", ""),
-                "variant_type": raw_config.get("variant_type", ""),
-                "variant_name": raw_config.get("variant_name", ""),
-                "threshold": threshold,
-                "alpha": alpha,
-                "beta": beta,
-                "evaluation_timestamp": evaluated["evaluated_at"],
-                "source_file": str(eval_path),
-                "adjusted_metrics": evaluated["adjusted_metrics"],
-            },
-        )
-        _print_metrics_summary(
-            dataset_name=dataset_name,
-            run_id=run_id,
-            model_name=model_name,
-            metrics=evaluated["adjusted_metrics"],
-        )
+            edge_rows = []
+            for row in evaluated["per_edge_results"]:
+                edge_rows.append(
+                    {
+                        "dataset_name": dataset_name,
+                        "dataset_dir": dataset_dir,
+                        "run_id": run_id,
+                        "model_name": model_name,
+                        "temperature": temperature,
+                        "prompt_family": raw_config.get("prompt_family", ""),
+                        "prompt_style": raw_config.get("prompt_style", ""),
+                        "variant_type": variant_type,
+                        "variant_name": variant_name,
+                        "metadata_file": metadata_file,
+                        "sampled_data_file": sampled_data_file,
+                        "threshold": threshold,
+                        **row,
+                        "edge_notes": str(row.get("edge_notes", "")),
+                        "no_edge_notes": str(row.get("no_edge_notes", "")),
+                    }
+                )
+            append_csv(edge_rows, str(eval_dir / f"evaluated_edges__{slice_slug}__thr_{threshold:g}.csv"))
+            append_csv(edge_rows, str(out_root / "all_evaluated_edges.csv"))
+
+            summary_rows = []
+            metric_items = []
+            for alpha, beta in product(alpha_values, beta_values):
+                metrics = _adjusted_metrics(evaluated["counts"], alpha=alpha, beta=beta)
+                summary_row = _evaluation_summary_row(
+                    dataset_name=dataset_name,
+                    dataset_dir=dataset_dir,
+                    run_id=run_id,
+                    model_name=model_name,
+                    temperature=temperature,
+                    prompt_family=raw_config.get("prompt_family", ""),
+                    prompt_style=raw_config.get("prompt_style", ""),
+                    variant_type=variant_type,
+                    variant_name=variant_name,
+                    metadata_file=metadata_file,
+                    sampled_data_file=sampled_data_file,
+                    threshold=threshold,
+                    alpha=alpha,
+                    beta=beta,
+                    metrics=metrics,
+                )
+                summary_rows.append(summary_row)
+                metric_items.append(
+                    {
+                        "threshold": threshold,
+                        "alpha": alpha,
+                        "beta": beta,
+                        "adjusted_metrics": metrics,
+                    }
+                )
+
+            evaluated["metric_grid"] = metric_items
+            eval_path = eval_dir / f"ternaryEval__{slice_slug}__thr_{threshold:g}.json"
+            save_json(str(eval_path), evaluated)
+            append_csv(summary_rows, str(eval_dir / "evaluation_summary.csv"))
+            append_csv(summary_rows, str(out_root / "all_evaluation_summary.csv"))
+
+            for summary_row, metric_item in zip(summary_rows, metric_items):
+                _upsert_manifest_entry(
+                    out_root / "all_evaluations.json",
+                    {
+                        "run_id": run_id,
+                        "dataset_name": dataset_name,
+                        "model_name": model_name,
+                        "temperature": temperature,
+                        "prompt_family": raw_config.get("prompt_family", ""),
+                        "prompt_style": raw_config.get("prompt_style", ""),
+                        "variant_type": variant_type,
+                        "variant_name": variant_name,
+                        "threshold": summary_row["threshold"],
+                        "alpha": summary_row["alpha"],
+                        "beta": summary_row["beta"],
+                        "evaluation_timestamp": evaluated_at,
+                        "source_file": str(eval_path),
+                        "adjusted_metrics": metric_item["adjusted_metrics"],
+                    },
+                )
+
+            _print_metrics_summary(
+                dataset_name=dataset_name,
+                run_id=run_id,
+                model_name=model_name,
+                metrics=metric_items[0]["adjusted_metrics"],
+            )
 
 
 def main() -> None:
@@ -462,24 +519,23 @@ def main() -> None:
     out_root = Path(str(config.get("out_root", "outputs")))
     alpha_values = _normalize_float_list(evaluation.get("alpha", config.get("alpha")), 1.0)
     beta_values = _normalize_float_list(evaluation.get("beta", config.get("beta")), 1.0)
-    threshold = float(evaluation.get("threshold", config.get("threshold", 0.7)))
+    threshold_values = _normalize_float_list(evaluation.get("threshold", config.get("threshold")), 0.7)
     eval_run_ids = list(config.get("eval_run_ids", []))
 
     if not eval_run_ids:
         raise ValueError("config.yaml must define a non-empty 'eval_run_ids' list when evaluation is enabled.")
 
-    raw_root = out_root / "RawLLMResults"
+    raw_root = out_root / str(experiment.get("prompt_family", "metaData"))
 
     _ = experiment  # reserved for future filtering by prompt family/style if needed
     for run_dir in _iter_run_dirs(raw_root, [str(run_id) for run_id in eval_run_ids]):
-        for alpha, beta in product(alpha_values, beta_values):
-            evaluate_run(
-                run_dir=run_dir,
-                out_root=out_root,
-                alpha=alpha,
-                beta=beta,
-                threshold=threshold,
-            )
+        evaluate_run(
+            run_dir=run_dir,
+            out_root=out_root,
+            alpha_values=alpha_values,
+            beta_values=beta_values,
+            threshold_values=threshold_values,
+        )
 
 
 if __name__ == "__main__":

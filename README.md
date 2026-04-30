@@ -54,7 +54,7 @@ datasets:
 
 experiment:
   prompt_family: metaData
-  prompt_style: vanilla
+  prompt_style: all
   run_inference: 1
   run_evaluation: 0
 
@@ -62,7 +62,10 @@ eval_run_ids:
   - run_1774191789
 
 evaluation:
-  threshold: 0.7
+  threshold:
+    - 0.65
+    - 0.7
+    - 0.75
   alpha: 1.0
   beta: 1.0
 ```
@@ -75,11 +78,18 @@ What these mean:
   - use prompts that need both metadata and sampled CSV data
   - runs clean metadata with clean and corrupt sampled-data variants
 - `prompt_style`
-  - `vanilla`, `cot`, or `cot5Shot`
+  - `vanilla`, `cot`, `cot5Shot`, `all`, or a YAML list such as `[vanilla, cot]`
+  - for `prompt_family: metaData`, `all` runs `vanilla`, `cot`, and `cot5Shot`
 - `run_inference`
   - set to `1` to generate raw model outputs
 - `run_evaluation`
   - set to `1` to evaluate existing raw runs listed in `eval_run_ids`
+- `temperature`
+  - accepts one value or a list of values
+  - low values such as `0`, `0.25`, and `0.5` are best for repeatable causal judgments
+- `evaluation.threshold`
+  - accepts one value or a list of values
+  - evaluation runs every threshold with every alpha/beta combination
 
 Simple examples:
 
@@ -87,7 +97,7 @@ Simple examples:
 # Metadata-only experiment
 experiment:
   prompt_family: metaData
-  prompt_style: vanilla
+  prompt_style: all
   run_inference: 1
   run_evaluation: 0
 ```
@@ -132,28 +142,28 @@ Example for `asia`:
 ## Output Structure
 
 Outputs are organized so you can easily tell:
+- run id
 - dataset
+- model
 - prompt family
 - prompt style
 - variant type
 - exact variant name
-- run id
 
 Raw outputs:
 
 ```text
 outputs/
-  RawLLMResults/
-    <dataset_name>/
-      <prompt_family>/
-        <prompt_style>/
-          <variant_type>/
-            <variant_name>/
-              <run_id>/
-                config.json
-                edgeLLM__<model>.json
-                noEdgeLLM__<model>.json
-                raw_predictions.csv
+  <prompt_family>/
+    <run_id>/
+      <dataset_name>/
+        <model>/
+          <prompt_style>/
+            config.json
+            raw_predictions.csv
+            raw_json/
+              edgeLLM__temp_<temperature>__<variant_type>__<variant_name>.json
+              noEdgeLLM__temp_<temperature>__<variant_type>__<variant_name>.json
 ```
 
 Evaluated outputs:
@@ -161,16 +171,15 @@ Evaluated outputs:
 ```text
 outputs/
   EvaluatedResults/
-    <dataset_name>/
-      <prompt_family>/
-        <prompt_style>/
-          <variant_type>/
-            <variant_name>/
-              <run_id>/
-                config.json
-                ternaryEval__<model>.json
-                evaluated_edges.csv
-                evaluation_summary.csv
+    <prompt_family>/
+      <run_id>/
+        <dataset_name>/
+          <model>/
+            <prompt_style>/
+              config.json
+              ternaryEval__temp_<temperature>__<variant_type>__<variant_name>__thr_<threshold>.json
+              evaluated_edges__temp_<temperature>__<variant_type>__<variant_name>__thr_<threshold>.csv
+              evaluation_summary.csv
 ```
 
 Top-level aggregate files:

@@ -18,8 +18,11 @@ models:
 
 # Base dataset folders.
 datasets:
-  # - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/asia
+  - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/asia
+  - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/sach
+  - data/DiscreteBayesianNetworks/mediumNewteorks-20-50nodes/alarm
   - data/DiscreteBayesianNetworks/mediumNewteorks-20-50nodes/insurance
+  - data/DiscreteBayesianNetworks/LargeNetworks-50–100nodes/hailfinder
 
 # Root folder where raw and evaluated outputs are written.
 out_root: outputs
@@ -32,8 +35,14 @@ max_tokens:
   - 70000
   - 90000
   - 120000
-# Sampling temperature for the model.
-temperature: 0.0
+# Sampling temperature values for the model.
+# Low values are recommended for causal labeling; higher values are useful as robustness checks.
+temperature:
+  - 0.0
+  - 0.25
+  - 0.5
+  - 0.75
+  - 1.0
 
 # Optional custom run name.
 # Leave empty to auto-generate run_<timestamp>.
@@ -44,9 +53,12 @@ experiment:
   # metaData -> metadata-only prompts
   # dataMetaData -> metadata + sampled-data prompts
   prompt_family: metaData
+  # prompt_family: dataMetaData
 
-  # Choose the prompt style inside that family.
-  prompt_style: vanilla
+  # Choose the prompt style(s) inside that family.
+  # Use all to run every style available for the prompt family.
+  # For metaData this expands to: vanilla, cot, cot5Shot.
+  prompt_style: all
 
   # Set to 1 to run inference.
   run_inference: 0
@@ -58,8 +70,15 @@ experiment:
 eval_run_ids:
   - run_1775000063
 evaluation:
-  # Shared threshold for ternary voting.
-  threshold: 0.7
+  # Shared threshold values for ternary voting.
+  threshold:
+    - 0.65
+    - 0.7
+    - 0.75
+    - 0.8
+    - 0.85
+    - 0.9
+    - 0.95
 
   # Penalty weights for UN = uncertain prediction on a true no-edge.
   # Evaluation will run for every alpha/beta combination.
