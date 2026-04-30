@@ -1,0 +1,12 @@
+{
+  "nodes": [
+    "rain",
+    "umbrella"
+  ],
+  "edges": [
+    {
+      "source": "rain",
+      "target": "umbrella"
+    }
+  ]
+}

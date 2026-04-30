@@ -1,23 +1,24 @@
 # Models to query for every dataset listed below.
 # Use current OpenRouter model IDs.
 models:
-  # OpenAI small models
-  - openai/gpt-4.1-mini
+  # Small / efficient models
+  - openai/gpt-5.4-mini
+  - openai/gpt-5.4-nano
+  - anthropic/claude-haiku-4.5
+  - google/gemini-3.1-flash-lite-preview
+  - x-ai/grok-4.1-fast
 
-  # OpenAI mid-size models
-  - openai/gpt-4.1
-
-  # OpenAI large models
-  - openai/gpt-4o
-
-  # Additional frontier baselines
-  - openai/gpt-5.2
-
-  # MoE comparison
-  - openai/gpt-oss-20b
+  # Large / frontier models
+  - openai/gpt-5.5
+  - anthropic/claude-opus-4.7
+  - anthropic/claude-sonnet-4.6
+  - google/gemini-3.1-pro-preview
+  - deepseek/deepseek-v3.2-speciale
 
 # Base dataset folders.
 datasets:
+  # Dummy dataset for smoke-test experiments.
+  # - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/tiny
   - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/asia
   - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/sach
   - data/DiscreteBayesianNetworks/mediumNewteorks-20-50nodes/alarm
@@ -61,10 +62,10 @@ experiment:
   prompt_style: all
 
   # Set to 1 to run inference.
-  run_inference: 0
+  run_inference: 1
 
   # Set to 1 to run evaluation.
-  run_evaluation: 1
+  run_evaluation: 0
 
 # Run IDs to evaluate when experiment.run_evaluation = 1.
 eval_run_ids:

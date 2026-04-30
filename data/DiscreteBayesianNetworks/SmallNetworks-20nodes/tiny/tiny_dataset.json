@@ -1,0 +1,54 @@
+{
+  "name": "tiny",
+  "reference": "Synthetic two-node smoke-test dataset.",
+  "field": "weather",
+  "context": "Tiny synthetic dataset for testing causal discovery. Rain directly causes people to carry an umbrella.",
+  "variables": [
+    {
+      "name": "rain",
+      "description": "Whether it is raining (levels: yes, no)."
+    },
+    {
+      "name": "umbrella",
+      "description": "Whether a person carries an umbrella (levels: yes, no)."
+    }
+  ],
+  "graph": {
+    "nodes": [
+      "rain",
+      "umbrella"
+    ],
+    "edges": [
+      {
+        "source": "rain",
+        "target": "umbrella"
+      }
+    ]
+  },
+  "rows": [
+    {
+      "rain": "yes",
+      "umbrella": "yes"
+    },
+    {
+      "rain": "yes",
+      "umbrella": "yes"
+    },
+    {
+      "rain": "yes",
+      "umbrella": "no"
+    },
+    {
+      "rain": "no",
+      "umbrella": "no"
+    },
+    {
+      "rain": "no",
+      "umbrella": "no"
+    },
+    {
+      "rain": "no",
+      "umbrella": "yes"
+    }
+  ]
+}

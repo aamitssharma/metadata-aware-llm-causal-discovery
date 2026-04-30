@@ -62,6 +62,8 @@ def _normalize_entries_mapping(entries: Dict[str, Any], variables: List[str]) ->
     for source, target in permutations(variables, 2):
         edge_key = f"{source}->{target}"
         entry = entries.get(edge_key, {}) or {}
+        if not isinstance(entry, dict):
+            entry = {"probability": entry}
         normalized[edge_key] = {
             "confidence": _clamp_probability(entry.get("probability", 0.5)),
             "notes": [],

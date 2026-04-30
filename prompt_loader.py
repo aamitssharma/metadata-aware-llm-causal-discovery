@@ -1,6 +1,7 @@
 from importlib.util import module_from_spec, spec_from_file_location
+from itertools import permutations
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate
@@ -51,6 +52,7 @@ def build_prompt(
             "input_csv": input_csv,
         },
     )
+    rendered = f"{rendered}\n\n{_output_format_instructions(list(schema.get('variables', {}).keys()))}"
     # Use concrete message objects so JSON braces inside the prompt examples
     # are treated as literal text rather than template variables.
     return ChatPromptTemplate.from_messages(
@@ -109,3 +111,22 @@ def _schema_to_input_json(schema: Dict[str, Any]) -> str:
         "variables": variables,
     }
     return json.dumps(obj, indent=2)
+
+
+def _output_format_instructions(variables: List[str]) -> str:
+    example_entries = []
+    for source, target in list(permutations(variables, 2))[:3]:
+        example_entries.append(f'  "{source}->{target}": {{"probability": 0.5}}')
+    example = ",\n".join(example_entries)
+    return f"""
+### OUTPUT FORMAT
+Return only valid JSON. Do not include markdown, prose, code fences, or reasoning.
+The JSON object must contain one key for every ordered pair of distinct variables.
+Each key must be exactly formatted as "source->target".
+Each value must be an object with a numeric "probability" between 0 and 1.
+
+Example shape:
+{{
+{example}
+}}
+"""

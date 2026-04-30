@@ -9,6 +9,12 @@ from parser import build_batch_response_model, normalize_batch_query_output, par
 QueryMode = str  # "edge" | "no_edge"
 
 
+def _supports_structured_output(model: str) -> bool:
+    # OpenRouter exposes many providers through the OpenAI-compatible API, but
+    # not every provider supports tool/function/Pydantic structured output.
+    return model.startswith("openai/")
+
+
 def _response_to_text(response: Any) -> str:
     content = getattr(response, "content", response)
     if isinstance(content, str):
@@ -76,15 +82,29 @@ class OpenRouterLLM:
             attribute_b="",
             input_csv=input_csv,
         )
-        chain = prompt | llm.with_structured_output(batch_response_model)
-        try:
-            payload = chain.invoke({})
-            return normalize_batch_query_output(payload, variables)
-        except Exception as structured_error:
-            raw_chain = prompt | llm
-            raw_response = raw_chain.invoke({})
-            raw_text = _response_to_text(raw_response)
+        if _supports_structured_output(model):
+            chain = prompt | llm.with_structured_output(batch_response_model)
             try:
-                return parse_batch_query_text(raw_text, variables)
-            except Exception:
-                raise structured_error
+                payload = chain.invoke({})
+                return normalize_batch_query_output(payload, variables)
+            except Exception as structured_error:
+                try:
+                    return self._label_all_pairs_raw(
+                        llm=llm,
+                        prompt=prompt,
+                        variables=variables,
+                    )
+                except Exception:
+                    raise structured_error
+
+        return self._label_all_pairs_raw(
+            llm=llm,
+            prompt=prompt,
+            variables=variables,
+        )
+
+    def _label_all_pairs_raw(self, *, llm: ChatOpenAI, prompt, variables: List[str]) -> Dict[str, Any]:
+        raw_chain = prompt | llm
+        raw_response = raw_chain.invoke({})
+        raw_text = _response_to_text(raw_response)
+        return parse_batch_query_text(raw_text, variables)
