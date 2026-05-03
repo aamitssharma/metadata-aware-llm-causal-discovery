@@ -1,0 +1,266 @@
+{
+  "reference": "Beinlich I, Suermondt HJ, Chavez RM, Cooper GF (1989). \"The ALARM Monitoring System: A Case Study with Two Probabilistic Inference Techniques for Belief Networks.\" Proceedings of the 2nd European Conference on Artificial Intelligence in Medicine, 247–256.",
+  "field": "medicine",
+  "context": "ALARM (\"A Logical Alarm Reduction Mechanism\") is a Bayesian network for patient monitoring alarms. It represents cardiovascular status, oxygenation/ventilation, and ventilator/tube conditions using discretized clinical measurements and device states.",
+  "variables": [
+    {
+      "name": "CVP",
+      "description": "Central venous pressure; a coarse indicator of venous pressure/volume status (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "PCWP",
+      "description": "Pulmonary capillary wedge pressure; a coarse indicator related to left-side filling pressure (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "HIST",
+      "description": "History; whether relevant patient history is present as a binary flag (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "TPR",
+      "description": "Total peripheral resistance; an overall resistance to blood flow in the systemic circulation (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "BP",
+      "description": "Blood pressure; an overall arterial pressure state (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "CO",
+      "description": "Cardiac output; overall blood flow pumped by the heart per unit time (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "HRBP",
+      "description": "Heart rate / blood pressure; a combined/derived discretized state capturing HR relative to BP (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "HREK",
+      "description": "Heart rate measured by an EKG monitor; observed HR reading from EKG (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "HRSA",
+      "description": "Heart rate / oxygen saturation; a combined/derived discretized state capturing HR relative to SAO2 (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "PAP",
+      "description": "Pulmonary artery pressure; pressure in the pulmonary artery circulation (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "SAO2",
+      "description": "Arterial oxygen saturation; overall oxygen saturation level in arterial blood (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "FIO2",
+      "description": "Fraction of inspired oxygen; the delivered oxygen fraction from the breathing mixture (levels: LOW, NORMAL)."
+    },
+    {
+      "name": "PRSS",
+      "description": "Breathing pressure; an observed pressure level in the breathing circuit/airway (levels: ZERO, LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "ECO2",
+      "description": "Expelled CO2; exhaled CO2 level in expired gas (levels: ZERO, LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "MINV",
+      "description": "Minimum volume; an observed ventilation volume level (levels: ZERO, LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "MVS",
+      "description": "Minimum volume set; the set/target minimum ventilation volume (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "HYP",
+      "description": "Hypovolemia; whether low circulating blood volume is present (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "LVF",
+      "description": "Left ventricular failure; whether LV failure is present (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "APL",
+      "description": "Anaphylaxis; whether an anaphylactic event/state is present (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "ANES",
+      "description": "Insufficient anesthesia/analgesia; whether anesthesia/analgesia is insufficient (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "PMB",
+      "description": "Pulmonary embolus; whether a pulmonary embolus is present (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "INT",
+      "description": "Intubation; tube placement status (levels: NORMAL, ESOPHAGEAL, ONESIDED)."
+    },
+    {
+      "name": "KINK",
+      "description": "Kinked tube; whether the breathing tube is kinked/obstructed (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "DISC",
+      "description": "Disconnection; whether a disconnection in the breathing circuit has occurred (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "LVV",
+      "description": "Left ventricular end-diastolic volume; a coarse LV filling/volume state (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "STKV",
+      "description": "Stroke volume; blood volume ejected per heartbeat (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "CCHL",
+      "description": "Catecholamine; overall catecholamine level/state (levels: NORMAL, HIGH)."
+    },
+    {
+      "name": "ERLO",
+      "description": "Error low output; a binary flag indicating a low-output error/state (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "HR",
+      "description": "Heart rate; overall HR state (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "ERCA",
+      "description": "Electrocauter; whether electrocautery is being used (often relevant to monitoring conditions) (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "SHNT",
+      "description": "Shunt; a coarse shunt state (levels: NORMAL, HIGH)."
+    },
+    {
+      "name": "PVS",
+      "description": "Pulmonary venous oxygen saturation; oxygen saturation state on the pulmonary venous side (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "ACO2",
+      "description": "Arterial CO2; overall arterial CO2 level state (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "VALV",
+      "description": "Pulmonary alveoli ventilation; ventilation level at the alveolar level (levels: ZERO, LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "VLNG",
+      "description": "Lung ventilation; overall lung ventilation level (levels: ZERO, LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "VTUB",
+      "description": "Ventilation tube; ventilation level through/at the tube (levels: ZERO, LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "VMCH",
+      "description": "Ventilation machine; ventilation level/output attributed to the ventilator machine (levels: ZERO, LOW, NORMAL, HIGH)."
+   
+      "name": "PAP",
+      "description": "Pulmonary artery pressure; pressure in the pulmonary artery circulation (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "SAO2",
+      "description": "Arterial oxygen saturation; overall oxygen saturation level in arterial blood (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "FIO2",
+      "description": "Fraction of inspired oxygen; the delivered oxygen fraction from the breathing mixture (levels: LOW, NORMAL)."
+    },
+    {
+      "name": "PRSS",
+      "description": "Breathing pressure; an observed pressure level in the breathing circuit/airway (levels: ZERO, LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "ECO2",
+      "description": "Expelled CO2; exhaled CO2 level in expired gas (levels: ZERO, LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "MINV",
+      "description": "Minimum volume; an observed ventilation volume level (levels: ZERO, LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "MVS",
+      "description": "Minimum volume set; the set/target minimum ventilation volume (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "HYP",
+      "description": "Hypovolemia; whether low circulating blood volume is present (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "LVF",
+      "description": "Left ventricular failure; whether LV failure is present (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "APL",
+      "description": "Anaphylaxis; whether an anaphylactic event/state is present (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "ANES",
+      "description": "Insufficient anesthesia/analgesia; whether anesthesia/analgesia is insufficient (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "PMB",
+      "description": "Pulmonary embolus; whether a pulmonary embolus is present (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "INT",
+      "description": "Intubation; tube placement status (levels: NORMAL, ESOPHAGEAL, ONESIDED)."
+    },
+    {
+      "name": "KINK",
+      "description": "Kinked tube; whether the breathing tube is kinked/obstructed (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "DISC",
+      "description": "Disconnection; whether a disconnection in the breathing circuit has occurred (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "LVV",
+      "description": "Left ventricular end-diastolic volume; a coarse LV filling/volume state (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "STKV",
+      "description": "Stroke volume; blood volume ejected per heartbeat (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "CCHL",
+      "description": "Catecholamine; overall catecholamine level/state (levels: NORMAL, HIGH)."
+    },
+    {
+      "name": "ERLO",
+      "description": "Error low output; a binary flag indicating a low-output error/state (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "HR",
+      "description": "Heart rate; overall HR state (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "ERCA",
+      "description": "Electrocauter; whether electrocautery is being used (often relevant to monitoring conditions) (levels: TRUE, FALSE)."
+    },
+    {
+      "name": "SHNT",
+      "description": "Shunt; a coarse shunt state (levels: NORMAL, HIGH)."
+    },
+    {
+      "name": "PVS",
+      "description": "Pulmonary venous oxygen saturation; oxygen saturation state on the pulmonary venous side (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "ACO2",
+      "description": "Arterial CO2; overall arterial CO2 level state (levels: LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "VALV",
+      "description": "Pulmonary alveoli ventilation; ventilation level at the alveolar level (levels: ZERO, LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "VLNG",
+      "description": "Lung ventilation; overall lung ventilation level (levels: ZERO, LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "VTUB",
+      "description": "Ventilation tube; ventilation level through/at the tube (levels: ZERO, LOW, NORMAL, HIGH)."
+    },
+    {
+      "name": "VMCH",
+      "description": "Ventilation machine; ventilation level/output attributed to the ventilator machine (levels: ZERO, LOW, NORMAL, HIGH)."
+    }
+  ]
+}

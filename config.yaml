@@ -41,9 +41,9 @@ max_tokens:
 temperature:
   - 0.0
   # - 0.25
-  # # - 0.5
-  # # - 0.75
-  # # - 1.0
+  # - 0.5
+  # - 0.75
+  # - 1.0
 
 # Optional custom run name.
 # Leave empty to auto-generate run_<timestamp>.

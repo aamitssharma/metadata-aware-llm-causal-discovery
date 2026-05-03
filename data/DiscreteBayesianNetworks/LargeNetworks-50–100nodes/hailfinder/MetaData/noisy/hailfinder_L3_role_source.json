@@ -1,0 +1,399 @@
+{
+  "level": 3,
+  "field": "weather",
+  "context": "Attribute names with labels, discrete levels, variable role (observational / derived / index / forecast), and data source — functional context without explicit causal direction.",
+  "variables": [
+    {
+      "name": "N07muVerMo",
+      "label": "10.7-micron vertical motion",
+      "role": "observational",
+      "source": "Satellite infrared 10.7-micron channel temperature-tendency estimate",
+      "levels": ["StrongUp","WeakUp","Neutral","Down"]
+    },
+    {
+      "name": "SubjVertMo",
+      "label": "Subjective vertical motion",
+      "role": "observational",
+      "source": "Forecaster manual assessment of vertical motion",
+      "levels": ["StrongUp","WeakUp","Neutral","Down"]
+    },
+    {
+      "name": "QGVertMotion",
+      "label": "Quasigeostrophic vertical motion",
+      "role": "observational",
+      "source": "Upper-air analysis; QG omega diagnosis from 500 hPa height field",
+      "levels": ["StrongUp","WeakUp","Neutral","Down"]
+    },
+    {
+      "name": "CombVerMo",
+      "label": "Combined vertical motion",
+      "role": "derived",
+      "source": "Aggregation of N07muVerMo, SubjVertMo, and QGVertMotion",
+      "levels": ["StrongUp","WeakUp","Neutral","Down"]
+    },
+    {
+      "name": "AreaMesoALS",
+      "label": "Area of meso-alpha-scale lifting",
+      "role": "derived",
+      "source": "Synoptic analysis; area extent of organized meso-alpha upward motion",
+      "levels": ["StrongUp","WeakUp","Neutral","Down"]
+    },
+    {
+      "name": "SatContMoist",
+      "label": "Satellite moisture contribution",
+      "role": "observational",
+      "source": "Satellite water-vapor channel; precipitable-water retrievals",
+      "levels": ["VeryWet","Wet","Neutral","Dry"]
+    },
+    {
+      "name": "RaoContMoist",
+      "label": "RAO center moisture reading",
+      "role": "observational",
+      "source": "Regional Aviation Outlook / NWS forecast center surface/upper-air moisture analysis",
+      "levels": ["VeryWet","Wet","Neutral","Dry"]
+    },
+    {
+      "name": "CombMoisture",
+      "label": "Combined moisture",
+      "role": "derived",
+      "source": "Aggregation of SatContMoist and RaoContMoist",
+      "levels": ["VeryWet","Wet","Neutral","Dry"]
+    },
+    {
+      "name": "AreaMoDryAir",
+      "label": "Area of moisture / dry-air intrusion",
+      "role": "derived",
+      "source": "Synoptic moisture analysis; area of mid-level dry-air intrusion vs. low-level moisture",
+      "levels": ["VeryWet","Wet","Neutral","Dry"]
+    },
+    {
+      "name": "VISCloudCov",
+      "label": "Visible-channel cloud cover",
+      "role": "observational",
+      "source": "GOES visible satellite imagery",
+      "levels": ["Cloudy","PC","Clear"]
+    },
+    {
+      "name": "IRCloudCover",
+      "label": "Infrared-channel cloud cover",
+      "role": "observational",
+      "source": "GOES infrared (10.7-micron) satellite imagery",
+      "levels": ["Cloudy","PC","Clear"]
+    },
+    {
+      "name": "CombClouds",
+      "label": "Combined cloud cover",
+      "role": "derived",
+      "source": "Aggregation of VISCloudCov and IRCloudCover",
+      "levels": ["Cloudy","PC","Clear"]
+    },
+    {
+      "name": "CldShadeOth",
+      "label": "Cloud shading — non-convective",
+      "role": "derived",
+      "source": "Cirrus, stratus, or mid-level cloud shading not associated with convection",
+      "levels": ["Cloudy","PC","Clear"]
+    },
+    {
+      "name": "AMInstabMt",
+      "label": "Morning instability over mountains",
+      "role": "observational",
+      "source": "Morning sounding / morning surface observations over the Front Range foothills",
+      "levels": ["None","Weak","Strong"]
+    },
+    {
+      "name": "InsInMt",
+      "label": "Instability over mountains",
+      "role": "derived",
+      "source": "Combined instability diagnosis over the Colorado Front Range and foothills",
+      "levels": ["None","Weak","Strong"]
+    },
+    {
+      "name": "WndHodograph",
+      "label": "Wind hodograph shape",
+      "role": "observational",
+      "source": "Rawinsonde hodograph analysis; directional wind shear profile",
+      "levels": ["DCVZFavor","StrongWest","Westerly","Other"]
+    },
+    {
+      "name": "OutflowFrMt",
+      "label": "Outflow from mountains",
+      "role": "observational",
+      "source": "Surface mesonet / radar; cold-pool drainage outflow from mountain storms",
+      "levels": ["None","Weak","Strong"]
+    },
+    {
+      "name": "MorningBound",
+      "label": "Morning boundaries",
+      "role": "observational",
+      "source": "Morning surface analysis; pre-existing fronts, outflow boundaries, or convergence zones",
+      "levels": ["None","Weak","Strong"]
+    },
+    {
+      "name": "Boundaries",
+      "label": "Boundaries",
+      "role": "derived",
+      "source": "Synthesis of OutflowFrMt, MorningBound, and surface analysis features",
+      "levels": ["None","Weak","Strong"]
+    },
+    {
+      "name": "CldShadeConv",
+      "label": "Convective cloud shading",
+      "role": "observational",
+      "source": "Visible satellite; degree to which existing convection shadows the boundary layer",
+      "levels": ["None","Some","Marked"]
+    },
+    {
+      "name": "CompPlFcst",
+      "label": "Composite plains forecast tendency",
+      "role": "derived",
+      "source": "Synthesis of CapChange and InsChange trends over the northeastern Colorado plains",
+      "levels": ["IncCapDecIns","LittleChange","DecCapIncIns"]
+    },
+    {
+      "name": "CapChange",
+      "label": "Capping inversion change",
+      "role": "derived",
+      "source": "Forecast change in capping inversion strength (EML or lid) over the forecast period",
+      "levels": ["Decreasing","LittleChange","Increasing"]
+    },
+    {
+      "name": "LoLevMoistAd",
+      "label": "Low-level moisture advection",
+      "role": "observational",
+      "source": "850 hPa wind analysis and dewpoint fields; southerly flow moisture advection",
+      "levels": ["StrongPos","WeakPos","Neutral","Negative"]
+    },
+    {
+      "name": "InsChange",
+      "label": "Instability change",
+      "role": "derived",
+      "source": "Forecast change in CAPE / lapse rates over the forecast period",
+      "levels": ["Decreasing","LittleChange","Increasing"]
+    },
+    {
+      "name": "MountainFcst",
+      "label": "Mountain region (R1) severe-weather forecast",
+      "role": "forecast",
+      "source": "Final probabilistic hail-severity forecast for the Colorado Front Range / mountain region",
+      "levels": ["XNIL","SIG","SVR"]
+    },
+    {
+      "name": "Date",
+      "label": "Seasonal date bucket",
+      "role": "contextual",
+      "source": "Calendar date grouped into phenological hail-season windows",
+      "levels": ["May15_Jun14","Jun15_Jul1","Jul2_Jul15","Jul16_Aug10","Aug11_Aug20","Aug20_Sep15"]
+    },
+    {
+      "name": "Scenario",
+      "label": "Synoptic-scale weather scenario",
+      "role": "contextual",
+      "source": "Expert-defined synoptic pattern classification (A–K) from upper-air and surface analysis",
+      "levels": ["A","B","C","D","E","F","G","H","I","J","K"]
+    },
+    {
+      "name": "ScenRelAMCIN",
+      "label": "Scenario grouping for AM CIN",
+      "role": "derived",
+      "source": "Partitions Scenario into two groups based on expected morning CIN behavior",
+      "levels": ["AB","CThruK"]
+    },
+    {
+      "name": "MorningCIN",
+      "label": "Morning convective inhibition",
+      "role": "observational",
+      "source": "Morning rawinsonde or surface-based CIN estimate; strength of convective lid at sunrise",
+      "levels": ["None","PartInhibit","Stifling","TotalInhibit"]
+    },
+    {
+      "name": "AMCINInScen",
+      "label": "AM CIN relative to scenario baseline",
+      "role": "derived",
+      "source": "Normalizes MorningCIN against climatological CIN for the active Scenario",
+      "levels": ["LessThanAve","Average","MoreThanAve"]
+    },
+    {
+      "name": "CapInScen",
+      "label": "Capping relative to scenario baseline",
+      "role": "derived",
+      "source": "Normalizes afternoon capping strength against scenario-specific climatology",
+      "levels": ["LessThanAve","Average","MoreThanAve"]
+    },
+    {
+      "name": "ScenRelAMIns",
+      "label": "Scenario grouping for AM instability",
+      "role": "derived",
+      "source": "Partitions Scenario into six groups based on expected morning instability character",
+      "levels": ["ABI","CDEJ","F","G","H","K"]
+    },
+    {
+      "name": "LIfr12ZDENSd",
+      "label": "Lifted index from 12Z Denver sounding",
+      "role": "observational",
+      "source": "12Z rawinsonde launch from Denver (KDVN/KDEN); surface-lifted parcel LI",
+      "levels": ["LIGt0","N1GtLIGt_4","N5GtLIGt_8","LILt_8"]
+    },
+    {
+      "name": "AMDewptCalPl",
+      "label": "AM dewpoint calculation — plains",
+      "role": "observational",
+      "source": "Morning surface dewpoint network over northeastern Colorado plains; convective potential indicator",
+      "levels": ["Instability","Neutral","Stability"]
+    },
+    {
+      "name": "AMInsWliScen",
+      "label": "AM instability relative to scenario",
+      "role": "derived",
+      "source": "Normalizes morning instability (LI / dewpoint) against scenario-specific baseline",
+      "levels": ["LessUnstable","Average","MoreUnstable"]
+    },
+    {
+      "name": "InsSclInScen",
+      "label": "Instability scaling within scenario",
+      "role": "derived",
+      "source": "Final scaled instability measure adjusted for Scenario climatology",
+      "levels": ["LessUnstable","Average","MoreUnstable"]
+    },
+    {
+      "name": "ScenRel34",
+      "label": "Scenario grouping for regions 2/3/4",
+      "role": "derived",
+      "source": "Partitions Scenario into five groups relevant to northeastern Colorado plains sub-regions",
+      "levels": ["ACEFK","B","D","GJ","HI"]
+    },
+    {
+      "name": "LatestCIN",
+      "label": "Latest convective inhibition estimate",
+      "role": "observational",
+      "source": "Most recent CIN estimate from afternoon sounding or mesoanalysis; updated through forecast day",
+      "levels": ["None","PartInhibit","Stifling","TotalInhibit"]
+    },
+    {
+      "name": "LLIW",
+      "label": "LLIW severe-weather composite index",
+      "role": "index",
+      "source": "Low-Level Index of Wind shear; composite of shear, moisture, and instability",
+      "levels": ["Unfavorable","Weak","Moderate","Strong"]
+    },
+    {
+      "name": "CurPropConv",
+      "label": "Current propensity to convection",
+      "role": "derived",
+      "source": "Real-time synthesis of LatestCIN, LLIW, and boundary-layer thermodynamics",
+      "levels": ["None","Slight","Moderate","Strong"]
+    },
+    {
+      "name": "ScnRelPlFcst",
+      "label": "Scenario identifier for plains forecast",
+      "role": "contextual",
+      "source": "Direct pass-through of Scenario to the plains forecast sub-network",
+      "levels": ["A","B","C","D","E","F","G","H","I","J","K"]
+    },
+    {
+      "name": "PlainsFcst",
+      "label": "Plains severe-weather forecast",
+      "role": "forecast",
+      "source": "Final hail-severity forecast for the northeastern Colorado plains",
+      "levels": ["XNIL","SIG","SVR"]
+    },
+    {
+      "name": "N34StarFcst",
+      "label": "Regions 2/3/4 severe-weather forecast",
+      "role": "forecast",
+      "source": "Final hail-severity forecast for northeastern Colorado sub-regions 2, 3, and 4",
+      "levels": ["XNIL","SIG","SVR"]
+    },
+    {
+      "name": "R5Fcst",
+      "label": "Region 5 severe-weather forecast",
+      "role": "forecast",
+      "source": "Final hail-severity forecast for the eastern plains edge (Region 5)",
+      "levels": ["XNIL","SIG","SVR"]
+    },
+    {
+      "name": "Dewpoints",
+      "label": "Spatial dewpoint pattern",
+      "role": "observational",
+      "source": "Surface mesonet dewpoint network; spatial gradient across plains and mountains",
+      "levels": ["LowEverywhere","LowAtStation","LowSHighN","LowNHighS","LowMtsHighPl","HighEverywher","Other"]
+    },
+    {
+      "name": "LowLLapse",
+      "label": "Low-level lapse rate",
+      "role": "observational",
+      "source": "Surface to 850 hPa temperature gradient from Denver sounding or mesoanalysis",
+      "levels": ["CloseToDryAd","Steep","ModerateOrLe","Stable"]
+    },
+    {
+      "name": "MeanRH",
+      "label": "Mean relative humidity",
+      "role": "observational",
+      "source": "Layer-mean RH from surface to 500 hPa; sounding or model analysis",
+      "levels": ["VeryMoist","Average","Dry"]
+    },
+    {
+      "name": "MidLLapse",
+      "label": "Mid-level lapse rate",
+      "role": "observational",
+      "source": "700–500 hPa temperature gradient from Denver sounding",
+      "levels": ["CloseToDryAd","Steep","ModerateOrLe"]
+    },
+    {
+      "name": "MvmtFeatures",
+      "label": "Movement of synoptic features",
+      "role": "observational",
+      "source": "Short-range forecast / observed motion of fronts, upper troughs, or jet streaks",
+      "levels": ["StrongFront","MarkedUpper","OtherRapid","NoMajor"]
+    },
+    {
+      "name": "RHRatio",
+      "label": "Mid- to low-level RH ratio",
+      "role": "derived",
+      "source": "Ratio of mid-level to low-level relative humidity; discriminates elevated dry air from moist BL",
+      "levels": ["MoistMDryL","DryMMoistL","other"]
+    },
+    {
+      "name": "SfcWndShfDis",
+      "label": "Surface wind shifts and discontinuities",
+      "role": "observational",
+      "source": "Surface mesonet and radar fine-line analysis; boundary-layer convergence zones",
+      "levels": ["DenvCyclone","E_W_N","E_W_S","MovigFtorOt","DryLine","None","Other"]
+    },
+    {
+      "name": "SynForcng",
+      "label": "Synoptic forcing tendency",
+      "role": "observational",
+      "source": "QG forcing / upper divergence / jet-streak analysis; large-scale lift driver",
+      "levels": ["SigNegative","NegToPos","SigPositive","PosToNeg","LittleChange"]
+    },
+    {
+      "name": "TempDis",
+      "label": "Temperature discontinuities",
+      "role": "observational",
+      "source": "Surface analysis / mesonet; frontal or outflow thermal boundaries",
+      "levels": ["QStationary","Moving","None","Other"]
+    },
+    {
+      "name": "WindAloft",
+      "label": "Upper-level wind field",
+      "role": "observational",
+      "source": "300–200 hPa wind analysis; jet stream position and quadrant relative to forecast area",
+      "levels": ["LV","SWQuad","NWQuad","AllElse"]
+    },
+    {
+      "name": "WindFieldMt",
+      "label": "Wind field over mountains",
+      "role": "observational",
+      "source": "700 hPa analysis or mountain-station winds; controls orographic lifting",
+      "levels": ["Westerly","LVorOther"]
+    },
+    {
+      "name": "WindFieldPln",
+      "label": "Wind field over plains",
+      "role": "observational",
+      "source": "Surface and 850 hPa wind analysis over northeastern Colorado plains; boundary-layer flow regime",
+      "levels": ["LV","DenvCyclone","LongAnticyc","E_NE","SEquad","WidespdDnsl"]
+    }
+  ]
+}

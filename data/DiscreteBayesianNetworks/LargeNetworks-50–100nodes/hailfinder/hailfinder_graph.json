@@ -1,0 +1,326 @@
+{
+  "nodes": [
+    "N0_7muVerMo",
+    "SubjVertMo",
+    "QGVertMotion",
+    "CombVerMo",
+    "AreaMeso_ALS",
+    "SatContMoist",
+    "RaoContMoist",
+    "CombMoisture",
+    "AreaMoDryAir",
+    "VISCloudCov",
+    "IRCloudCover",
+    "CombClouds",
+    "CldShadeOth",
+    "AMInstabMt",
+    "InsInMt",
+    "WndHodograph",
+    "OutflowFrMt",
+    "MorningBound",
+    "Boundaries",
+    "CldShadeConv",
+    "CompPlFcst",
+    "CapChange",
+    "LoLevMoistAd",
+    "InsChange",
+    "MountainFcst",
+    "Date",
+    "Scenario",
+    "ScenRelAMCIN",
+    "MorningCIN",
+    "AMCINInScen",
+    "CapInScen",
+    "ScenRelAMIns",
+    "LIfr12ZDENSd",
+    "AMDewptCalPl",
+    "AMInsWliScen",
+    "InsSclInScen",
+    "ScenRel3_4",
+    "LatestCIN",
+    "LLIW",
+    "CurPropConv",
+    "ScnRelPlFcst",
+    "PlainsFcst",
+    "N34StarFcst",
+    "R5Fcst",
+    "Dewpoints",
+    "LowLLapse",
+    "MeanRH",
+    "MidLLapse",
+    "MvmtFeatures",
+    "RHRatio",
+    "SfcWndShfDis",
+    "SynForcng",
+    "TempDis",
+    "WindAloft",
+    "WindFieldMt",
+    "WindFieldPln"
+  ],
+  "edges": [
+    {
+      "source": "N0_7muVerMo",
+      "target": "CombVerMo"
+    },
+    {
+      "source": "SubjVertMo",
+      "target": "CombVerMo"
+    },
+    {
+      "source": "QGVertMotion",
+      "target": "CombVerMo"
+    },
+    {
+      "source": "CombVerMo",
+      "target": "AreaMeso_ALS"
+    },
+    {
+      "source": "AreaMeso_ALS",
+      "target": "AreaMoDryAir"
+    },
+    {
+      "source": "AreaMeso_ALS",
+      "target": "CldShadeOth"
+    },
+    {
+      "source": "AreaMeso_ALS",
+      "target": "CompPlFcst"
+    },
+    {
+      "source": "SatContMoist",
+      "target": "CombMoisture"
+    },
+    {
+      "source": "RaoContMoist",
+      "target": "CombMoisture"
+    },
+    {
+      "source": "CombMoisture",
+      "target": "AreaMoDryAir"
+    },
+    {
+      "source": "AreaMoDryAir",
+      "target": "CldShadeOth"
+    },
+    {
+      "source": "VISCloudCov",
+      "target": "CombClouds"
+    },
+    {
+      "source": "IRCloudCover",
+      "target": "CombClouds"
+    },
+    {
+      "source": "CombClouds",
+      "target": "CldShadeOth"
+    },
+    {
+      "source": "CldShadeOth",
+      "target": "InsInMt"
+    },
+    {
+      "source": "CldShadeOth",
+      "target": "CompPlFcst"
+    },
+    {
+      "source": "AMInstabMt",
+      "target": "InsInMt"
+    },
+    {
+      "source": "InsInMt",
+      "target": "OutflowFrMt"
+    },
+    {
+      "source": "InsInMt",
+      "target": "CldShadeConv"
+    },
+    {
+      "source": "InsInMt",
+      "target": "MountainFcst"
+    },
+    {
+      "source": "WndHodograph",
+      "target": "OutflowFrMt"
+    },
+    {
+      "source": "WndHodograph",
+      "target": "Boundaries"
+    },
+    {
+      "source": "WndHodograph",
+      "target": "CldShadeConv"
+    },
+    {
+      "source": "OutflowFrMt",
+      "target": "Boundaries"
+    },
+    {
+      "source": "MorningBound",
+      "target": "Boundaries"
+    },
+    {
+      "source": "Boundaries",
+      "target": "CompPlFcst"
+    },
+    {
+      "source": "CldShadeConv",
+      "target": "CompPlFcst"
+    },
+    {
+      "source": "CompPlFcst",
+      "target": "CapChange"
+    },
+    {
+      "source": "CompPlFcst",
+      "target": "InsChange"
+    },
+    {
+      "source": "CapChange",
+      "target": "CapInScen"
+    },
+    {
+      "source": "LoLevMoistAd",
+      "target": "InsChange"
+    },
+    {
+      "source": "InsChange",
+      "target": "InsSclInScen"
+    },
+    {
+      "source": "MountainFcst",
+      "target": "R5Fcst"
+    },
+    {
+      "source": "Date",
+      "target": "Scenario"
+    },
+    {
+      "source": "Scenario",
+      "target": "ScenRelAMCIN"
+    },
+    {
+      "source": "Scenario",
+      "target": "ScenRelAMIns"
+    },
+    {
+      "source": "Scenario",
+      "target": "ScenRel3_4"
+    },
+    {
+      "source": "Scenario",
+      "target": "ScnRelPlFcst"
+    },
+    {
+      "source": "Scenario",
+      "target": "Dewpoints"
+    },
+    {
+      "source": "Scenario",
+      "target": "LowLLapse"
+    },
+    {
+      "source": "Scenario",
+      "target": "MeanRH"
+    },
+    {
+      "source": "Scenario",
+      "target": "MidLLapse"
+    },
+    {
+      "source": "Scenario",
+      "target": "MvmtFeatures"
+    },
+    {
+      "source": "Scenario",
+      "target": "RHRatio"
+    },
+    {
+      "source": "Scenario",
+      "target": "SfcWndShfDis"
+    },
+    {
+      "source": "Scenario",
+      "target": "SynForcng"
+    },
+    {
+      "source": "Scenario",
+      "target": "TempDis"
+    },
+    {
+      "source": "Scenario",
+      "target": "WindAloft"
+    },
+    {
+      "source": "Scenario",
+      "target": "WindFieldMt"
+    },
+    {
+      "source": "Scenario",
+      "target": "WindFieldPln"
+    },
+    {
+      "source": "ScenRelAMCIN",
+      "target": "AMCINInScen"
+    },
+    {
+      "source": "MorningCIN",
+      "target": "AMCINInScen"
+    },
+    {
+      "source": "AMCINInScen",
+      "target": "CapInScen"
+    },
+    {
+      "source": "CapInScen",
+      "target": "PlainsFcst"
+    },
+    {
+      "source": "ScenRelAMIns",
+      "target": "AMInsWliScen"
+    },
+    {
+      "source": "LIfr12ZDENSd",
+      "target": "AMInsWliScen"
+    },
+    {
+      "source": "AMDewptCalPl",
+      "target": "AMInsWliScen"
+    },
+    {
+      "source": "AMInsWliScen",
+      "target": "InsSclInScen"
+    },
+    {
+      "source": "InsSclInScen",
+      "target": "PlainsFcst"
+    },
+    {
+      "source": "ScenRel3_4",
+      "target": "N34StarFcst"
+    },
+    {
+      "source": "LatestCIN",
+      "target": "CurPropConv"
+    },
+    {
+      "source": "LLIW",
+      "target": "CurPropConv"
+    },
+    {
+      "source": "CurPropConv",
+      "target": "PlainsFcst"
+    },
+    {
+      "source": "ScnRelPlFcst",
+      "target": "PlainsFcst"
+    },
+    {
+      "source": "PlainsFcst",
+      "target": "N34StarFcst"
+    },
+    {
+      "source": "N34StarFcst",
+      "target": "R5Fcst"
+    }
+  ]
+}
