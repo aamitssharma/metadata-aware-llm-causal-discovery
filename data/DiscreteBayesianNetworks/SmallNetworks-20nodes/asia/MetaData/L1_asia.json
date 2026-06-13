@@ -1,0 +1,34 @@
+[
+  {
+    "name": "dysp",
+    "label": "Dyspnoea"
+  },
+  {
+    "name": "tub",
+    "label": "Tuberculosis"
+  },
+  {
+    "name": "lung",
+    "label": "Lung cancer"
+  },
+  {
+    "name": "bronc",
+    "label": "Bronchitis"
+  },
+  {
+    "name": "asia",
+    "label": "Visit to Asia"
+  },
+  {
+    "name": "smoke",
+    "label": "Smoking"
+  },
+  {
+    "name": "xray",
+    "label": "Chest X-ray abnormal"
+  },
+  {
+    "name": "either",
+    "label": "Tuberculosis or lung cancer present"
+  }
+]

@@ -1,0 +1,150 @@
+[
+  {
+    "name": "CVP",
+    "label": "Central venous pressure"
+  },
+  {
+    "name": "PCWP",
+    "label": "Pulmonary capillary wedge pressure"
+  },
+  {
+    "name": "HIST",
+    "label": "Patient history flag"
+  },
+  {
+    "name": "TPR",
+    "label": "Total peripheral resistance"
+  },
+  {
+    "name": "BP",
+    "label": "Blood pressure"
+  },
+  {
+    "name": "CO",
+    "label": "Cardiac output"
+  },
+  {
+    "name": "HRBP",
+    "label": "Heart rate / blood pressure index"
+  },
+  {
+    "name": "HREK",
+    "label": "Heart rate from EKG"
+  },
+  {
+    "name": "HRSA",
+    "label": "Heart rate / oxygen saturation index"
+  },
+  {
+    "name": "PAP",
+    "label": "Pulmonary artery pressure"
+  },
+  {
+    "name": "SAO2",
+    "label": "Arterial oxygen saturation"
+  },
+  {
+    "name": "FIO2",
+    "label": "Fraction of inspired oxygen"
+  },
+  {
+    "name": "PRSS",
+    "label": "Breathing circuit pressure"
+  },
+  {
+    "name": "ECO2",
+    "label": "Expired CO2"
+  },
+  {
+    "name": "MINV",
+    "label": "Minute ventilation (observed)"
+  },
+  {
+    "name": "MVS",
+    "label": "Minute ventilation set (target)"
+  },
+  {
+    "name": "HYP",
+    "label": "Hypovolemia"
+  },
+  {
+    "name": "LVF",
+    "label": "Left ventricular failure"
+  },
+  {
+    "name": "APL",
+    "label": "Anaphylaxis"
+  },
+  {
+    "name": "ANES",
+    "label": "Insufficient anesthesia / analgesia"
+  },
+  {
+    "name": "PMB",
+    "label": "Pulmonary embolus"
+  },
+  {
+    "name": "INT",
+    "label": "Intubation status"
+  },
+  {
+    "name": "KINK",
+    "label": "Kinked breathing tube"
+  },
+  {
+    "name": "DISC",
+    "label": "Circuit disconnection"
+  },
+  {
+    "name": "LVV",
+    "label": "Left ventricular end-diastolic volume"
+  },
+  {
+    "name": "STKV",
+    "label": "Stroke volume"
+  },
+  {
+    "name": "CCHL",
+    "label": "Catecholamine level"
+  },
+  {
+    "name": "ERLO",
+    "label": "Error / low output flag"
+  },
+  {
+    "name": "HR",
+    "label": "Heart rate"
+  },
+  {
+    "name": "ERCA",
+    "label": "Electrocautery in use"
+  },
+  {
+    "name": "SHNT",
+    "label": "Intrapulmonary shunt"
+  },
+  {
+    "name": "PVS",
+    "label": "Pulmonary venous oxygen saturation"
+  },
+  {
+    "name": "ACO2",
+    "label": "Arterial CO2"
+  },
+  {
+    "name": "VALV",
+    "label": "Alveolar ventilation"
+  },
+  {
+    "name": "VLNG",
+    "label": "Lung ventilation"
+  },
+  {
+    "name": "VTUB",
+    "label": "Tube ventilation"
+  },
+  {
+    "name": "VMCH",
+    "label": "Ventilator machine output"
+  }
+]

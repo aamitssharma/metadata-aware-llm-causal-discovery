@@ -1,0 +1,366 @@
+[
+  {
+    "name": "CVP",
+    "label": "Central venous pressure",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Right atrial pressure; reflects venous volume status and right-heart preload."
+  },
+  {
+    "name": "PCWP",
+    "label": "Pulmonary capillary wedge pressure",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Left atrial pressure surrogate; left-heart preload and congestion indicator."
+  },
+  {
+    "name": "HIST",
+    "label": "Patient history flag",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Binary prior history flag; encodes baseline cardiac risk."
+  },
+  {
+    "name": "TPR",
+    "label": "Total peripheral resistance",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Systemic vascular resistance; afterload determinant."
+  },
+  {
+    "name": "BP",
+    "label": "Blood pressure",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Systemic arterial pressure; the principal haemodynamic alarm trigger."
+  },
+  {
+    "name": "CO",
+    "label": "Cardiac output",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Heart rate \u00d7 stroke volume; central perfusion index."
+  },
+  {
+    "name": "HRBP",
+    "label": "Heart rate / blood pressure index",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Monitoring index; detects HR/BP dissociation patterns."
+  },
+  {
+    "name": "HREK",
+    "label": "Heart rate from EKG",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "EKG-measured HR; noisy observation of true HR."
+  },
+  {
+    "name": "HRSA",
+    "label": "Heart rate / oxygen saturation index",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Monitoring index combining HR and SpO2; detects hypoxic tachycardia."
+  },
+  {
+    "name": "PAP",
+    "label": "Pulmonary artery pressure",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Pulmonary arterial pressure; elevated by PE or LVF."
+  },
+  {
+    "name": "SAO2",
+    "label": "Arterial oxygen saturation",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Arterial O2 saturation; key hypoxaemia alarm indicator."
+  },
+  {
+    "name": "FIO2",
+    "label": "Fraction of inspired oxygen",
+    "levels": [
+      "LOW",
+      "NORMAL"
+    ],
+    "description": "Ventilator O2 setting; root determinant of oxygen delivery."
+  },
+  {
+    "name": "PRSS",
+    "label": "Breathing circuit pressure",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Observed circuit pressure; reflects tube-level ventilation."
+  },
+  {
+    "name": "ECO2",
+    "label": "Expired CO2",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "End-tidal CO2; alveolar ventilation and metabolism indicator."
+  },
+  {
+    "name": "MINV",
+    "label": "Minute ventilation (observed)",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Measured minute ventilation; can deviate from machine output."
+  },
+  {
+    "name": "MVS",
+    "label": "Minute ventilation set (target)",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Clinician-set ventilation target; root of the ventilation delivery chain."
+  },
+  {
+    "name": "HYP",
+    "label": "Hypovolemia",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Reduced circulating blood volume; primary preload cause."
+  },
+  {
+    "name": "LVF",
+    "label": "Left ventricular failure",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Impaired LV contractility; raises filling pressures and reduces output."
+  },
+  {
+    "name": "APL",
+    "label": "Anaphylaxis",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Severe systemic allergic reaction; causes acute vasodilation."
+  },
+  {
+    "name": "ANES",
+    "label": "Insufficient anesthesia / analgesia",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Pain/awareness under anaesthesia; triggers sympathetic activation."
+  },
+  {
+    "name": "PMB",
+    "label": "Pulmonary embolus",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Pulmonary vascular obstruction; raises PAP and creates V/Q mismatch."
+  },
+  {
+    "name": "INT",
+    "label": "Intubation status",
+    "levels": [
+      "NORMAL",
+      "ESOPHAGEAL",
+      "ONESIDED"
+    ],
+    "description": "ETT placement; determines whether ventilation reaches the trachea/lungs."
+  },
+  {
+    "name": "KINK",
+    "label": "Kinked breathing tube",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "ETT kinking; obstructs gas flow and reduces VTUB."
+  },
+  {
+    "name": "DISC",
+    "label": "Circuit disconnection",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Breathing circuit separation; eliminates all gas delivery."
+  },
+  {
+    "name": "LVV",
+    "label": "Left ventricular end-diastolic volume",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "LV preload; the Frank-Starling determinant of stroke volume."
+  },
+  {
+    "name": "STKV",
+    "label": "Stroke volume",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Volume ejected per heartbeat; central output integrator."
+  },
+  {
+    "name": "CCHL",
+    "label": "Catecholamine level",
+    "levels": [
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Circulating catecholamines; drives HR and vasoconstriction."
+  },
+  {
+    "name": "ERLO",
+    "label": "Error / low output flag",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Low-output alarm; triggers catecholamine reflex and clinical alert."
+  },
+  {
+    "name": "HR",
+    "label": "Heart rate",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Heart rate; rate component of cardiac output."
+  },
+  {
+    "name": "ERCA",
+    "label": "Electrocautery in use",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Surgical electrocautery active; corrupts EKG measurement."
+  },
+  {
+    "name": "SHNT",
+    "label": "Intrapulmonary shunt",
+    "levels": [
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Fraction of CO bypassing ventilated alveoli; causes O2-refractory hypoxaemia."
+  },
+  {
+    "name": "PVS",
+    "label": "Pulmonary venous oxygen saturation",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "O2 saturation of blood leaving the lungs; set by FIO2 and alveolar ventilation."
+  },
+  {
+    "name": "ACO2",
+    "label": "Arterial CO2",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "PaCO2; inversely proportional to alveolar ventilation."
+  },
+  {
+    "name": "VALV",
+    "label": "Alveolar ventilation",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Effective gas-exchange ventilation; lung ventilation minus dead space."
+  },
+  {
+    "name": "VLNG",
+    "label": "Lung ventilation",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Total ventilation reaching the lungs; penultimate ventilation delivery node."
+  },
+  {
+    "name": "VTUB",
+    "label": "Tube ventilation",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Gas flow at the ETT; subject to mechanical circuit faults."
+  },
+  {
+    "name": "VMCH",
+    "label": "Ventilator machine output",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Mechanical ventilator gas delivery; set by MVS."
+  }
+]

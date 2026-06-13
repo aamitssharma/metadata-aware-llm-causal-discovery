@@ -1,0 +1,110 @@
+[
+  {
+    "name": "GoodStudent",
+    "label": "Good student status"
+  },
+  {
+    "name": "Age",
+    "label": "Driver age group"
+  },
+  {
+    "name": "SocioEcon",
+    "label": "Socio-economic status"
+  },
+  {
+    "name": "RiskAversion",
+    "label": "Risk aversion tendency"
+  },
+  {
+    "name": "VehicleYear",
+    "label": "Vehicle model year"
+  },
+  {
+    "name": "ThisCarDam",
+    "label": "Damage to insured car"
+  },
+  {
+    "name": "RuggedAuto",
+    "label": "Vehicle structural ruggedness"
+  },
+  {
+    "name": "Accident",
+    "label": "Accident severity"
+  },
+  {
+    "name": "MakeModel",
+    "label": "Car make/model class"
+  },
+  {
+    "name": "DrivQuality",
+    "label": "Driving quality"
+  },
+  {
+    "name": "Mileage",
+    "label": "Annual mileage bucket"
+  },
+  {
+    "name": "Antilock",
+    "label": "Antilock braking system (ABS)"
+  },
+  {
+    "name": "DrivingSkill",
+    "label": "Driver skill level"
+  },
+  {
+    "name": "SeniorTrain",
+    "label": "Senior driver training"
+  },
+  {
+    "name": "ThisCarCost",
+    "label": "Insured car claim cost"
+  },
+  {
+    "name": "Theft",
+    "label": "Vehicle theft"
+  },
+  {
+    "name": "CarValue",
+    "label": "Insured car value"
+  },
+  {
+    "name": "HomeBase",
+    "label": "Home neighbourhood type"
+  },
+  {
+    "name": "AntiTheft",
+    "label": "Anti-theft system"
+  },
+  {
+    "name": "PropCost",
+    "label": "Proportional cost comparison"
+  },
+  {
+    "name": "OtherCarCost",
+    "label": "Other car claim cost"
+  },
+  {
+    "name": "OtherCar",
+    "label": "Other vehicle involved"
+  },
+  {
+    "name": "MedCost",
+    "label": "Medical treatment cost"
+  },
+  {
+    "name": "Cushioning",
+    "label": "Occupant cushioning quality"
+  },
+  {
+    "name": "Airbag",
+    "label": "Airbag present"
+  },
+  {
+    "name": "ILiCost",
+    "label": "Injury / liability cost"
+  },
+  {
+    "name": "DrivHist",
+    "label": "Prior driving incidents"
+  }
+]

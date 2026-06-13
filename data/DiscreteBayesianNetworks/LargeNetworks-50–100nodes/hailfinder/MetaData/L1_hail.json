@@ -1,0 +1,226 @@
+[
+  {
+    "name": "N07muVerMo",
+    "label": "10.7-micron vertical motion"
+  },
+  {
+    "name": "SubjVertMo",
+    "label": "Subjective vertical motion assessment"
+  },
+  {
+    "name": "QGVertMotion",
+    "label": "Quasigeostrophic vertical motion"
+  },
+  {
+    "name": "CombVerMo",
+    "label": "Combined vertical motion"
+  },
+  {
+    "name": "AreaMesoALS",
+    "label": "Area of meso-alpha-scale lifting"
+  },
+  {
+    "name": "SatContMoist",
+    "label": "Satellite moisture contribution"
+  },
+  {
+    "name": "RaoContMoist",
+    "label": "RAO center moisture reading"
+  },
+  {
+    "name": "CombMoisture",
+    "label": "Combined moisture"
+  },
+  {
+    "name": "AreaMoDryAir",
+    "label": "Area of moisture / dry-air intrusion"
+  },
+  {
+    "name": "VISCloudCov",
+    "label": "Visible-channel cloud cover"
+  },
+  {
+    "name": "IRCloudCover",
+    "label": "Infrared-channel cloud cover"
+  },
+  {
+    "name": "CombClouds",
+    "label": "Combined cloud cover"
+  },
+  {
+    "name": "CldShadeOth",
+    "label": "Non-convective cloud shading"
+  },
+  {
+    "name": "AMInstabMt",
+    "label": "Morning instability over mountains"
+  },
+  {
+    "name": "InsInMt",
+    "label": "Instability over mountains"
+  },
+  {
+    "name": "WndHodograph",
+    "label": "Wind hodograph shape"
+  },
+  {
+    "name": "OutflowFrMt",
+    "label": "Outflow from mountain storms"
+  },
+  {
+    "name": "MorningBound",
+    "label": "Morning boundaries"
+  },
+  {
+    "name": "Boundaries",
+    "label": "Active boundaries"
+  },
+  {
+    "name": "CldShadeConv",
+    "label": "Convective cloud shading"
+  },
+  {
+    "name": "CompPlFcst",
+    "label": "Composite plains forecast tendency"
+  },
+  {
+    "name": "CapChange",
+    "label": "Capping inversion change"
+  },
+  {
+    "name": "LoLevMoistAd",
+    "label": "Low-level moisture advection"
+  },
+  {
+    "name": "InsChange",
+    "label": "Instability change"
+  },
+  {
+    "name": "MountainFcst",
+    "label": "Mountain region (R1) severe-weather forecast"
+  },
+  {
+    "name": "Date",
+    "label": "Seasonal date bucket"
+  },
+  {
+    "name": "Scenario",
+    "label": "Synoptic-scale weather scenario"
+  },
+  {
+    "name": "ScenRelAMCIN",
+    "label": "Scenario grouping for AM CIN"
+  },
+  {
+    "name": "MorningCIN",
+    "label": "Morning convective inhibition"
+  },
+  {
+    "name": "AMCINInScen",
+    "label": "AM CIN relative to scenario baseline"
+  },
+  {
+    "name": "CapInScen",
+    "label": "Capping relative to scenario baseline"
+  },
+  {
+    "name": "ScenRelAMIns",
+    "label": "Scenario grouping for AM instability"
+  },
+  {
+    "name": "LIfr12ZDENSd",
+    "label": "Lifted index \u2014 12Z Denver sounding"
+  },
+  {
+    "name": "AMDewptCalPl",
+    "label": "AM dewpoint calculation \u2014 plains"
+  },
+  {
+    "name": "AMInsWliScen",
+    "label": "AM instability relative to scenario"
+  },
+  {
+    "name": "InsSclInScen",
+    "label": "Instability scaling within scenario"
+  },
+  {
+    "name": "ScenRel34",
+    "label": "Scenario grouping for regions 2/3/4"
+  },
+  {
+    "name": "LatestCIN",
+    "label": "Latest convective inhibition estimate"
+  },
+  {
+    "name": "LLIW",
+    "label": "LLIW severe-weather composite index"
+  },
+  {
+    "name": "CurPropConv",
+    "label": "Current propensity to convection"
+  },
+  {
+    "name": "ScnRelPlFcst",
+    "label": "Scenario pass-through for plains forecast"
+  },
+  {
+    "name": "PlainsFcst",
+    "label": "Plains severe-weather forecast"
+  },
+  {
+    "name": "N34StarFcst",
+    "label": "Regions 2/3/4 severe-weather forecast"
+  },
+  {
+    "name": "R5Fcst",
+    "label": "Region 5 severe-weather forecast"
+  },
+  {
+    "name": "Dewpoints",
+    "label": "Spatial dewpoint pattern"
+  },
+  {
+    "name": "LowLLapse",
+    "label": "Low-level lapse rate"
+  },
+  {
+    "name": "MeanRH",
+    "label": "Mean relative humidity"
+  },
+  {
+    "name": "MidLLapse",
+    "label": "Mid-level lapse rate"
+  },
+  {
+    "name": "MvmtFeatures",
+    "label": "Movement of synoptic features"
+  },
+  {
+    "name": "RHRatio",
+    "label": "Mid- to low-level RH ratio"
+  },
+  {
+    "name": "SfcWndShfDis",
+    "label": "Surface wind shifts and discontinuities"
+  },
+  {
+    "name": "SynForcng",
+    "label": "Synoptic forcing tendency"
+  },
+  {
+    "name": "TempDis",
+    "label": "Temperature discontinuities"
+  },
+  {
+    "name": "WindAloft",
+    "label": "Upper-level wind field"
+  },
+  {
+    "name": "WindFieldMt",
+    "label": "Wind field over mountains"
+  },
+  {
+    "name": "WindFieldPln",
+    "label": "Wind field over plains"
+  }
+]

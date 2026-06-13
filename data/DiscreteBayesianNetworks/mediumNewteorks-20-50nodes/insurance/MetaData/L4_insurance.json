@@ -1,0 +1,307 @@
+[
+  {
+    "name": "GoodStudent",
+    "label": "Good student status",
+    "levels": [
+      "False",
+      "True"
+    ],
+    "description": "Whether the driver qualifies as a good student (GPA \u2265 3.0 or equivalent).",
+    "mechanism": "GoodStudent is a binary indicator jointly determined by Age (primarily Adolescent/young Adult) and SocioEcon (academic performance correlates with socioeconomic resources and parental investment). It serves as a risk proxy that feeds RiskAversion: good students are empirically more likely to be Cautious or Normal drivers. Not a vehicle or cost node."
+  },
+  {
+    "name": "Age",
+    "label": "Driver age group",
+    "levels": [
+      "Adolescent",
+      "Adult",
+      "Senior"
+    ],
+    "description": "Driver's age bracket; the most broadly connected demographic root node.",
+    "mechanism": "Root node with no modeled parents. Age has three direct downstream effects: GoodStudent (Adolescent most eligible), SeniorTrain (Senior-only intervention), and DrivingSkill (Adolescent and Senior both have elevated SubStandard probability due to inexperience and age-related decline respectively). Age is the most connected root node in the driver sub-network."
+  },
+  {
+    "name": "SocioEcon",
+    "label": "Socio-economic status",
+    "levels": [
+      "Prole",
+      "Middle",
+      "UpperMiddle",
+      "Wealthy"
+    ],
+    "description": "Household socio-economic tier; shapes vehicle and neighbourhood choices.",
+    "mechanism": "Root node with no modeled parents. SocioEcon is the primary economic constraint variable: it determines vehicle tier (MakeModel), residential location (HomeBase), and contributes to GoodStudent. Wealthy drivers drive Luxury/SuperLuxury vehicles in Secure/Suburb areas; Prole drivers drive Economy vehicles in City/Rural areas. SocioEcon is the root that connects vehicle quality to neighbourhood theft risk."
+  },
+  {
+    "name": "RiskAversion",
+    "label": "Risk aversion tendency",
+    "levels": [
+      "Psychopath",
+      "Adventurous",
+      "Normal",
+      "Cautious"
+    ],
+    "description": "Dispositional risk attitude; primary behavioural input to driving quality.",
+    "mechanism": "RiskAversion is influenced by GoodStudent (good students trend Cautious). It is the behavioural component of DrivQuality (interacting with DrivingSkill) and also drives Mileage exposure (risk-seeking drivers drive more). It is the key node bridging demographic background and accident risk: high risk aversion can partly compensate for low driving skill, and vice versa."
+  },
+  {
+    "name": "VehicleYear",
+    "label": "Vehicle model year",
+    "levels": [
+      "Current",
+      "older"
+    ],
+    "description": "Vehicle recency; proxy for safety technology availability.",
+    "mechanism": "Root node. VehicleYear is the temporal technology proxy: Current vehicles have substantially higher probability of having Antilock brakes, Airbags, and AntiTheft systems than older vehicles. It also contributes to CarValue (depreciation means older vehicles are worth less). VehicleYear is the key root node connecting model-year to three downstream safety and value nodes."
+  },
+  {
+    "name": "ThisCarDam",
+    "label": "Damage to insured car",
+    "levels": [
+      "None",
+      "Mild",
+      "Moderate",
+      "Severe"
+    ],
+    "description": "Physical damage severity to the insured vehicle.",
+    "mechanism": "ThisCarDam is jointly determined by Accident severity (more severe accident \u2192 more damage) and RuggedAuto (structural protection moderates damage given accident severity). The interaction is multiplicative: Accident=Severe + RuggedAuto=EggShell \u2192 near-certain Severe damage; Accident=Mild + RuggedAuto=Tank \u2192 likely None or Mild. ThisCarDam directly drives ThisCarCost."
+  },
+  {
+    "name": "RuggedAuto",
+    "label": "Vehicle structural ruggedness",
+    "levels": [
+      "EggShell",
+      "Football",
+      "Tank"
+    ],
+    "description": "Structural crashworthiness category; moderates accident-to-damage translation.",
+    "mechanism": "RuggedAuto is determined by MakeModel: SportsCar/Economy \u2192 EggShell (lightweight, poor crash structure); FamilySedan \u2192 Football (average); Luxury/SuperLuxury \u2192 Tank (high-strength steel, crumple zones). RuggedAuto moderates ThisCarDam and jointly determines Cushioning (with Airbag). It is the primary vehicle-side damage moderation node."
+  },
+  {
+    "name": "Accident",
+    "label": "Accident severity",
+    "levels": [
+      "None",
+      "Mild",
+      "Moderate",
+      "Severe"
+    ],
+    "description": "Overall accident severity; the central loss event node.",
+    "mechanism": "Accident is the central hub of the loss sub-network. It is determined by DrivQuality (proximate behavioural cause), Mileage (exposure), Antilock (active safety mitigation), and OtherCar (multi-vehicle amplification of severity). It simultaneously drives ThisCarDam (own vehicle), OtherCarCost (third-party), and MedCost (injuries). Accident is the highest-fanout outcome node in the network."
+  },
+  {
+    "name": "MakeModel",
+    "label": "Car make/model class",
+    "levels": [
+      "SportsCar",
+      "Economy",
+      "FamilySedan",
+      "Luxury",
+      "SuperLuxury"
+    ],
+    "description": "Vehicle class; the primary vehicle-side root determining all vehicle attributes.",
+    "mechanism": "MakeModel is determined by SocioEcon. It is the most connected vehicle node: it determines RuggedAuto (crash structure), CarValue (market price), Antilock availability, Airbag availability, and indirectly AntiTheft. MakeModel is the key common cause for all vehicle attribute nodes, making it a critical fork in the vehicle sub-network."
+  },
+  {
+    "name": "DrivQuality",
+    "label": "Driving quality",
+    "levels": [
+      "Poor",
+      "Normal",
+      "Excellent"
+    ],
+    "description": "Synthesized driving performance; the proximate cause of accident risk.",
+    "mechanism": "DrivQuality integrates DrivingSkill (technical competency) and RiskAversion (behavioural disposition). The interaction is approximately multiplicative: Expert skill + Cautious attitude \u2192 Excellent; SubStandard skill + Psychopath attitude \u2192 Poor (certain). A skilled but reckless driver (Expert + Adventurous) tends toward Normal, not Excellent. DrivQuality is the direct proximate cause of Accident severity, rendering Accident conditionally independent of DrivingSkill and RiskAversion given DrivQuality."
+  },
+  {
+    "name": "Mileage",
+    "label": "Annual mileage bucket",
+    "levels": [
+      "FiveThou",
+      "TwentyThou",
+      "FiftyThou",
+      "Domino"
+    ],
+    "description": "Annual miles driven; pure exposure multiplier on accident risk.",
+    "mechanism": "Mileage is influenced by RiskAversion (risk-seeking drivers drive more). It functions as an exposure variable: holding DrivQuality constant, higher mileage increases accident probability proportionally to kilometres at risk. Domino represents extreme mileage (commercial or rideshare level, ~100k+ miles/year). Mileage also affects OtherCar probability (more driving in dense areas)."
+  },
+  {
+    "name": "Antilock",
+    "label": "Antilock braking system (ABS)",
+    "levels": [
+      "False",
+      "True"
+    ],
+    "description": "ABS presence; active safety system reducing accident severity.",
+    "mechanism": "Antilock is determined by MakeModel (standard on Luxury/SuperLuxury) and VehicleYear (Current vehicles). When True, ABS directly reduces P(Accident=Severe or Moderate) by maintaining steering control during hard braking. It is conditionally independent of driver profile nodes given MakeModel and VehicleYear."
+  },
+  {
+    "name": "DrivingSkill",
+    "label": "Driver skill level",
+    "levels": [
+      "SubStandard",
+      "Normal",
+      "Expert"
+    ],
+    "description": "Technical driving competency; the skill component of driving quality.",
+    "mechanism": "DrivingSkill is determined by three inputs: Age (inexperience in Adolescents, decline in Seniors), SeniorTrain (completed training improves Senior skill), and DrivHist (more prior incidents \u2192 lower skill rating). DrivingSkill feeds DrivQuality as the technical component, interacting with RiskAversion. Given DrivQuality, DrivingSkill is conditionally independent of Accident."
+  },
+  {
+    "name": "SeniorTrain",
+    "label": "Senior driver training",
+    "levels": [
+      "False",
+      "True"
+    ],
+    "description": "Completion of senior driver refresher program; Age-conditional intervention.",
+    "mechanism": "SeniorTrain is available only to Senior-age drivers (Age=Senior prerequisite). When True, it improves DrivingSkill. It is a targeted intervention node: its effect is zero for non-Seniors (P(SeniorTrain=True | Age=Adolescent or Adult) \u2248 0). This makes SeniorTrain a key node for policy interventions targeting the Senior segment."
+  },
+  {
+    "name": "ThisCarCost",
+    "label": "Insured car claim cost",
+    "levels": [
+      "Thousand",
+      "TenThou",
+      "HundredThou",
+      "Million"
+    ],
+    "description": "Total financial cost for the insured vehicle (repair or total loss).",
+    "mechanism": "ThisCarCost is determined by two independent pathways: (1) damage pathway: ThisCarDam \u00d7 CarValue (damage severity \u00d7 replacement cost basis); (2) theft pathway: Theft \u00d7 CarValue (total loss value). Both pathways interact through CarValue, making CarValue the key moderating variable for all this-car financial outcomes. ThisCarCost feeds PropCost."
+  },
+  {
+    "name": "Theft",
+    "label": "Vehicle theft",
+    "levels": [
+      "False",
+      "True"
+    ],
+    "description": "Whether the insured vehicle was stolen.",
+    "mechanism": "Theft probability is determined by three factors: CarValue (more valuable cars more targeted), HomeBase (City highest crime; Secure lowest), and AntiTheft (deterrence reduces probability). These combine as: attractive target (CarValue) \u00d7 access opportunity (HomeBase) \u00d7 deterrence (AntiTheft). Theft feeds ThisCarCost as a total-loss pathway independent of the accident pathway."
+  },
+  {
+    "name": "CarValue",
+    "label": "Insured car value",
+    "levels": [
+      "FiveThou",
+      "TenThou",
+      "TwentyThou",
+      "FiftyThou",
+      "Million"
+    ],
+    "description": "Market value of the insured vehicle; the financial scale parameter for all property costs.",
+    "mechanism": "CarValue is determined by MakeModel (primary value driver: SuperLuxury \u2192 Million; Economy \u2192 FiveThou) and VehicleYear (Current \u2192 higher value due to no depreciation). CarValue is a common cause of two important downstream nodes: Theft (attractive target) and ThisCarCost (replacement cost ceiling). It is the financial scale moderator for all property-related costs."
+  },
+  {
+    "name": "HomeBase",
+    "label": "Home neighbourhood type",
+    "levels": [
+      "Secure",
+      "City",
+      "Suburb",
+      "Rural"
+    ],
+    "description": "Residential neighbourhood type; ambient risk environment.",
+    "mechanism": "HomeBase is determined by SocioEcon (Wealthy \u2192 Secure; Prole \u2192 City primarily). It influences two downstream nodes: Theft (City has highest crime density) and OtherCar (City traffic density increases multi-vehicle collision probability). HomeBase is the bridge node between socio-economic status and environmental risk."
+  },
+  {
+    "name": "AntiTheft",
+    "label": "Anti-theft system",
+    "levels": [
+      "False",
+      "True"
+    ],
+    "description": "Anti-theft device; primary deterrent reducing theft probability.",
+    "mechanism": "AntiTheft presence is determined by MakeModel (standard on Luxury/SuperLuxury) and VehicleYear (Current vehicles more likely equipped). AntiTheft has a single downstream effect: directly reducing Theft probability. It has no effect on accident severity, driving quality, or any cost node other than through Theft."
+  },
+  {
+    "name": "PropCost",
+    "label": "Proportional cost comparison",
+    "levels": [
+      "Thousand",
+      "TenThou",
+      "HundredThou",
+      "Million"
+    ],
+    "description": "Relative cost summary comparing insured-car to other-car costs.",
+    "mechanism": "PropCost aggregates ThisCarCost and OtherCarCost into a comparative cost ratio used for policy pricing and claim reserve estimation. It is a terminal aggregation leaf \u2014 the highest-level cost summary node in the network with no downstream effects."
+  },
+  {
+    "name": "OtherCarCost",
+    "label": "Other car claim cost",
+    "levels": [
+      "Thousand",
+      "TenThou",
+      "HundredThou",
+      "Million"
+    ],
+    "description": "Third-party vehicle cost; liability cost for the other vehicle.",
+    "mechanism": "OtherCarCost is determined by Accident severity and OtherCar (prerequisite: if OtherCar=False, OtherCarCost=Thousand with near-certainty). Severe multi-vehicle accidents with an involved third party (OtherCar=True) produce the highest OtherCarCost. OtherCarCost feeds PropCost."
+  },
+  {
+    "name": "OtherCar",
+    "label": "Other vehicle involved",
+    "levels": [
+      "False",
+      "True"
+    ],
+    "description": "Whether a second vehicle participates in the incident.",
+    "mechanism": "OtherCar is influenced by HomeBase (City traffic density increases multi-vehicle collision probability) and Mileage (more driving exposure increases encounter probability). OtherCar=True both amplifies Accident severity (multi-vehicle crashes are more severe) and is the prerequisite for OtherCarCost. This creates a v-structure at Accident (DrivQuality \u2192 Accident \u2190 OtherCar) that is important for explaining-away inference."
+  },
+  {
+    "name": "MedCost",
+    "label": "Medical treatment cost",
+    "levels": [
+      "Thousand",
+      "TenThou",
+      "HundredThou",
+      "Million"
+    ],
+    "description": "Medical cost of accident-related injuries.",
+    "mechanism": "MedCost is jointly determined by Accident severity (more severe accident \u2192 more injuries) and Cushioning quality (Poor cushioning amplifies injury given accident). These interact multiplicatively: Severe accident + Poor cushioning \u2192 near-certain HundredThou/Million costs; Mild accident + Excellent cushioning \u2192 Thousand. MedCost feeds ILiCost."
+  },
+  {
+    "name": "Cushioning",
+    "label": "Occupant cushioning quality",
+    "levels": [
+      "Poor",
+      "Fair",
+      "Good",
+      "Excellent"
+    ],
+    "description": "Integrated occupant protection quality; modulates injury severity given accident.",
+    "mechanism": "Cushioning is determined by Airbag (primary active protection component) and RuggedAuto (structural passive protection). The two inputs interact: Airbag=True + RuggedAuto=Tank \u2192 almost certainly Excellent; Airbag=False + RuggedAuto=EggShell \u2192 almost certainly Poor. Cushioning then moderates how Accident severity translates into MedCost."
+  },
+  {
+    "name": "Airbag",
+    "label": "Airbag present",
+    "levels": [
+      "False",
+      "True"
+    ],
+    "description": "Airbag availability; primary active occupant protection system.",
+    "mechanism": "Airbag is determined by MakeModel (standard on Luxury/SuperLuxury; rare on older Economy) and VehicleYear (Current vehicles standard-equipped post-1998 mandate). Airbag is the dominant input to Cushioning quality; its presence reduces MedCost through improved Cushioning. Given MakeModel and VehicleYear, Airbag is conditionally independent of all driver profile nodes."
+  },
+  {
+    "name": "ILiCost",
+    "label": "Injury / liability cost",
+    "levels": [
+      "Thousand",
+      "TenThou",
+      "HundredThou",
+      "Million"
+    ],
+    "description": "Total injury and legal liability cost; terminal liability cost leaf.",
+    "mechanism": "ILiCost aggregates MedCost (direct injury costs) into a total injury-and-liability bucket that incorporates third-party bodily injury liability, legal defence costs, and pain-and-suffering settlements. It is a terminal leaf node with no downstream effects in the model."
+  },
+  {
+    "name": "DrivHist",
+    "label": "Prior driving incidents",
+    "levels": [
+      "Zero",
+      "One",
+      "Many"
+    ],
+    "description": "Bucketed count of prior at-fault accidents or moving violations.",
+    "mechanism": "Root node with no modeled parents. DrivHist is a historical record that directly informs DrivingSkill: Many incidents \u2192 SubStandard skill much more probable. It is also the primary observable actuarial risk indicator, as it is the most reliable predictor of future claims. DrivHist is causally upstream of DrivingSkill only \u2014 it does not directly affect RiskAversion or any vehicle node."
+  }
+]

@@ -1,0 +1,205 @@
+{
+  "reference": "Maximally structured causal metadata for the Sachs cellular signaling network",
+  "field": "cellular signaling networks",
+  "context": "Single-cell flow cytometry measurements of intracellular signaling proteins and phospholipids. Metadata is enriched for Bayesian causal discovery, mechanistic graph reconstruction, Markov blanket estimation, and probabilistic pathway inference.",
+  "variables": [
+    {
+      "name": "PKC",
+      "label": "Protein Kinase C activity",
+      "role": "downstream signaling effector",
+      "category": "kinase_signaling",
+      "levels": ["Low", "Moderate", "High"],
+      "description": "Integrated phosphorylation readout capturing activity across multiple PKC isoforms.",
+      "causal_mechanism": "Activated downstream of PLCγ-mediated DAG and calcium signaling. PKC propagates intracellular signaling and modulates MAPK pathway activity.",
+      "direct_parents": ["Plcg", "PIP2"],
+      "direct_children": ["Raf"],
+      "markov_blanket": ["Plcg", "PIP2", "Raf"],
+      "cpt_shape_hints": {
+        "High": "Most probable when Plcg=High and PIP2=Moderate/High",
+        "Moderate": "Occurs under intermediate PLCγ activation",
+        "Low": "Likely when PLCγ activity is absent or PIP2 substrate is depleted"
+      },
+      "quantitative_notes": "PKC activation frequently exhibits nonlinear threshold effects due to second messenger amplification."
+    },
+    {
+      "name": "PKA",
+      "label": "Protein Kinase A substrate activity",
+      "role": "parallel regulatory kinase pathway",
+      "category": "kinase_signaling",
+      "levels": ["Low", "Moderate", "High"],
+      "description": "Aggregate motif-based phosphorylation signal reflecting cyclic AMP dependent kinase activity.",
+      "causal_mechanism": "Acts through cAMP-mediated phosphorylation cascades largely parallel to MAPK signaling.",
+      "direct_parents": [],
+      "direct_children": [],
+      "markov_blanket": [],
+      "cpt_shape_hints": {
+        "High": "Occurs during strong cAMP-mediated stimulation",
+        "Moderate": "Represents baseline signaling variability",
+        "Low": "Observed under minimal cyclic AMP activation"
+      },
+      "quantitative_notes": "PKA often behaves as a partially independent signaling axis in perturbation experiments."
+    },
+    {
+      "name": "Raf",
+      "label": "Raf phosphorylation",
+      "role": "MAPK cascade entry node",
+      "category": "MAPK_pathway",
+      "levels": ["Inactive", "Intermediate", "Active"],
+      "description": "Upstream MAPK regulator controlling MEK phosphorylation dynamics.",
+      "causal_mechanism": "Receives upstream signaling from receptor and PKC-related pathways and activates MEK.",
+      "direct_parents": ["PKC"],
+      "direct_children": ["Mek"],
+      "markov_blanket": ["PKC", "Mek", "Akt"],
+      "cpt_shape_hints": {
+        "Active": "Strongly associated with PKC=High",
+        "Intermediate": "Occurs during transient activation states",
+        "Inactive": "Likely when upstream signaling is weak"
+      },
+      "quantitative_notes": "Raf activation exhibits switch-like behavior in MAPK cascade propagation."
+    },
+    {
+      "name": "Mek",
+      "label": "MEK phosphorylation",
+      "role": "MAPK intermediate transmission node",
+      "category": "MAPK_pathway",
+      "levels": ["Inactive", "Intermediate", "Active"],
+      "description": "Central kinase mediating Raf-to-ERK information transfer.",
+      "causal_mechanism": "Activated directly by Raf and propagates downstream MAPK signaling toward ERK.",
+      "direct_parents": ["Raf"],
+      "direct_children": ["Erk"],
+      "markov_blanket": ["Raf", "Erk"],
+      "cpt_shape_hints": {
+        "Active": "Highly probable when Raf=Active",
+        "Intermediate": "Associated with partial Raf activation",
+        "Inactive": "Occurs when Raf signaling is absent"
+      },
+      "quantitative_notes": "MEK activation generally follows monotonic dependence on Raf activity."
+    },
+    {
+      "name": "Erk",
+      "label": "ERK phosphorylation",
+      "role": "terminal MAPK effector",
+      "category": "MAPK_pathway",
+      "levels": ["Inactive", "Intermediate", "Active"],
+      "description": "Terminal MAPK signaling output associated with proliferation and transcriptional activation.",
+      "causal_mechanism": "Activated downstream of MEK and integrates proliferative signaling responses.",
+      "direct_parents": ["Mek"],
+      "direct_children": [],
+      "markov_blanket": ["Mek"],
+      "cpt_shape_hints": {
+        "Active": "Dominantly occurs when Mek=Active",
+        "Intermediate": "Occurs during partial MAPK transmission",
+        "Inactive": "Associated with absent MEK activation"
+      },
+      "quantitative_notes": "ERK commonly displays sustained activation under strong pathway stimulation."
+    },
+    {
+      "name": "Akt",
+      "label": "Akt phosphorylation",
+      "role": "survival signaling effector",
+      "category": "PI3K_Akt_pathway",
+      "levels": ["Inactive", "Intermediate", "Active"],
+      "description": "Downstream PI3K/Akt pathway kinase involved in metabolism and survival signaling.",
+      "causal_mechanism": "Activated through membrane recruitment driven by PIP3 accumulation.",
+      "direct_parents": ["PIP3"],
+      "direct_children": [],
+      "markov_blanket": ["PIP3", "Raf"],
+      "cpt_shape_hints": {
+        "Active": "Strongly associated with PIP3=High",
+        "Intermediate": "Occurs under moderate PI3K signaling",
+        "Inactive": "Likely when PIP3 levels are depleted"
+      },
+      "quantitative_notes": "Akt signaling often exhibits strong positive dependence on PI3K lipid signaling."
+    },
+    {
+      "name": "Jnk",
+      "label": "JNK phosphorylation",
+      "role": "stress-response kinase",
+      "category": "stress_MAPK_pathway",
+      "levels": ["Inactive", "Intermediate", "Active"],
+      "description": "Stress-activated MAPK pathway component responding to perturbation.",
+      "causal_mechanism": "Activated by environmental stress and inflammatory signaling.",
+      "direct_parents": [],
+      "direct_children": [],
+      "markov_blanket": ["P38"],
+      "cpt_shape_hints": {
+        "Active": "More likely during stress perturbation conditions",
+        "Intermediate": "Represents moderate stress response",
+        "Inactive": "Occurs in quiescent cellular states"
+      },
+      "quantitative_notes": "JNK and P38 frequently co-activate during stress conditions."
+    },
+    {
+      "name": "P38",
+      "label": "p38 phosphorylation",
+      "role": "stress/inflammatory signaling node",
+      "category": "stress_MAPK_pathway",
+      "levels": ["Inactive", "Intermediate", "Active"],
+      "description": "MAPK stress-response signaling component associated with inflammatory pathways.",
+      "causal_mechanism": "Activated under stress and inflammatory signaling conditions.",
+      "direct_parents": [],
+      "direct_children": [],
+      "markov_blanket": ["Jnk"],
+      "cpt_shape_hints": {
+        "Active": "Frequently co-occurs with Jnk=Active",
+        "Intermediate": "Associated with partial stress activation",
+        "Inactive": "Likely under minimal stress signaling"
+      },
+      "quantitative_notes": "P38 exhibits strong statistical association with JNK signaling activity."
+    },
+    {
+      "name": "Plcg",
+      "label": "PLCγ phosphorylation",
+      "role": "upstream phospholipase regulator",
+      "category": "phosphoinositide_signaling",
+      "levels": ["Inactive", "Intermediate", "Active"],
+      "description": "Phospholipase signaling regulator controlling phosphoinositide hydrolysis.",
+      "causal_mechanism": "Consumes PIP2 to generate second messengers driving PKC activation.",
+      "direct_parents": ["PIP2"],
+      "direct_children": ["PKC"],
+      "markov_blanket": ["PIP2", "PKC"],
+      "cpt_shape_hints": {
+        "Active": "Most probable when sufficient PIP2 substrate exists",
+        "Intermediate": "Occurs under partial receptor stimulation",
+        "Inactive": "Likely when phosphoinositide signaling is absent"
+      },
+      "quantitative_notes": "PLCγ often acts as a branching point for calcium and PKC signaling."
+    },
+    {
+      "name": "PIP3",
+      "label": "Phosphatidylinositol (3,4,5)-trisphosphate",
+      "role": "membrane signaling lipid",
+      "category": "PI3K_lipid_signaling",
+      "levels": ["Low", "Moderate", "High"],
+      "description": "Membrane phospholipid generated by PI3K activity.",
+      "causal_mechanism": "Acts as a membrane docking signal for Akt recruitment and activation.",
+      "direct_parents": ["PIP2"],
+      "direct_children": ["Akt"],
+      "markov_blanket": ["PIP2", "Akt"],
+      "cpt_shape_hints": {
+        "High": "Occurs during active PI3K signaling and abundant PIP2 substrate",
+        "Moderate": "Represents basal lipid signaling",
+        "Low": "Associated with reduced PI3K activity"
+      },
+      "quantitative_notes": "PIP3 is typically sparse but highly informative for Akt pathway activation."
+    },
+    {
+      "name": "PIP2",
+      "label": "Phosphatidylinositol (4,5)-bisphosphate",
+      "role": "upstream phospholipid substrate",
+      "category": "phosphoinositide_signaling",
+      "levels": ["Low", "Moderate", "High"],
+      "description": "Membrane phospholipid precursor consumed by PLCγ and PI3K signaling pathways.",
+      "causal_mechanism": "Serves as upstream substrate for both PIP3 generation and PLCγ-mediated second messenger signaling.",
+      "direct_parents": [],
+      "direct_children": ["PIP3", "Plcg"],
+      "markov_blanket": ["PIP3", "Plcg", "PKC"],
+      "cpt_shape_hints": {
+        "High": "Observed when phospholipid turnover is limited",
+        "Moderate": "Represents balanced phosphoinositide metabolism",
+        "Low": "Occurs under strong consumption by PI3K and PLCγ pathways"
+      },
+      "quantitative_notes": "PIP2 acts as a shared upstream substrate node linking multiple signaling branches."
+    }
+  ]
+}

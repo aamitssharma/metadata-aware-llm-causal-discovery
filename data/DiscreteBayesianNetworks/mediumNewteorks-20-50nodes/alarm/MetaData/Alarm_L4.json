@@ -1,0 +1,403 @@
+[
+  {
+    "name": "CVP",
+    "label": "Central venous pressure",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Right atrial pressure; reflects venous volume status and right-heart preload.",
+    "mechanism": "CVP is a passive downstream indicator of left ventricular filling volume (LVV) and the backward-pressure effects of left ventricular failure (LVF). It is a terminal leaf: observed for clinical alarms but does not drive any other node."
+  },
+  {
+    "name": "PCWP",
+    "label": "Pulmonary capillary wedge pressure",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Left atrial pressure surrogate; left-heart preload and congestion indicator.",
+    "mechanism": "PCWP reflects LV filling volume (LVV) and is elevated specifically by LVF through backward pressure transmission into the pulmonary venous circuit. Unlike CVP, PCWP is the most sensitive indicator of left-sided heart failure; normal CVP with elevated PCWP is classic for isolated LVF."
+  },
+  {
+    "name": "HIST",
+    "label": "Patient history flag",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Binary prior history flag; encodes baseline cardiac risk.",
+    "mechanism": "Root node with no modeled parents. A positive history (prior MI, cardiomyopathy) substantially raises the prior probability of LVF. Acts as a purely informational prior modifier; its causal influence in the network flows exclusively through LVF."
+  },
+  {
+    "name": "TPR",
+    "label": "Total peripheral resistance",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Systemic vascular resistance; afterload determinant.",
+    "mechanism": "TPR is elevated by catecholamine-driven vasoconstriction (CCHL\u2192alpha-adrenergic) and reduced by anaphylaxis-mediated histamine vasodilation (APL). TPR jointly determines blood pressure (BP = CO \u00d7 TPR) and modulates stroke volume through afterload (high TPR impedes ventricular ejection, reducing STKV)."
+  },
+  {
+    "name": "BP",
+    "label": "Blood pressure",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Systemic arterial pressure; the principal haemodynamic alarm trigger.",
+    "mechanism": "BP = CO \u00d7 TPR. It receives influences from both the output pathway (CO, which depends on HR and STKV) and the vascular resistance pathway (TPR, which depends on CCHL and APL). BP feeds the HRBP derived monitoring index. Given CO and TPR, BP is conditionally independent of all other nodes."
+  },
+  {
+    "name": "CO",
+    "label": "Cardiac output",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Heart rate \u00d7 stroke volume; central perfusion index.",
+    "mechanism": "CO is the product of HR (rate) and STKV (volume per beat). It determines BP (via TPR) and triggers the ERLO alarm when low. CO is the central haemodynamic node linking the rate pathway (CCHL\u2192HR) and the volume/contractility pathway (HYP/LVF\u2192LVV/STKV)."
+  },
+  {
+    "name": "HRBP",
+    "label": "Heart rate / blood pressure index",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Monitoring index; detects HR/BP dissociation patterns.",
+    "mechanism": "HRBP is a derived monitoring index computed from the true HR and observed BP. Abnormal states (e.g., HIGH HR with LOW BP = compensated shock; LOW HR with HIGH BP = hypertensive bradycardia) trigger specific alarm patterns. Terminal leaf \u2014 no downstream effects."
+  },
+  {
+    "name": "HREK",
+    "label": "Heart rate from EKG",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "EKG-measured HR; noisy observation of true HR.",
+    "mechanism": "HREK observes the true HR but is subject to electrocautery artefact (ERCA). When ERCA=TRUE, the EKG signal is corrupted and HREK may not accurately reflect HR. This makes HREK a noisy measurement node \u2014 a classic measurement-error structure in Bayesian networks. Terminal leaf."
+  },
+  {
+    "name": "HRSA",
+    "label": "Heart rate / oxygen saturation index",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Monitoring index combining HR and SpO2; detects hypoxic tachycardia.",
+    "mechanism": "HRSA combines HR and SAO2 to detect the pattern of hypoxic tachycardia (HIGH HR in the setting of LOW SAO2). Terminal leaf \u2014 no downstream effects in the model."
+  },
+  {
+    "name": "PAP",
+    "label": "Pulmonary artery pressure",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Pulmonary arterial pressure; elevated by PE or LVF.",
+    "mechanism": "PAP is raised by two independent mechanisms: PMB (obstructs pulmonary vasculature, acutely raises right ventricular afterload) and LVF (backward congestion raises pulmonary venous and arterial pressures). These two causes produce distinct clinical patterns: PMB raises PAP with normal/low PCWP; LVF raises both PAP and PCWP. Terminal leaf."
+  },
+  {
+    "name": "SAO2",
+    "label": "Arterial oxygen saturation",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Arterial O2 saturation; key hypoxaemia alarm indicator.",
+    "mechanism": "SAO2 is determined by pulmonary venous saturation (PVS, set by FIO2 and VALV) and intrapulmonary shunt (SHNT). High SHNT reduces SAO2 even with adequate ventilation and FIO2 (shunt-refractory hypoxaemia). SAO2 feeds HRSA monitoring index."
+  },
+  {
+    "name": "FIO2",
+    "label": "Fraction of inspired oxygen",
+    "levels": [
+      "LOW",
+      "NORMAL"
+    ],
+    "description": "Ventilator O2 setting; root determinant of oxygen delivery.",
+    "mechanism": "Root node set by the clinician. FIO2 is the primary oxygen-delivery input, setting alveolar PO2 via the alveolar gas equation. It directly determines pulmonary venous saturation (PVS). FIO2=LOW represents a delivery error (e.g., empty O2 source, wrong gas). Its influence on SAO2 is fully mediated through PVS."
+  },
+  {
+    "name": "PRSS",
+    "label": "Breathing circuit pressure",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Observed circuit pressure; reflects tube-level ventilation.",
+    "mechanism": "PRSS is driven by VTUB: the gas pressure at the tube/circuit interface rises proportionally with delivered gas volume. ZERO pressure is pathognomonic of complete disconnection (DISC=TRUE) or VMCH=ZERO. HIGH pressure indicates obstruction distal to the measurement point (e.g., KINK). Terminal leaf."
+  },
+  {
+    "name": "ECO2",
+    "label": "Expired CO2",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "End-tidal CO2; alveolar ventilation and metabolism indicator.",
+    "mechanism": "ECO2 is the downstream gas-exchange product of alveolar ventilation (VALV). ZERO ECO2 is pathognomonic of esophageal intubation (INT=ESOPHAGEAL) or complete circuit disconnection \u2014 no gas exchange occurring. ECO2 is the most rapid indicator of catastrophic ventilation failure. Terminal leaf."
+  },
+  {
+    "name": "MINV",
+    "label": "Minute ventilation (observed)",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Measured minute ventilation; can deviate from machine output.",
+    "mechanism": "MINV is observed at the lung level and reflects VLNG. The key diagnostic use of MINV in ALARM is its dissociation from VMCH: VMCH=NORMAL + MINV=ZERO indicates a fault between machine and lungs (DISC, KINK, or INT=ESOPHAGEAL). Terminal measurement leaf."
+  },
+  {
+    "name": "MVS",
+    "label": "Minute ventilation set (target)",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Clinician-set ventilation target; root of the ventilation delivery chain.",
+    "mechanism": "Root node. MVS is set by the clinician based on patient size and ventilatory requirements. It is the upstream input to VMCH and therefore the starting point of the entire ventilation delivery cascade. No parents in the model."
+  },
+  {
+    "name": "HYP",
+    "label": "Hypovolemia",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Reduced circulating blood volume; primary preload cause.",
+    "mechanism": "Root node. HYP reduces left ventricular preload (LVV\u2192LOW), which by Frank-Starling reduces stroke volume (STKV\u2192LOW), then CO, and ultimately BP. The haemodynamic fingerprint of hypovolemia is LOW CVP + LOW PCWP + LOW CO + LOW BP with preserved TPR and high CCHL (reflex)."
+  },
+  {
+    "name": "LVF",
+    "label": "Left ventricular failure",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Impaired LV contractility; raises filling pressures and reduces output.",
+    "mechanism": "Partially a root node (modulated by HIST). LVF reduces stroke volume by impairing contractility (reduced ejection fraction), simultaneously raising left-sided filling pressures (PCWP, CVP) and pulmonary artery pressure (PAP). It is causally upstream of five nodes and is the most connected root cause in the cardiovascular subnetwork."
+  },
+  {
+    "name": "APL",
+    "label": "Anaphylaxis",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Severe systemic allergic reaction; causes acute vasodilation.",
+    "mechanism": "Root node. APL releases histamine, which directly reduces TPR via arteriolar dilation and increases capillary permeability (reducing circulating volume). This produces the anaphylactic shock pattern: LOW TPR + LOW BP despite initially preserved or HIGH CO (high-output shock). Its effect on TPR is the strongest single-cause TPR reduction in the model."
+  },
+  {
+    "name": "ANES",
+    "label": "Insufficient anesthesia / analgesia",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Pain/awareness under anaesthesia; triggers sympathetic activation.",
+    "mechanism": "Root node. Inadequate anaesthetic depth activates the sympatho-adrenal axis, raising circulating catecholamines (CCHL). This is the primary intraoperative cause of catecholamine excess. CCHL then drives HR and TPR upward, producing the hypertensive tachycardia pattern of awareness under anaesthesia."
+  },
+  {
+    "name": "PMB",
+    "label": "Pulmonary embolus",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Pulmonary vascular obstruction; raises PAP and creates V/Q mismatch.",
+    "mechanism": "Root node. PMB simultaneously (a) obstructs pulmonary vasculature \u2192 HIGH PAP (right ventricular strain) and (b) creates V/Q mismatch \u2192 HIGH SHNT \u2192 LOW SAO2. This dual cardiovascular-oxygenation effect makes PMB the only root cause node that bridges both subsystems."
+  },
+  {
+    "name": "INT",
+    "label": "Intubation status",
+    "levels": [
+      "NORMAL",
+      "ESOPHAGEAL",
+      "ONESIDED"
+    ],
+    "description": "ETT placement; determines whether ventilation reaches the trachea/lungs.",
+    "mechanism": "Root node. INT governs whether tube-delivered gas (VTUB) reaches the lungs: ESOPHAGEAL \u2192 all gas enters the esophagus, VLNG=ZERO; ONESIDED \u2192 gas goes to one bronchus, VLNG reduced by ~50%; NORMAL \u2192 full VTUB reaches lungs. INT is the highest-impact single fault in the ventilation pathway."
+  },
+  {
+    "name": "KINK",
+    "label": "Kinked breathing tube",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "ETT kinking; obstructs gas flow and reduces VTUB.",
+    "mechanism": "Root node. KINK obstructs the lumen of the ETT, reducing VTUB proportionally (partial kink \u2192 LOW, complete kink \u2192 ZERO). KINK produces the HIGH PRSS (pressure builds up proximal to obstruction) + LOW MINV pattern. It is one of two mechanical root causes of VTUB reduction (the other being DISC)."
+  },
+  {
+    "name": "DISC",
+    "label": "Circuit disconnection",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Breathing circuit separation; eliminates all gas delivery.",
+    "mechanism": "Root node. DISC completely breaks the gas-delivery circuit, reducing VTUB to ZERO irrespective of VMCH output. DISC produces ZERO PRSS + ZERO MINV + ZERO ECO2 \u2014 the complete ventilation failure pattern. It is the most immediately life-threatening ventilation fault and the highest-priority alarm in ALARM."
+  },
+  {
+    "name": "LVV",
+    "label": "Left ventricular end-diastolic volume",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "LV preload; the Frank-Starling determinant of stroke volume.",
+    "mechanism": "LVV is determined by circulating volume (HYP reduces it) and by LVF (impaired emptying may paradoxically raise residual volume in dilated cardiomyopathy). By the Frank-Starling relationship, LVV directly and monotonically determines STKV across the physiological range. It is also the primary driver of venous filling pressures CVP and PCWP."
+  },
+  {
+    "name": "STKV",
+    "label": "Stroke volume",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Volume ejected per heartbeat; central output integrator.",
+    "mechanism": "STKV integrates three physiological determinants: preload (LVV \u2014 Frank-Starling), contractility (LVF \u2014 reduces ejection fraction), and afterload (TPR \u2014 high afterload impedes ejection). It is the direct multiplicative factor in CO = HR \u00d7 STKV and is the single most important intermediate node connecting root causes to the CO alarm."
+  },
+  {
+    "name": "CCHL",
+    "label": "Catecholamine level",
+    "levels": [
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Circulating catecholamines; drives HR and vasoconstriction.",
+    "mechanism": "CCHL is elevated by two inputs: ANES (sympathetic activation from pain/awareness) and ERLO (baroreceptor-mediated reflex response to low CO). CCHL then drives two downstream effects: HR (beta-1 chronotropy) and TPR (alpha-1 vasoconstriction). This creates the key feedback loop: low CO \u2192 ERLO \u2192 CCHL \u2192 HR \u2192 CO (partial correction)."
+  },
+  {
+    "name": "ERLO",
+    "label": "Error / low output flag",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Low-output alarm; triggers catecholamine reflex and clinical alert.",
+    "mechanism": "ERLO is triggered by low CO. It then activates the baroreceptor-mediated catecholamine response (CCHL), forming the only feedback loop in the ALARM network: CO \u2192 ERLO \u2192 CCHL \u2192 HR \u2192 CO. This feedback is the physiological compensation for low output but is also the source of reflex tachycardia/hypertension alarms."
+  },
+  {
+    "name": "HR",
+    "label": "Heart rate",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Heart rate; rate component of cardiac output.",
+    "mechanism": "HR is driven by CCHL (beta-1 adrenergic chronotropy). It is one of the two multiplicative factors in CO = HR \u00d7 STKV and simultaneously feeds three monitoring indices: HRBP (with BP), HREK (with ERCA noise), and HRSA (with SAO2). HR is the central hub node of the HR monitoring subsystem."
+  },
+  {
+    "name": "ERCA",
+    "label": "Electrocautery in use",
+    "levels": [
+      "TRUE",
+      "FALSE"
+    ],
+    "description": "Surgical electrocautery active; corrupts EKG measurement.",
+    "mechanism": "Root node. ERCA introduces high-frequency (200\u2013500 kHz) electrical interference that overwhelms the ECG amplifier, making HREK an unreliable HR measurement. It does not affect the underlying physiology \u2014 only the fidelity of the HREK observation. This is a canonical measurement-error / instrumentation-noise node in the ALARM network."
+  },
+  {
+    "name": "SHNT",
+    "label": "Intrapulmonary shunt",
+    "levels": [
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Fraction of CO bypassing ventilated alveoli; causes O2-refractory hypoxaemia.",
+    "mechanism": "SHNT is elevated by PMB (V/Q mismatch from vascular obstruction) and by inadequate alveolar ventilation (VALV=LOW or ZERO \u2014 atelectasis, one-lung ventilation). HIGH SHNT reduces SAO2 in a manner refractory to FIO2 increase \u2014 the defining feature of shunt physiology."
+  },
+  {
+    "name": "PVS",
+    "label": "Pulmonary venous oxygen saturation",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "O2 saturation of blood leaving the lungs; set by FIO2 and alveolar ventilation.",
+    "mechanism": "PVS is determined by alveolar PO2, which depends on both FIO2 (O2 delivery to alveoli) and VALV (ventilation to clear CO2 and maintain alveolar PO2). PVS feeds SAO2, where shunt (SHNT) mixes unventilated blood and reduces the final arterial saturation."
+  },
+  {
+    "name": "ACO2",
+    "label": "Arterial CO2",
+    "levels": [
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "PaCO2; inversely proportional to alveolar ventilation.",
+    "mechanism": "ACO2 is determined by alveolar ventilation (VALV): VA = VCO2 / (PaCO2 \u00d7 K). Hypoventilation (VALV=LOW/ZERO) raises ACO2; hyperventilation (VALV=HIGH) lowers it. ACO2 is the gold-standard ventilatory adequacy measure and a terminal leaf in the oxygenation pathway."
+  },
+  {
+    "name": "VALV",
+    "label": "Alveolar ventilation",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Effective gas-exchange ventilation; lung ventilation minus dead space.",
+    "mechanism": "VALV is derived from VLNG (total lung ventilation minus anatomical dead space ~150 mL/breath). VALV is the final common pathway of all ventilation effects: it simultaneously drives CO2 removal (ACO2 inverse relationship), O2 delivery (PVS via alveolar PO2), expired CO2 signal (ECO2), and shunt magnitude (SHNT via atelectasis). It is the highest-fanout intermediate node in the ventilation subnetwork."
+  },
+  {
+    "name": "VLNG",
+    "label": "Lung ventilation",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Total ventilation reaching the lungs; penultimate ventilation delivery node.",
+    "mechanism": "VLNG is determined by VTUB (gas arriving at the trachea) modified by INT (intubation status). ESOPHAGEAL INT forces VLNG=ZERO; ONESIDED reduces it to ~50%. Normal INT means VLNG \u2248 VTUB. VLNG then feeds VALV (alveolar exchange) and MINV (observed ventilation measurement)."
+  },
+  {
+    "name": "VTUB",
+    "label": "Tube ventilation",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Gas flow at the ETT; subject to mechanical circuit faults.",
+    "mechanism": "VTUB is the machine output (VMCH) after passing through two series fault gates: KINK (tube obstruction, reduces/blocks gas) and DISC (circuit break, zeroes gas delivery). These faults combine multiplicatively: either alone can reduce VTUB to ZERO. VTUB then determines VLNG (via INT) and PRSS (circuit pressure)."
+  },
+  {
+    "name": "VMCH",
+    "label": "Ventilator machine output",
+    "levels": [
+      "ZERO",
+      "LOW",
+      "NORMAL",
+      "HIGH"
+    ],
+    "description": "Mechanical ventilator gas delivery; set by MVS.",
+    "mechanism": "VMCH is driven by the clinician-set minute ventilation (MVS). It is the first node in the ventilation delivery cascade. The diagnostic significance of VMCH lies in its dissociation from downstream measurements: VMCH=NORMAL with MINV=ZERO or PRSS=ZERO indicates a fault downstream (DISC, KINK, or INT). VMCH=ZERO with all others ZERO indicates a machine or MVS fault."
+  }
+]

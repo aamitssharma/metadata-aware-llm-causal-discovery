@@ -1,0 +1,82 @@
+[
+  {
+    "name": "dysp",
+    "label": "Dyspnoea",
+    "levels": [
+      "yes",
+      "no"
+    ],
+    "description": "Shortness of breath; a terminal symptom node in the network.",
+    "mechanism": "Dyspnoea results from impaired gas exchange or airway obstruction. In this model it is a collider on no path \u2014 it is a pure effect node caused by bronchitis (obstructive physiology) and by the 'either' node (TB/cancer parenchymal or mass-effect pathology). Conditioning on dyspnoea activates the explaining-away effect between bronchitis and 'either', creating a spurious dependence between smoking (via bronchitis) and Asia/TB (via either) in the posterior."
+  },
+  {
+    "name": "tub",
+    "label": "Tuberculosis",
+    "levels": [
+      "yes",
+      "no"
+    ],
+    "description": "Pulmonary tuberculosis; an infectious disease node with a geographic risk factor as its sole parent.",
+    "mechanism": "TB prevalence is substantially higher in many Asian countries than in Western populations; recent travel therefore updates the prior from a background rate of ~0.01 to ~0.05. TB feeds deterministically into the 'either' node. It is d-separated from smoking, bronchitis, and lung cancer given 'either' (or in the absence of conditioning on dyspnoea or xray)."
+  },
+  {
+    "name": "lung",
+    "label": "Lung cancer",
+    "levels": [
+      "yes",
+      "no"
+    ],
+    "description": "Primary lung malignancy; caused solely by smoking in this model.",
+    "mechanism": "Tobacco carcinogens (PAHs, nitrosamines) induce somatic mutations in bronchial epithelium over years of exposure, raising cancer probability roughly 10-fold in smokers vs. non-smokers. Lung cancer shares the 'either' aggregation node with TB, which is why a positive X-ray or dyspnoea cannot distinguish between them. Lung cancer is independent of Asia travel and bronchitis conditional on smoking."
+  },
+  {
+    "name": "bronc",
+    "label": "Bronchitis",
+    "levels": [
+      "yes",
+      "no"
+    ],
+    "description": "Bronchial inflammation; the second smoking-caused disease in the network.",
+    "mechanism": "Smoking paralyzes mucociliary clearance and directly irritates the bronchial mucosa, producing chronic bronchitis in a large fraction of long-term smokers (~60%). Even in non-smokers a baseline prevalence (~30%) models idiopathic or infectious bronchitis. Bronchitis directly causes dyspnoea and has no path to xray or either, making it informationally isolated from TB and lung cancer except through the collider dyspnoea."
+  },
+  {
+    "name": "asia",
+    "label": "Visit to Asia",
+    "levels": [
+      "yes",
+      "no"
+    ],
+    "description": "Recent travel to Asia; a root node and sole external risk factor for tuberculosis.",
+    "mechanism": "Root node with no parents in the model. Encodes epidemiological prior that TB incidence is substantially higher in parts of Asia. Its causal influence is entirely mediated through tuberculosis; it has no direct edges to any other node. Crucially, asia and smoke are marginally independent, and asia and lung/bronc are independent given tub (and absent conditioning on colliders)."
+  },
+  {
+    "name": "smoke",
+    "label": "Smoking",
+    "levels": [
+      "yes",
+      "no"
+    ],
+    "description": "Tobacco smoking status; the central common cause in the network.",
+    "mechanism": "Root node with no parents. Smoking is the single most important node in the network from a causal-discovery perspective because it is the common cause (fork) of both lung cancer and bronchitis. Any algorithm that fails to recover smoke as a parent of both will produce a Markov-equivalent but causally incorrect graph. Smoking is marginally independent of Asia, tub, xray, and either in the absence of conditioning on descendants."
+  },
+  {
+    "name": "xray",
+    "label": "Chest X-ray abnormal",
+    "levels": [
+      "yes",
+      "no"
+    ],
+    "description": "Chest radiograph result; a terminal observation node driven exclusively by the 'either' node.",
+    "mechanism": "X-ray is a noisy, low-specificity test: both TB infiltrates and lung-cancer masses produce similar opacities, so the X-ray result cannot discriminate between them. In this model it has a single parent ('either') and no children, making it a pure measurement leaf. Its high false-positive rate (~5% when either=no) and imperfect sensitivity (~98% when either=yes) model real radiographic uncertainty."
+  },
+  {
+    "name": "either",
+    "label": "Tuberculosis or lung cancer present",
+    "levels": [
+      "yes",
+      "no"
+    ],
+    "description": "Deterministic logical OR of tuberculosis and lung cancer; an intermediate aggregation node.",
+    "mechanism": "Encodes the logical disjunction: either=yes if and only if tub=yes or lung=yes (or both). This node is the structural reason that xray and dyspnoea cannot distinguish between TB and lung cancer: both diseases feed into it with equal logical weight. It is a deterministic function of its parents (no noise), so P(either=yes | tub=yes) = 1 and P(either=yes | tub=no, lung=no) = 0. Conditioning on either or its descendants (xray, dysp) creates a v-structure that induces dependence between tub and lung even though they are marginally independent."
+  }
+]

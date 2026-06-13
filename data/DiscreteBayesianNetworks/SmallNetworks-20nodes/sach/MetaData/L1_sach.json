@@ -1,0 +1,46 @@
+[
+  {
+    "name": "PKC",
+    "label": "Protein Kinase C activity"
+  },
+  {
+    "name": "PKA",
+    "label": "Protein Kinase A substrate activity"
+  },
+  {
+    "name": "Raf",
+    "label": "Raf phosphorylation"
+  },
+  {
+    "name": "Mek",
+    "label": "MEK phosphorylation"
+  },
+  {
+    "name": "Erk",
+    "label": "ERK phosphorylation"
+  },
+  {
+    "name": "Akt",
+    "label": "Akt phosphorylation"
+  },
+  {
+    "name": "Jnk",
+    "label": "JNK phosphorylation"
+  },
+  {
+    "name": "P38",
+    "label": "p38 phosphorylation"
+  },
+  {
+    "name": "Plcg",
+    "label": "PLC\u03b3 phosphorylation"
+  },
+  {
+    "name": "PIP3",
+    "label": "Phosphatidylinositol (3,4,5)-trisphosphate"
+  },
+  {
+    "name": "PIP2",
+    "label": "Phosphatidylinositol (4,5)-bisphosphate"
+  }
+]

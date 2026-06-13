@@ -1,0 +1,137 @@
+[
+  {
+    "name": "GoodStudent",
+    "label": "Good student status",
+    "description": "Whether the driver qualifies as a good student (GPA \u2265 3.0 or equivalent)."
+  },
+  {
+    "name": "Age",
+    "label": "Driver age group",
+    "description": "Driver's age bracket; the most broadly connected demographic root node."
+  },
+  {
+    "name": "SocioEcon",
+    "label": "Socio-economic status",
+    "description": "Household socio-economic tier; shapes vehicle and neighbourhood choices."
+  },
+  {
+    "name": "RiskAversion",
+    "label": "Risk aversion tendency",
+    "description": "Dispositional risk attitude; primary behavioural input to driving quality."
+  },
+  {
+    "name": "VehicleYear",
+    "label": "Vehicle model year",
+    "description": "Vehicle recency; proxy for safety technology availability."
+  },
+  {
+    "name": "ThisCarDam",
+    "label": "Damage to insured car",
+    "description": "Physical damage severity to the insured vehicle."
+  },
+  {
+    "name": "RuggedAuto",
+    "label": "Vehicle structural ruggedness",
+    "description": "Structural crashworthiness category; moderates accident-to-damage translation."
+  },
+  {
+    "name": "Accident",
+    "label": "Accident severity",
+    "description": "Overall accident severity; the central loss event node."
+  },
+  {
+    "name": "MakeModel",
+    "label": "Car make/model class",
+    "description": "Vehicle class; the primary vehicle-side root determining all vehicle attributes."
+  },
+  {
+    "name": "DrivQuality",
+    "label": "Driving quality",
+    "description": "Synthesized driving performance; the proximate cause of accident risk."
+  },
+  {
+    "name": "Mileage",
+    "label": "Annual mileage bucket",
+    "description": "Annual miles driven; pure exposure multiplier on accident risk."
+  },
+  {
+    "name": "Antilock",
+    "label": "Antilock braking system (ABS)",
+    "description": "ABS presence; active safety system reducing accident severity."
+  },
+  {
+    "name": "DrivingSkill",
+    "label": "Driver skill level",
+    "description": "Technical driving competency; the skill component of driving quality."
+  },
+  {
+    "name": "SeniorTrain",
+    "label": "Senior driver training",
+    "description": "Completion of senior driver refresher program; Age-conditional intervention."
+  },
+  {
+    "name": "ThisCarCost",
+    "label": "Insured car claim cost",
+    "description": "Total financial cost for the insured vehicle (repair or total loss)."
+  },
+  {
+    "name": "Theft",
+    "label": "Vehicle theft",
+    "description": "Whether the insured vehicle was stolen."
+  },
+  {
+    "name": "CarValue",
+    "label": "Insured car value",
+    "description": "Market value of the insured vehicle; the financial scale parameter for all property costs."
+  },
+  {
+    "name": "HomeBase",
+    "label": "Home neighbourhood type",
+    "description": "Residential neighbourhood type; ambient risk environment."
+  },
+  {
+    "name": "AntiTheft",
+    "label": "Anti-theft system",
+    "description": "Anti-theft device; primary deterrent reducing theft probability."
+  },
+  {
+    "name": "PropCost",
+    "label": "Proportional cost comparison",
+    "description": "Relative cost summary comparing insured-car to other-car costs."
+  },
+  {
+    "name": "OtherCarCost",
+    "label": "Other car claim cost",
+    "description": "Third-party vehicle cost; liability cost for the other vehicle."
+  },
+  {
+    "name": "OtherCar",
+    "label": "Other vehicle involved",
+    "description": "Whether a second vehicle participates in the incident."
+  },
+  {
+    "name": "MedCost",
+    "label": "Medical treatment cost",
+    "description": "Medical cost of accident-related injuries."
+  },
+  {
+    "name": "Cushioning",
+    "label": "Occupant cushioning quality",
+    "description": "Integrated occupant protection quality; modulates injury severity given accident."
+  },
+  {
+    "name": "Airbag",
+    "label": "Airbag present",
+    "description": "Airbag availability; primary active occupant protection system."
+  },
+  {
+    "name": "ILiCost",
+    "label": "Injury / liability cost",
+    "description": "Total injury and legal liability cost; terminal liability cost leaf."
+  },
+  {
+    "name": "DrivHist",
+    "label": "Prior driving incidents",
+    "description": "Bucketed count of prior at-fault accidents or moving violations."
+  }
+]

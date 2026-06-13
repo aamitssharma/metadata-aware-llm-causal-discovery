@@ -1,0 +1,617 @@
+[
+  {
+    "name": "N07muVerMo",
+    "label": "10.7-micron vertical motion",
+    "levels": [
+      "StrongUp",
+      "WeakUp",
+      "Neutral",
+      "Down"
+    ],
+    "mechanism": "IR brightness-temperature decrease over time (cooling cloud tops) indicates ascending air. Used as an objective satellite-based vertical-motion proxy, most reliable where mid-tropospheric ascent drives deep cloud."
+  },
+  {
+    "name": "SubjVertMo",
+    "label": "Subjective vertical motion assessment",
+    "levels": [
+      "StrongUp",
+      "WeakUp",
+      "Neutral",
+      "Down"
+    ],
+    "mechanism": "Expert-integrated vertical-motion judgment; synthesizes information unavailable to automated sensors. Acts as a regularizing observational node that can override purely QG-derived estimates when mesoscale features dominate."
+  },
+  {
+    "name": "QGVertMotion",
+    "label": "Quasigeostrophic vertical motion",
+    "levels": [
+      "StrongUp",
+      "WeakUp",
+      "Neutral",
+      "Down"
+    ],
+    "mechanism": "QG omega is the primary synoptic-scale ascent diagnostic. Positive vorticity advection increasing with height plus warm-air advection both contribute upward QG forcing. This node is a direct physical driver of CombVerMo and is itself driven by large-scale WindAloft configuration."
+  },
+  {
+    "name": "CombVerMo",
+    "label": "Combined vertical motion",
+    "levels": [
+      "StrongUp",
+      "WeakUp",
+      "Neutral",
+      "Down"
+    ],
+    "mechanism": "Consensus lifting signal passed downstream. Serves as the primary dynamic-lifting input to both the area and instability sub-networks. Its state reflects the most probable vertical-motion regime after reconciling three independent observational channels."
+  },
+  {
+    "name": "AreaMesoALS",
+    "label": "Area of meso-alpha-scale lifting",
+    "levels": [
+      "StrongUp",
+      "WeakUp",
+      "Neutral",
+      "Down"
+    ],
+    "mechanism": "Spatial extent and intensity of meso-alpha-scale (200\u20132000 km) organized lifting over northeastern Colorado. Strong meso-alpha lifting provides the regional backdrop that allows scattered convective cells to grow upscale into organized severe systems."
+  },
+  {
+    "name": "SatContMoist",
+    "label": "Satellite moisture contribution",
+    "levels": [
+      "VeryWet",
+      "Wet",
+      "Neutral",
+      "Dry"
+    ],
+    "mechanism": "Water-vapor channel (6.7 \u03bcm) diagnoses mid-tropospheric moisture. A dry 500\u2013300 hPa layer (dark on WV imagery) indicates a dry intrusion that can both enhance lapse rates and reduce CAPE simultaneously \u2014 its net effect on hail depends on moisture depth."
+  },
+  {
+    "name": "RaoContMoist",
+    "label": "RAO center moisture reading",
+    "levels": [
+      "VeryWet",
+      "Wet",
+      "Neutral",
+      "Dry"
+    ],
+    "mechanism": "Operational surface/upper-air moisture analysis synthesizing surface dewpoints, rawinsondes, and model first-guess. Provides the primary ground-truth moisture estimate at the analysis time; correlates strongly with Dewpoints and LoLevMoistAd."
+  },
+  {
+    "name": "CombMoisture",
+    "label": "Combined moisture",
+    "levels": [
+      "VeryWet",
+      "Wet",
+      "Neutral",
+      "Dry"
+    ],
+    "mechanism": "Consensus moisture signal. Higher CombMoisture raises CAPE through elevated LCL theta-e and supports larger hailstone growth by maintaining a deep moist layer below the freezing level that reduces melting."
+  },
+  {
+    "name": "AreaMoDryAir",
+    "label": "Area of moisture / dry-air intrusion",
+    "levels": [
+      "VeryWet",
+      "Wet",
+      "Neutral",
+      "Dry"
+    ],
+    "mechanism": "Mid-level dry air (700\u2013500 hPa) from the desert Southwest creates the classic 'loaded gun' sounding: steep lapse rates atop a moist BL. This node captures whether that configuration is present spatially and its areal extent, which modulates both hail size and convective mode."
+  },
+  {
+    "name": "VISCloudCov",
+    "label": "Visible-channel cloud cover",
+    "levels": [
+      "Cloudy",
+      "PC",
+      "Clear"
+    ],
+    "mechanism": "Visible imagery diagnoses BL cloud fraction during daylight hours. Heavy cloud cover (Cloudy) suppresses surface heating and CAPE build-up; Clear allows maximum insolation and destabilization. PC (partly cloudy) is the transitional state most associated with convective initiation timing uncertainty."
+  },
+  {
+    "name": "IRCloudCover",
+    "label": "Infrared-channel cloud cover",
+    "levels": [
+      "Cloudy",
+      "PC",
+      "Clear"
+    ],
+    "mechanism": "Cold cloud tops (T < \u221232\u00b0C, ~240 K) indicate deep convection; warm tops indicate shallow or no cloud. IR cloud cover is the all-hours complement to VIS; at night, it is the sole cloud-cover input to CombClouds."
+  },
+  {
+    "name": "CombClouds",
+    "label": "Combined cloud cover",
+    "levels": [
+      "Cloudy",
+      "PC",
+      "Clear"
+    ],
+    "mechanism": "Consensus cloud signal feeding BL heating diagnostics and shading effects. Cloudy inhibits daytime CAPE build-up; Clear maximizes insolation and lapse-rate steepening prior to convective initiation."
+  },
+  {
+    "name": "CldShadeOth",
+    "label": "Non-convective cloud shading",
+    "levels": [
+      "Cloudy",
+      "PC",
+      "Clear"
+    ],
+    "mechanism": "Non-convective cloud (cirrus shields from upstream convection, advected stratus) reduces insolation independently of local convection. Can suppress CAPE even in otherwise favorable thermodynamic environments. Particularly relevant when WindAloft transports cirrus over the forecast area."
+  },
+  {
+    "name": "AMInstabMt",
+    "label": "Morning instability over mountains",
+    "levels": [
+      "None",
+      "Weak",
+      "Strong"
+    ],
+    "mechanism": "Elevated terrain accelerates early morning destabilization; orographic heating produces convective initiation hours before plains convection begins. Strong AM mountain instability seeds afternoon severe-storm development that propagates eastward."
+  },
+  {
+    "name": "InsInMt",
+    "label": "Instability over mountains",
+    "levels": [
+      "None",
+      "Weak",
+      "Strong"
+    ],
+    "mechanism": "Afternoon mountain instability; synthesizes morning instability with scenario-scaled instability to produce the net destabilization available for orographic convection. Controls outflow production and mountain-to-plains storm propagation."
+  },
+  {
+    "name": "WndHodograph",
+    "label": "Wind hodograph shape",
+    "levels": [
+      "DCVZFavor",
+      "StrongWest",
+      "Westerly",
+      "Other"
+    ],
+    "mechanism": "Hodograph shape determines storm-relative helicity (SRH) and supercell potential. DCVZFavor (Denver Cyclone / Convergence Zone hodograph) features curved, clockwise-turning shear that maximizes SRH and is the strongest discriminator of supercell-and-large-hail days in northeastern Colorado. StrongWest produces long, straight hodographs favoring squall lines with less hail."
+  },
+  {
+    "name": "OutflowFrMt",
+    "label": "Outflow from mountain storms",
+    "levels": [
+      "None",
+      "Weak",
+      "Strong"
+    ],
+    "mechanism": "Cold-pool outflow from afternoon mountain convection creates surface boundaries that move eastward onto the plains. Strong outflow boundaries serve as the most reliable convective trigger for severe cells forming along the mountain/plains interface."
+  },
+  {
+    "name": "MorningBound",
+    "label": "Morning boundaries",
+    "levels": [
+      "None",
+      "Weak",
+      "Strong"
+    ],
+    "mechanism": "Boundaries present at sunrise \u2014 stalled fronts, remnant outflows from overnight MCS activity \u2014 provide focused low-level convergence all day. Their persistence is controlled by the synoptic flow and is particularly important on days with limited surface heating (overcast or weak insolation)."
+  },
+  {
+    "name": "Boundaries",
+    "label": "Active boundaries",
+    "levels": [
+      "None",
+      "Weak",
+      "Strong"
+    ],
+    "mechanism": "Resultant surface convergence zone strength. The most spatially specific convective trigger in the Hailfinder network; Strong boundaries can initiate severe convection even under moderate cap and instability. Interacts multiplicatively with CapInScen and InsSclInScen in the forecast nodes."
+  },
+  {
+    "name": "CldShadeConv",
+    "label": "Convective cloud shading",
+    "levels": [
+      "None",
+      "Some",
+      "Marked"
+    ],
+    "mechanism": "Active convective anvils shade adjacent boundary layer, cooling the surface and reducing CAPE inflow into downstream cells. Marked shading can effectively terminate secondary convective development in the lee of active cells, concentrating remaining severe weather in unshaded corridors."
+  },
+  {
+    "name": "CompPlFcst",
+    "label": "Composite plains forecast tendency",
+    "levels": [
+      "IncCapDecIns",
+      "LittleChange",
+      "DecCapIncIns"
+    ],
+    "mechanism": "Summarizes the joint cap-instability trend. DecCapIncIns is the climatologically most favorable state for severe hail; IncCapDecIns strongly suppresses convection by widening the negative area on the sounding while shrinking CAPE."
+  },
+  {
+    "name": "CapChange",
+    "label": "Capping inversion change",
+    "levels": [
+      "Decreasing",
+      "LittleChange",
+      "Increasing"
+    ],
+    "mechanism": "The EML (Elevated Mixed Layer) capping inversion prevents premature convective initiation. Its erosion (Decreasing) is necessary for severe-hail outbreaks; its strengthening (Increasing) can suppress all convection. Driven by large-scale subsidence/ascent, cloud cover, and dry-air advection."
+  },
+  {
+    "name": "LoLevMoistAd",
+    "label": "Low-level moisture advection",
+    "levels": [
+      "StrongPos",
+      "WeakPos",
+      "Neutral",
+      "Negative"
+    ],
+    "mechanism": "Warm, moist southerly advection at 850 hPa raises theta-e in the BL and feeds CAPE; the low-level jet (LLJ) is the primary moisture delivery mechanism into northeastern Colorado. Negative (cold/dry) advection suppresses instability development."
+  },
+  {
+    "name": "InsChange",
+    "label": "Instability change",
+    "levels": [
+      "Decreasing",
+      "LittleChange",
+      "Increasing"
+    ],
+    "mechanism": "Rising CAPE (Increasing) results from combination of BL moisture increase, solar heating, and lapse-rate steepening. Increasing instability paired with Decreasing cap is the necessary condition for severe convective outbreak. The interaction between InsChange and CapChange is the central nonlinear threshold in the Hailfinder network."
+  },
+  {
+    "name": "MountainFcst",
+    "label": "Mountain region (R1) severe-weather forecast",
+    "levels": [
+      "XNIL",
+      "SIG",
+      "SVR"
+    ],
+    "mechanism": "Terminal node. SVR indicates high probability of severe hail (diameter \u22653/4 inch) over the mountain region. Driven principally by mountain instability, boundary focusing, and scenario-scaled capping. Conditionally independent of plains nodes given its direct parents."
+  },
+  {
+    "name": "Date",
+    "label": "Seasonal date bucket",
+    "levels": [
+      "May15_Jun14",
+      "Jun15_Jul1",
+      "Jul2_Jul15",
+      "Jul16_Aug10",
+      "Aug11_Aug20",
+      "Aug20_Sep15"
+    ],
+    "mechanism": "Root node (no parents in the network). Encodes seasonal climatological priors: jet stream position, moisture-regime frequency, and synoptic-pattern prevalence all shift substantially across the six windows. Peak northeastern Colorado severe-hail frequency is Jun15\u2013Jul15."
+  },
+  {
+    "name": "Scenario",
+    "label": "Synoptic-scale weather scenario",
+    "levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J",
+      "K"
+    ],
+    "mechanism": "Root contextual node (only Date as parent). Encodes the dominant large-scale synoptic archetype for the day. Each scenario carries distinct climatological priors for CIN, instability, moisture, and wind shear that propagate through every scenario-relative normalization node in the network."
+  },
+  {
+    "name": "ScenRelAMCIN",
+    "label": "Scenario grouping for AM CIN",
+    "levels": [
+      "AB",
+      "CThruK"
+    ],
+    "mechanism": "Scenarios A\u2013B are characterized by weak or absent morning CIN (weak synoptic pattern, good mixing); scenarios C\u2013K span a wide range but generally have more significant morning inhibition from EML or subsidence. This binary partition is used to set conditional probability tables for MorningCIN."
+  },
+  {
+    "name": "MorningCIN",
+    "label": "Morning convective inhibition",
+    "levels": [
+      "None",
+      "PartInhibit",
+      "Stifling",
+      "TotalInhibit"
+    ],
+    "mechanism": "Observed CIN at forecast start. Stifling (CIN ~100\u2013250 J/kg) requires extraordinary forcing to overcome; TotalInhibit (>250 J/kg) essentially precludes surface-based convection. Interaction with CapChange determines whether cap will erode by afternoon."
+  },
+  {
+    "name": "AMCINInScen",
+    "label": "AM CIN relative to scenario baseline",
+    "levels": [
+      "LessThanAve",
+      "Average",
+      "MoreThanAve"
+    ],
+    "mechanism": "Anomaly encoding that accounts for the fact that the same absolute CIN value means very different things across scenarios. MoreThanAve CIN suppresses convection even in otherwise favorable synoptic archetypes (scenarios G, H) where average CIN is already low."
+  },
+  {
+    "name": "CapInScen",
+    "label": "Capping relative to scenario baseline",
+    "levels": [
+      "LessThanAve",
+      "Average",
+      "MoreThanAve"
+    ],
+    "mechanism": "Anomalous cap weakness (LessThanAve) within a given scenario is the key probabilistic lever that elevates SVR probability in all forecast nodes simultaneously. Acts as a d-separation gate: once CapInScen is observed, Scenario and MorningCIN become conditionally independent of the forecast nodes given this node."
+  },
+  {
+    "name": "ScenRelAMIns",
+    "label": "Scenario grouping for AM instability",
+    "levels": [
+      "ABI",
+      "CDEJ",
+      "F",
+      "G",
+      "H",
+      "K"
+    ],
+    "mechanism": "Six instability regime groups with distinct prior distributions for morning LI and CAPE. Group G (strong southwesterly flow + deep moisture) and H (pre-frontal environment) have the highest prior probability of Strong AM instability; ABI is most benign."
+  },
+  {
+    "name": "LIfr12ZDENSd",
+    "label": "Lifted index \u2014 12Z Denver sounding",
+    "levels": [
+      "LIGt0",
+      "N1GtLIGt_4",
+      "N5GtLIGt_8",
+      "LILt_8"
+    ],
+    "mechanism": "Most direct instability observation in the network. LI is the temperature of the environment minus the temperature of a surface parcel lifted to 500 hPa; negative values indicate instability. LILt_8 (LI \u2264 \u22128) corresponds to extreme CAPE (>3000 J/kg) and is a strong discriminator for very large hail."
+  },
+  {
+    "name": "AMDewptCalPl",
+    "label": "AM dewpoint calculation \u2014 plains",
+    "levels": [
+      "Instability",
+      "Neutral",
+      "Stability"
+    ],
+    "mechanism": "Surface dewpoint is the most direct BL moisture proxy; controls theta-e and hence CAPE. High plains dewpoints (Instability state) produce surface-based CAPE of 1000\u20133000+ J/kg in combination with steep mid-level lapse rates."
+  },
+  {
+    "name": "AMInsWliScen",
+    "label": "AM instability relative to scenario",
+    "levels": [
+      "LessUnstable",
+      "Average",
+      "MoreUnstable"
+    ],
+    "mechanism": "Scenario-relative instability anomaly. MoreUnstable within scenario G or H (already high baseline) represents extreme CAPE environments. Interaction with CapInScen is the key multiplicative term: high instability anomaly plus low cap anomaly \u2192 nearly certain SVR."
+  },
+  {
+    "name": "InsSclInScen",
+    "label": "Instability scaling within scenario",
+    "levels": [
+      "LessUnstable",
+      "Average",
+      "MoreUnstable"
+    ],
+    "mechanism": "Calibrated instability input to all three regional forecast terminal nodes. Accounts for scenario-specific thermodynamic baseline before propagating instability signal. Acts as an information bottleneck: downstream forecast nodes depend on instability only through this node and CapInScen."
+  },
+  {
+    "name": "ScenRel34",
+    "label": "Scenario grouping for regions 2/3/4",
+    "levels": [
+      "ACEFK",
+      "B",
+      "D",
+      "GJ",
+      "HI"
+    ],
+    "mechanism": "Geographic sub-regionalization: different scenario groups produce distinct spatial hail-climatology fingerprints across sub-regions 2\u20134. Group HI scenarios are most strongly associated with widespread plains severe hail in sub-regions 2\u20134."
+  },
+  {
+    "name": "LatestCIN",
+    "label": "Latest convective inhibition estimate",
+    "levels": [
+      "None",
+      "PartInhibit",
+      "Stifling",
+      "TotalInhibit"
+    ],
+    "mechanism": "Updated CIN at or near valid time. Most proximate CIN information to the forecast; represents the actual inhibition state that convection must overcome. Stifling/TotalInhibit sharply reduces CurPropConv regardless of instability or forcing."
+  },
+  {
+    "name": "LLIW",
+    "label": "LLIW severe-weather composite index",
+    "levels": [
+      "Unfavorable",
+      "Weak",
+      "Moderate",
+      "Strong"
+    ],
+    "mechanism": "Combines low-level wind shear (0\u20131 km SRH), BL moisture (theta-e), and instability (CAPE) into a single index. Strong LLIW is strongly correlated with supercell and large-hail environments; it is one of the most discriminating predictors in the Hailfinder network for SVR vs. SIG distinction."
+  },
+  {
+    "name": "CurPropConv",
+    "label": "Current propensity to convection",
+    "levels": [
+      "None",
+      "Slight",
+      "Moderate",
+      "Strong"
+    ],
+    "mechanism": "Immediate probabilistic assessment integrating the cap state (LatestCIN), forcing index (LLIW), boundary focusing (Boundaries), and shear (WndHodograph). Acts as the primary pre-terminal aggregation node: Strong CurPropConv with anomalously low cap is the near-sufficient condition for SVR in all three regional forecast nodes."
+  },
+  {
+    "name": "ScnRelPlFcst",
+    "label": "Scenario pass-through for plains forecast",
+    "levels": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J",
+      "K"
+    ],
+    "mechanism": "Structural copy of Scenario that preserves scenario-specific CPT calibration for the PlainsFcst node. Ensures that the scenario prior is incorporated into plains forecast independently of the instability and cap sub-network paths, preventing d-separation artifacts in inference."
+  },
+  {
+    "name": "PlainsFcst",
+    "label": "Plains severe-weather forecast",
+    "levels": [
+      "XNIL",
+      "SIG",
+      "SVR"
+    ],
+    "mechanism": "Terminal forecast node. SVR = high probability of severe hail (diameter \u22653/4 inch) over plains. Integration node for all upstream paths: instability (InsSclInScen), cap (CapInScen), forcing tendency (CompPlFcst), initiation (CurPropConv + Boundaries), and scenario climatology (ScnRelPlFcst). XNIL = no significant hail expected; SIG = hail likely but below severe threshold."
+  },
+  {
+    "name": "N34StarFcst",
+    "label": "Regions 2/3/4 severe-weather forecast",
+    "levels": [
+      "XNIL",
+      "SIG",
+      "SVR"
+    ],
+    "mechanism": "Terminal forecast node for sub-regions 2\u20134 east of the primary plains corridor. Shares most upstream drivers with PlainsFcst but additionally conditioned on ScenRel34 (regional scenario climatology) and AreaMesoALS (large-scale lifting area extent necessary for convection to reach these distal regions)."
+  },
+  {
+    "name": "R5Fcst",
+    "label": "Region 5 severe-weather forecast",
+    "levels": [
+      "XNIL",
+      "SIG",
+      "SVR"
+    ],
+    "mechanism": "Terminal forecast node for the far-eastern fringe of the domain. At this distance from the orographic trigger, SVR requires either strong synoptic forcing to sustain convection or propagating organized systems. Primarily driven by CurPropConv and SynForcng; less dependent on local boundary effects."
+  },
+  {
+    "name": "Dewpoints",
+    "label": "Spatial dewpoint pattern",
+    "levels": [
+      "LowEverywhere",
+      "LowAtStation",
+      "LowSHighN",
+      "LowNHighS",
+      "LowMtsHighPl",
+      "HighEverywher",
+      "Other"
+    ],
+    "mechanism": "Spatial gradient of surface dewpoints defines theta-e ridges, moisture-convergence corridors, and the dryline position. HighEverywher represents the most favorable BL moisture state; LowMtsHighPl indicates plains moisture pool with dry mountains, supporting enhanced instability contrast."
+  },
+  {
+    "name": "LowLLapse",
+    "label": "Low-level lapse rate",
+    "levels": [
+      "CloseToDryAd",
+      "Steep",
+      "ModerateOrLe",
+      "Stable"
+    ],
+    "mechanism": "Near-surface lapse rate controls BL mixing depth and sensible-heat flux contribution to CAPE. CloseToDryAd (superadiabatic) indicates deep, vigorous mixing layer; Stable indicates inversion or cold air advection suppressing BL development."
+  },
+  {
+    "name": "MeanRH",
+    "label": "Mean relative humidity",
+    "levels": [
+      "VeryMoist",
+      "Average",
+      "Dry"
+    ],
+    "mechanism": "Layer-mean RH controls both CAPE (higher RH \u2192 higher theta-e) and hail-melting rate below the freezing level (VeryMoist reduces melting, supporting larger hail at the surface). Dry mid-levels paired with moist BL (the DryMMoistL RHRatio state) is the optimal hail-growth configuration."
+  },
+  {
+    "name": "MidLLapse",
+    "label": "Mid-level lapse rate",
+    "levels": [
+      "CloseToDryAd",
+      "Steep",
+      "ModerateOrLe"
+    ],
+    "mechanism": "The 700\u2013500 hPa lapse rate is the signature of the EML (Elevated Mixed Layer) from the Southwest desert; values \u22658\u00b0C/km create large CAPE and a deep hail-growth zone. Steep mid-level lapse rates are one of the two most discriminating large-hail predictors in northeastern Colorado (the other being low-level moisture)."
+  },
+  {
+    "name": "MvmtFeatures",
+    "label": "Movement of synoptic features",
+    "levels": [
+      "StrongFront",
+      "MarkedUpper",
+      "OtherRapid",
+      "NoMajor"
+    ],
+    "mechanism": "Rapidly moving synoptic features import fresh forcing and renew QG ascent. StrongFront can generate mesoscale lift that overcomes even substantial CIN; MarkedUpper (fast-moving upper trough) provides rapid QG forcing without necessarily creating a surface boundary."
+  },
+  {
+    "name": "RHRatio",
+    "label": "Mid- to low-level RH ratio",
+    "levels": [
+      "MoistMDryL",
+      "DryMMoistL",
+      "other"
+    ],
+    "mechanism": "DryMMoistL (dry mid-levels over moist BL) is the quintessential large-hail sounding configuration for northeastern Colorado: steep EML lapse rates create large CAPE while dry mid-levels maintain a warm, dry hail-growth zone that maximizes hailstone size and minimizes melting. MoistMDryL suppresses CAPE despite surface moisture."
+  },
+  {
+    "name": "SfcWndShfDis",
+    "label": "Surface wind shifts and discontinuities",
+    "levels": [
+      "DenvCyclone",
+      "E_W_N",
+      "E_W_S",
+      "MovigFtorOt",
+      "DryLine",
+      "None",
+      "Other"
+    ],
+    "mechanism": "Surface boundaries and wind-shift lines provide the most reliable convective trigger in the region. The Denver Cyclone (DenvCyclone) is a mesoscale circulation unique to the Denver area driven by differential terrain heating; it generates convergence, hodograph curvature, and anomalously high SRH. Dryline provides sharp moisture-convergence focusing. E_W_N and E_W_S reflect east-west-oriented wind-shift lines with different moisture-advection geometry."
+  },
+  {
+    "name": "SynForcng",
+    "label": "Synoptic forcing tendency",
+    "levels": [
+      "SigNegative",
+      "NegToPos",
+      "SigPositive",
+      "PosToNeg",
+      "LittleChange"
+    ],
+    "mechanism": "Large-scale dynamic forcing driver that propagates influence to virtually every other node in the network. SigPositive forcing can overcome 100\u2013200 J/kg CIN and is necessary for widespread SVR events. SigNegative (strong subsidence/negative-vorticity-advection regime) effectively vetoes convection regardless of thermodynamic state."
+  },
+  {
+    "name": "TempDis",
+    "label": "Temperature discontinuities",
+    "levels": [
+      "QStationary",
+      "Moving",
+      "None",
+      "Other"
+    ],
+    "mechanism": "Thermal boundaries generate differential heating gradients and local wind-shear enhancement. QStationary boundaries are particularly potent because they persist over the target area for extended periods, allowing BL heating on the warm side while maintaining convergence. Moving boundaries can trigger convection over a larger swath."
+  },
+  {
+    "name": "WindAloft",
+    "label": "Upper-level wind field",
+    "levels": [
+      "LV",
+      "SWQuad",
+      "NWQuad",
+      "AllElse"
+    ],
+    "mechanism": "Jet stream quadrant position determines the sign and magnitude of upper-level divergence over the forecast area. NWQuad (entrance region of jet from the northwest) provides maximum left-exit divergence \u2192 strongest synoptic ascent. SWQuad (right-entrance region) produces convergence and suppresses convection."
+  },
+  {
+    "name": "WindFieldMt",
+    "label": "Wind field over mountains",
+    "levels": [
+      "Westerly",
+      "LVorOther"
+    ],
+    "mechanism": "Westerly 700 hPa flow drives orographic lifting over the Front Range, promoting afternoon mountain convection initiation. LVorOther (light/variable or non-westerly) reduces orographic forcing and delays or prevents mountain storm initiation, hence reducing outflow production onto the plains."
+  },
+  {
+    "name": "WindFieldPln",
+    "label": "Wind field over plains",
+    "levels": [
+      "LV",
+      "DenvCyclone",
+      "LongAnticyc",
+      "E_NE",
+      "SEquad",
+      "WidespdDnsl"
+    ],
+    "mechanism": "BL flow regime controls moisture-flux direction, boundary formation, and hodograph shape over the plains. DenvCyclone and SEquad (southeasterly) are most strongly linked to severe hail: DenvCyclone via hodograph curvature and convergence focus; SEquad via maximum low-level moisture advection from the Gulf. LongAnticyc (longwave anticyclonic) typically suppresses convection via subsidence and dry advection."
+  }
+]
