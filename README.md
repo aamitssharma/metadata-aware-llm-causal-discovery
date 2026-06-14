@@ -39,7 +39,7 @@ Run the program with:
 bash run.sh
 ```
 
-## How To Choose Experiments
+## How To Choose Experiments?
 
 The main config lives in [`config.yaml`](./config.yaml).
 
