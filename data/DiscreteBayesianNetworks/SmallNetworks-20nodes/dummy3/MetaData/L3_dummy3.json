@@ -1,0 +1,19 @@
+{
+  "reference": "Synthetic three-node smoke-test dataset.",
+  "field": "synthetic education",
+  "context": "A toy causal system where preparation, exam performance, and course completion are measured for a student.",
+  "variables": [
+    {
+      "name": "StudyEffort",
+      "description": "A pre-exam behavior representing how much time and focus a student spends preparing."
+    },
+    {
+      "name": "ExamScore",
+      "description": "A post-study assessment representing the student's measured exam performance."
+    },
+    {
+      "name": "PassCourse",
+      "description": "A final course outcome determined after exam performance is observed."
+    }
+  ]
+}

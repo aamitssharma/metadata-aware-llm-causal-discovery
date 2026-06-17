@@ -1,0 +1,28 @@
+network "dummy3" {
+}
+
+variable StudyEffort {
+  type discrete [ 2 ] { low, high };
+}
+
+variable ExamScore {
+  type discrete [ 2 ] { low, high };
+}
+
+variable PassCourse {
+  type discrete [ 2 ] { no, yes };
+}
+
+probability ( StudyEffort ) {
+  table 0.5, 0.5;
+}
+
+probability ( ExamScore | StudyEffort ) {
+  (low) 0.8, 0.2;
+  (high) 0.2, 0.8;
+}
+
+probability ( PassCourse | ExamScore ) {
+  (low) 0.9, 0.1;
+  (high) 0.1, 0.9;
+}

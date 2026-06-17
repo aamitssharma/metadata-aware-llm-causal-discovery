@@ -1,0 +1,4 @@
+source,target,p_value
+StudyEffort,ExamScore,0.001
+ExamScore,PassCourse,0.001
+StudyEffort,PassCourse,0.050

@@ -118,26 +118,31 @@ For each dataset, the code expects the new folder layout like this:
 ```text
 <dataset>/
   MetaData/
-    clean/
-    noisy/
-  sampledData/
-    clean/
-    corrupt/
+    L1_<dataset>.json
+    L2_<dataset>.json
+    L3_<dataset>.json
+    L4_<dataset>.json
+    L5_<dataset>_full_causal.json
+  CITestsResults/
+    <dataset>_filtered_seed1.csv
+    ...
+  <dataset>.bif
+  <dataset>_description.json
+  <dataset>_graph.json
+  <dataset>_seed1.csv
+  ...
 ```
 
 Example for `asia`:
-- clean metadata:
-  - `MetaData/clean/asia_description.json`
-- noisy metadata:
-  - `MetaData/noisy/asia_L1_names_only.json`
-  - `MetaData/noisy/asia_L2_labels_levels.json`
+- metadata variants:
+  - `MetaData/L1_asia.json`
+  - `MetaData/L2_asia.json`
   - ...
-- clean sampled data:
-  - `sampledData/clean/asia_seed1_sampled_0.csv`
-- corrupt sampled data:
-  - `sampledData/corrupt/asia_seed1_sampled_5.csv`
-  - `sampledData/corrupt/asia_seed1_sampled_15.csv`
-  - `sampledData/corrupt/asia_seed1_sampled_30.csv`
+- sampled data:
+  - `asia_seed1.csv`
+  - `asia_seed2.csv`
+- CI test results:
+  - `CITestsResults/asia_filtered_seed1.csv`
 
 ## Output Structure
 
@@ -154,32 +159,36 @@ Raw outputs:
 
 ```text
 outputs/
-  <prompt_family>/
+  runs/
     <run_id>/
       <dataset_name>/
-        <model>/
-          <prompt_style>/
-            config.json
-            raw_predictions.csv
-            raw_json/
-              edgeLLM__temp_<temperature>__<variant_type>__<variant_name>.json
-              noEdgeLLM__temp_<temperature>__<variant_type>__<variant_name>.json
+        <prompt_family>/
+          <variant_name>/
+            <prompt_style>/
+              <model>/
+                config.json
+                raw_predictions.csv
+                raw_json/
+                  edgeLLM__temp_<temperature>.json
+                  noEdgeLLM__temp_<temperature>.json
 ```
 
 Evaluated outputs:
 
 ```text
 outputs/
-  EvaluatedResults/
-    <prompt_family>/
-      <run_id>/
-        <dataset_name>/
-          <model>/
+  evaluations/
+    <run_id>/
+      <dataset_name>/
+        <prompt_family>/
+          <variant_name>/
             <prompt_style>/
-              config.json
-              ternaryEval__temp_<temperature>__<variant_type>__<variant_name>__thr_<threshold>.json
-              evaluated_edges__temp_<temperature>__<variant_type>__<variant_name>__thr_<threshold>.csv
-              evaluation_summary.csv
+              <model>/
+                config.json
+                evaluated_edges__temp_<temperature>__thr_<threshold>.csv
+                evaluation_summary.csv
+                evaluated_json/
+                  ternaryEval__temp_<temperature>__thr_<threshold>.json
 ```
 
 Top-level aggregate files:

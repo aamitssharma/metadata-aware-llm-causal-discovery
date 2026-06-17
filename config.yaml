@@ -1,28 +1,30 @@
 # Models to query for every dataset listed below.
 # Use current OpenRouter model IDs.
 models:
-  # Small / efficient models
-  - openai/gpt-5.4-mini
+  # Smoke-test model. Uncomment the full model grid below after the dummy run passes.
   - openai/gpt-5.4-nano
-  - anthropic/claude-haiku-4.5
-  - google/gemini-3.1-flash-lite-preview
-  - x-ai/grok-4.1-fast
-
-  # Large / frontier models
-  - openai/gpt-5.5
-  - anthropic/claude-opus-4.7
-  - anthropic/claude-sonnet-4.6
-  - google/gemini-3.1-pro-preview
-  - deepseek/deepseek-v3.2-speciale
+  # # OpenAI family
+  # - openai/gpt-5.4-nano
+  # - openai/gpt-5.4-mini
+  # - openai/gpt-5.5
+  #
+  # # Anthropic Claude family
+  # - "~anthropic/claude-haiku-latest"
+  # - "~anthropic/claude-sonnet-latest"
+  # - "~anthropic/claude-opus-latest"
+  #
+  # # Google Gemini family
+  # - google/gemini-3.1-flash-lite-preview
+  # - google/gemini-3.5-flash
+  # - "~google/gemini-pro-latest"
 
 # Base dataset folders.
 datasets:
-  # Dummy dataset for smoke-test experiments.
-  - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/tiny
+  - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/dummy3
   # - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/asia
-  # - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/sach
-  # - data/DiscreteBayesianNetworks/mediumNewteorks-20-50nodes/alarm
-  # - data/DiscreteBayesianNetworks/mediumNewteorks-20-50nodes/insurance
+  # - data/DiscreteBayesianNetworks/SmallNetworks-20nodes/sachs
+  # - data/DiscreteBayesianNetworks/MediumNetworks-20-50nodes/alarm
+  # - data/DiscreteBayesianNetworks/MediumNetworks-20-50nodes/insurance
   # - data/DiscreteBayesianNetworks/LargeNetworks-50–100nodes/hailfinder
 
 # Root folder where raw and evaluated outputs are written.
@@ -52,24 +54,30 @@ run_tag: ""
 experiment:
   # Choose which prompt folder family to use.
   # metaData -> metadata-only prompts
-  # dataMetaData -> metadata + sampled-data prompts
-  prompt_family: metaData
-  # prompt_family: dataMetaData
+  # dataMetaData -> root dataset description + CI-test result prompts
+  # prompt_family: metaData
+  prompt_family: dataMetaData
+
+  # For dataMetaData only:
+  # clean -> use CITestsResults/
+  # corrupt -> use CorruptData/
+  # both -> use both folders
+  ci_test_source: clean
 
   # Choose the prompt style(s) inside that family.
   # Use all to run every style available for the prompt family.
   # For metaData this expands to: vanilla, cot, cot5Shot.
-  prompt_style: all
+  prompt_style: vanilla
 
   # Set to 1 to run inference.
-  run_inference: 1
+  run_inference: 0
 
   # Set to 1 to run evaluation.
-  run_evaluation: 0
+  run_evaluation: 1
 
 # Run IDs to evaluate when experiment.run_evaluation = 1.
 eval_run_ids:
-  - run_1775000063
+  - run_1781727741
 evaluation:
   # Shared threshold values for ternary voting.
   threshold:

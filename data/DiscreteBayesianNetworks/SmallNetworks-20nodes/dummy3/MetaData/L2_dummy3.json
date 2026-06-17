@@ -1,0 +1,19 @@
+{
+  "reference": "Synthetic three-node smoke-test dataset.",
+  "field": "synthetic education",
+  "context": "A toy student outcome setting.",
+  "variables": [
+    {
+      "name": "StudyEffort",
+      "description": "Student preparation level."
+    },
+    {
+      "name": "ExamScore",
+      "description": "Exam performance level."
+    },
+    {
+      "name": "PassCourse",
+      "description": "Course passing outcome."
+    }
+  ]
+}

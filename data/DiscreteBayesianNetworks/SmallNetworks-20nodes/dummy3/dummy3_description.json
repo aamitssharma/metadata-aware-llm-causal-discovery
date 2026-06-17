@@ -1,0 +1,19 @@
+{
+  "reference": "Synthetic three-node smoke-test dataset.",
+  "field": "synthetic education",
+  "context": "A toy causal system for validating metadata-only causal discovery runs. Study effort affects exam score, and exam score affects course pass status.",
+  "variables": [
+    {
+      "name": "StudyEffort",
+      "description": "How much time and focus a student spends preparing for an exam."
+    },
+    {
+      "name": "ExamScore",
+      "description": "The student's measured performance on the exam."
+    },
+    {
+      "name": "PassCourse",
+      "description": "Whether the student passes the course after the exam outcome is determined."
+    }
+  ]
+}

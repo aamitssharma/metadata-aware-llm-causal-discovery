@@ -78,59 +78,81 @@ def load_csv_text(csv_file: str | Path) -> str:
     return Path(csv_file).read_text().strip()
 
 
-def resolve_experiment_variants(dataset_dir: str, prompt_family: str) -> List[Dict[str, Optional[str]]]:
+def resolve_experiment_variants(
+    dataset_dir: str,
+    prompt_family: str,
+    ci_test_source: str = "both",
+) -> List[Dict[str, Optional[str]]]:
     dataset_path = _resolve_dataset_dir(dataset_dir)
     dataset_name = dataset_path.name
-    metadata_clean_dir = dataset_path / "MetaData" / "clean"
-    metadata_noisy_dir = dataset_path / "MetaData" / "noisy"
-    sampled_clean_dir = dataset_path / "sampledData" / "clean"
-    sampled_corrupt_dir = dataset_path / "sampledData" / "corrupt"
+    metadata_dir = dataset_path / "MetaData"
 
-    metadata_clean_files = sorted(metadata_clean_dir.glob("*.json"))
-    metadata_noisy_files = sorted(metadata_noisy_dir.glob("*.json"))
-    sampled_clean_files = sorted(sampled_clean_dir.glob("*.csv"))
-    sampled_corrupt_files = sorted(sampled_corrupt_dir.glob("*.csv"))
-
-    if not metadata_clean_files:
-        metadata_clean_files = [_find_dataset_file(dataset_path, dataset_name, "description", "json")]
+    metadata_files = sorted(metadata_dir.glob("*.json"))
+    if not metadata_files:
+        metadata_files = [_find_dataset_file(dataset_path, dataset_name, "description", "json")]
 
     if prompt_family == "metaData":
-        variants = [
+        return [
             _build_variant(
                 dataset_name=dataset_name,
-                variant_type="metadata_clean",
+                variant_type="metadata",
                 metadata_file=metadata_file,
                 sampled_data_file=None,
             )
-            for metadata_file in metadata_clean_files
+            for metadata_file in metadata_files
         ]
-        variants.extend(
-            _build_variant(
-                dataset_name=dataset_name,
-                variant_type="metadata_noisy",
-                metadata_file=metadata_file,
-                sampled_data_file=None,
-            )
-            for metadata_file in metadata_noisy_files
-        )
-        return variants
 
     if prompt_family == "dataMetaData":
+        ci_test_source = _normalize_ci_test_source(ci_test_source)
+        metadata_file = _find_dataset_file(dataset_path, dataset_name, "description", "json")
+        ci_test_files = sorted((dataset_path / "CITestsResults").glob(f"{dataset_name}_filtered_seed*.csv"))
+        corrupt_ci_test_files = sorted((dataset_path / "CorruptData").glob(f"{dataset_name}_filtered_seed*.csv"))
+
         variants = []
-        for metadata_file in metadata_clean_files:
-            for sampled_data_file in [*sampled_clean_files, *sampled_corrupt_files]:
-                variant_type = "sampled_clean" if sampled_data_file in sampled_clean_files else "sampled_corrupt"
+        if ci_test_source in {"clean", "both"}:
+            for ci_test_file in ci_test_files:
                 variants.append(
                     _build_variant(
                         dataset_name=dataset_name,
-                        variant_type=variant_type,
+                        variant_type="ci_tests",
                         metadata_file=metadata_file,
-                        sampled_data_file=sampled_data_file,
+                        sampled_data_file=ci_test_file,
+                    )
+                )
+        if ci_test_source in {"corrupt", "both"}:
+            for ci_test_file in corrupt_ci_test_files:
+                variants.append(
+                    _build_variant(
+                        dataset_name=dataset_name,
+                        variant_type="ci_tests_corrupt",
+                        metadata_file=metadata_file,
+                        sampled_data_file=ci_test_file,
                     )
                 )
         return variants
 
     raise ValueError(f"Unsupported prompt_family: {prompt_family}")
+
+
+def _normalize_ci_test_source(raw_value: str) -> str:
+    source = str(raw_value or "both").strip().lower()
+    aliases = {
+        "ci": "clean",
+        "ci_tests": "clean",
+        "citestsresults": "clean",
+        "ci_tests_results": "clean",
+        "clean_ci_tests": "clean",
+        "corrupt_ci_tests": "corrupt",
+        "corruptdata": "corrupt",
+        "all": "both",
+    }
+    source = aliases.get(source, source)
+    if source not in {"clean", "corrupt", "both"}:
+        raise ValueError(
+            "ci_test_source must be one of: clean, corrupt, both "
+            f"(received {raw_value!r})"
+        )
+    return source
 
 
 def _find_dataset_file(dataset_path: Path, dataset_name: str, suffix: str, extension: str) -> Path:

@@ -1,0 +1,7 @@
+StudyEffort,ExamScore,PassCourse
+high,high,yes
+high,high,yes
+low,low,no
+low,low,no
+high,low,no
+low,high,yes

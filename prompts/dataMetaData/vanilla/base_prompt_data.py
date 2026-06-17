@@ -3,8 +3,8 @@ EDGE_PROMPT = """
 
 ### ROLE
 	- You are an expert Causal Inference Engine with deep knowledge of Directed Acyclic Graphs (DAGs), structural equation modeling, and domain-specific mechanisms.
-	- You are given the full set of variables, their definitions, and sampled data.
-	- Analyze the provided attributes, metadata, and sample data to estimate the probability of a DIRECT causal relationship for every ordered pair A -> B.
+	- You are given the full set of variables, their definitions, and conditional-independence test results.
+	- Analyze the provided attributes, metadata, and CI-test evidence to estimate the probability of a DIRECT causal relationship for every ordered pair A -> B.
 
 ### DEFINITION: "DIRECT CAUSE"
 A directly causes B (A → B) if and only if:
@@ -25,8 +25,20 @@ A directly causes B (A → B) if and only if:
 
 {input_json}
 
-### DATA CONTEXT (CSV Format)
+### DATA CONTEXT: CONDITIONAL-INDEPENDENCE TEST RESULTS (CSV Format)
 {input_csv}
+
+The CSV contains CI-test summaries with columns:
+- node_i/node_j or source/target: the two variables in the tested pair.
+- p_value: conditional-independence test p-value for that pair.
+
+Interpretation:
+- Lower p_value suggests stronger statistical evidence of dependence/association between node_i and node_j.
+- Higher p_value suggests weaker evidence of dependence, or stronger compatibility with conditional independence.
+- Treat the CI-test row as pairwise statistical evidence, not as a causal direction. A row shown as A,B supports evidence about the pair {A, B}; it does not by itself mean A -> B.
+- Use the same pairwise CI evidence when scoring both ordered directions A -> B and B -> A, then use metadata and causal mechanisms to decide which direction is more plausible.
+- Dependence alone is not sufficient for a direct edge; it can also arise from confounding or mediation.
+- Use CI evidence as statistical support, but prioritize directness, mechanism, temporal order, and mediation checks.
 
 ### TASK
 - Evaluate every possible ordered pair of distinct variables in the metadata and data context.
@@ -43,7 +55,7 @@ NO_EDGE_PROMPT = """
 ### ROLE
 - You are an expert Causal Inference Engine specializing in Causal Discovery and Structural Independence testing.
 - Your goal is to estimate the probability that there is **NO DIRECT EDGE** for every ordered pair A -> B.
-- Analyze the provided attributes, metadata, and sample data to estimate the probability of **NO DIRECT EDGE** for every ordered pair A -> B.
+- Analyze the provided attributes, metadata, and conditional-independence test results to estimate the probability of **NO DIRECT EDGE** for every ordered pair A -> B.
 
 
 ### TASK
@@ -68,8 +80,19 @@ The relationship A → B is FALSE if any of the following are true:
 ### METADATA
 {input_json}
 
-### DATA CONTEXT (CSV Format)
+### DATA CONTEXT: CONDITIONAL-INDEPENDENCE TEST RESULTS (CSV Format)
 {input_csv}
+
+The CSV contains CI-test summaries with columns:
+- node_i/node_j or source/target: the two variables in the tested pair.
+- p_value: conditional-independence test p-value for that pair.
+
+Interpretation:
+- Lower p_value suggests stronger statistical evidence of dependence/association between node_i and node_j.
+- Higher p_value suggests weaker evidence of dependence, or stronger compatibility with conditional independence.
+- Treat the CI-test row as pairwise statistical evidence, not as a causal direction. A row shown as A,B supports evidence about the pair {A, B}; it does not by itself mean A -> B.
+- Use the same pairwise CI evidence when scoring both ordered directions A -> B and B -> A, then use metadata and causal mechanisms to decide whether any association is direct, reverse, mediated, or confounded.
+- High dependence does not prove a direct edge; high p_value can support "no direct edge" but should be weighed against metadata.
 
 ### TASK OUTPUT
 - Evaluate every possible ordered pair of distinct variables in the metadata and data context.

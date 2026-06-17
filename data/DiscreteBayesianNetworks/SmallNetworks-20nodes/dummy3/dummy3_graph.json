@@ -1,0 +1,17 @@
+{
+  "nodes": [
+    "StudyEffort",
+    "ExamScore",
+    "PassCourse"
+  ],
+  "edges": [
+    {
+      "source": "StudyEffort",
+      "target": "ExamScore"
+    },
+    {
+      "source": "ExamScore",
+      "target": "PassCourse"
+    }
+  ]
+}

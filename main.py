@@ -64,6 +64,15 @@ def _run_slice_slug(*, query_mode: str, temperature: float, variant_type: str, v
     )
 
 
+def _raw_file_slug(*, query_mode: str, temperature: float) -> str:
+    return "__".join(
+        [
+            _mode_file_prefix(query_mode),
+            f"temp_{_float_slug(temperature)}",
+        ]
+    )
+
+
 def _normalize_prompt_styles(prompt_family: str, raw_value: Any) -> List[str]:
     available_styles = available_prompt_styles(prompt_family)
     if not available_styles:
@@ -120,7 +129,7 @@ def _save_model_outputs(
         os.path.join(
             run_dir,
             "raw_json",
-            f"{_run_slice_slug(query_mode=query_mode, temperature=temperature, variant_type=variant_type, variant_name=variant_name)}.json",
+            f"{_raw_file_slug(query_mode=query_mode, temperature=temperature)}.json",
         ),
         raw_results,
     )
@@ -168,7 +177,7 @@ def _save_model_error(
         os.path.join(
             run_dir,
             "errors_json",
-            f"{_run_slice_slug(query_mode=query_mode, temperature=temperature, variant_type=variant_type, variant_name=variant_name)}__error.json",
+            f"{_raw_file_slug(query_mode=query_mode, temperature=temperature)}__error.json",
         ),
         error_payload,
     )
@@ -290,19 +299,22 @@ def _run_model_for_mode(
 def _build_run_dir(
     *,
     out_root: str,
+    run_id: str,
     dataset_name: str,
+    variant_name: str,
     model: str,
     prompt_family: str,
     prompt_style: str,
-    run_id: str,
 ) -> str:
     return os.path.join(
         out_root,
-        prompt_family,
+        "runs",
         run_id,
         dataset_name,
-        _model_slug(model),
+        prompt_family,
+        variant_name,
         prompt_style,
+        _model_slug(model),
     )
 
 
@@ -318,7 +330,8 @@ def _save_run_config(
     temperatures: List[float],
     prompt_family: str,
     prompt_style: str,
-    variants: List[Dict[str, Optional[str]]],
+    ci_test_source: str,
+    variant: Dict[str, Optional[str]],
 ) -> None:
     save_json(
         os.path.join(run_dir, "config.json"),
@@ -335,7 +348,13 @@ def _save_run_config(
             "query_modes": ["edge", "no_edge"],
             "prompt_family": prompt_family,
             "prompt_style": prompt_style,
-            "variants": variants,
+            "ci_test_source": ci_test_source,
+            "variant_type": variant["variant_type"],
+            "variant_name": variant["variant_name"],
+            "metadata_file": variant["metadata_file"],
+            "sampled_data_file": variant["sampled_data_file"] or "",
+            "variant": variant,
+            "variants": [variant],
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         },
     )
@@ -351,44 +370,48 @@ def run_dataset(
     run_id: str,
     prompt_family: str,
     prompt_styles: List[str],
+    ci_test_source: str,
 ) -> None:
     dataset_name, _, gt_edges = load_dataset(dataset_dir)
-    variants = resolve_experiment_variants(dataset_dir, prompt_family)
+    variants = resolve_experiment_variants(dataset_dir, prompt_family, ci_test_source=ci_test_source)
     llm = OpenRouterLLM()
 
-    for prompt_style in prompt_styles:
-        for model in models:
-            run_dir = _build_run_dir(
-                out_root=out_root,
-                dataset_name=dataset_name,
-                model=model,
-                prompt_family=prompt_family,
-                prompt_style=prompt_style,
-                run_id=run_id,
-            )
+    for variant in variants:
+        schema = load_metadata_schema(variant["metadata_file"])
+        input_csv = load_csv_text(variant["sampled_data_file"]) if variant["sampled_data_file"] else ""
+        print(f"Loaded dataset: {dataset_name}")
+        print(f"Variant: {variant['variant_type']} | {variant['variant_name']}")
+        print(f"Variables: {list(schema.get('variables', {}).keys())}")
+        print(f"Ground truth edges: {len(gt_edges)}")
 
-            _save_run_config(
-                run_dir=run_dir,
-                models=[model],
-                dataset_name=dataset_name,
-                dataset_dir=dataset_dir,
-                out_root=out_root,
-                run_id=run_id,
-                max_tokens=max_tokens,
-                temperatures=temperatures,
-                prompt_family=prompt_family,
-                prompt_style=prompt_style,
-                variants=variants,
-            )
+        for prompt_style in prompt_styles:
+            for model in models:
+                run_dir = _build_run_dir(
+                    out_root=out_root,
+                    run_id=run_id,
+                    dataset_name=dataset_name,
+                    variant_name=variant["variant_name"],
+                    model=model,
+                    prompt_family=prompt_family,
+                    prompt_style=prompt_style,
+                )
 
-            for variant in variants:
-                schema = load_metadata_schema(variant["metadata_file"])
-                input_csv = load_csv_text(variant["sampled_data_file"]) if variant["sampled_data_file"] else ""
-                print(f"Loaded dataset: {dataset_name}")
+                _save_run_config(
+                    run_dir=run_dir,
+                    models=[model],
+                    dataset_name=dataset_name,
+                    dataset_dir=dataset_dir,
+                    out_root=out_root,
+                    run_id=run_id,
+                    max_tokens=max_tokens,
+                    temperatures=temperatures,
+                        prompt_family=prompt_family,
+                        prompt_style=prompt_style,
+                        ci_test_source=ci_test_source,
+                        variant=variant,
+                    )
                 print(f"Prompt: {prompt_family}/{prompt_style}")
-                print(f"Variant: {variant['variant_type']} | {variant['variant_name']}")
-                print(f"Variables: {list(schema.get('variables', {}).keys())}")
-                print(f"Ground truth edges: {len(gt_edges)}")
+                print(f"Model: {model}")
 
                 for temperature in temperatures:
                     for query_mode in ["edge", "no_edge"]:
@@ -469,6 +492,7 @@ def main() -> None:
     run_tag = str(config.get("run_tag", "") or "")
     prompt_family = str(experiment.get("prompt_family", "metaData"))
     prompt_styles = _normalize_prompt_styles(prompt_family, experiment.get("prompt_style", "vanilla"))
+    ci_test_source = str(experiment.get("ci_test_source", "both"))
 
     if not models:
         raise ValueError("config.yaml must define a non-empty 'models' list.")
@@ -478,6 +502,8 @@ def main() -> None:
     run_id = run_tag or f"run_{int(time.time())}"
     print(f"Run ID: {run_id}")
     print(f"Prompt styles: {', '.join(prompt_styles)}")
+    if prompt_family == "dataMetaData":
+        print(f"CI test source: {ci_test_source}")
     print(f"Temperatures: {', '.join(f'{value:g}' for value in temperatures)}")
 
     for dataset_dir in dataset_dirs:
@@ -491,6 +517,7 @@ def main() -> None:
                 run_id=run_id,
                 prompt_family=prompt_family,
                 prompt_styles=prompt_styles,
+                ci_test_source=ci_test_source,
             )
         except Exception as exc:
             print(f"Dataset failed: {dataset_dir}")
@@ -500,6 +527,7 @@ def main() -> None:
                 "run_id": run_id,
                 "prompt_family": prompt_family,
                 "prompt_styles": prompt_styles,
+                "ci_test_source": ci_test_source,
                 "error_type": type(exc).__name__,
                 "error_message": str(exc),
                 "traceback": traceback.format_exc(),

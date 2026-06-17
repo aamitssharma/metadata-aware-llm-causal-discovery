@@ -1,0 +1,19 @@
+{
+  "reference": "Synthetic three-node smoke-test dataset.",
+  "field": "synthetic education",
+  "context": "A toy causal system for validating metadata-only causal discovery. The intended ground-truth chain is StudyEffort -> ExamScore -> PassCourse. Study effort improves exam performance, and exam performance determines whether the student passes. Study effort may be associated with passing, but its effect is mediated by exam score in this graph.",
+  "variables": [
+    {
+      "name": "StudyEffort",
+      "description": "Direct cause of ExamScore. It represents preparation before the exam and should not be caused by ExamScore or PassCourse."
+    },
+    {
+      "name": "ExamScore",
+      "description": "Direct effect of StudyEffort and direct cause of PassCourse. It is the mediator between preparation and final course outcome."
+    },
+    {
+      "name": "PassCourse",
+      "description": "Direct effect of ExamScore. It is a final outcome and does not directly cause either StudyEffort or ExamScore."
+    }
+  ]
+}

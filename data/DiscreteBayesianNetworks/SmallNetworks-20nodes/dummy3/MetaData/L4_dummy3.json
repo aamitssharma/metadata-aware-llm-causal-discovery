@@ -1,0 +1,19 @@
+{
+  "reference": "Synthetic three-node smoke-test dataset.",
+  "field": "synthetic education",
+  "context": "A toy causal system for validating whether metadata helps infer direct causes among student preparation, exam performance, and final pass status.",
+  "variables": [
+    {
+      "name": "StudyEffort",
+      "description": "A pre-exam input behavior. Higher effort tends to improve later exam performance."
+    },
+    {
+      "name": "ExamScore",
+      "description": "An intermediate measured performance variable. It is affected by study effort and influences the final course outcome."
+    },
+    {
+      "name": "PassCourse",
+      "description": "A final binary outcome. It is downstream of exam performance rather than a direct cause of preparation."
+    }
+  ]
+}

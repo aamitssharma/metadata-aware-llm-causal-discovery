@@ -291,30 +291,34 @@ def _evaluate_model(
     }
 
 
-def _upsert_manifest_entry(manifest_path: Path, new_entry: Dict[str, Any]) -> None:
+def _upsert_manifest_entries(manifest_path: Path, new_entries: List[Dict[str, Any]]) -> None:
+    if not new_entries:
+        return
+
     items: List[Dict[str, Any]] = []
     if manifest_path.exists():
         with manifest_path.open("r") as f:
             payload = json.load(f)
         items = payload.get("items", []) if isinstance(payload, dict) else []
 
-    def _same_key(item: Dict[str, Any]) -> bool:
+    def _entry_key(item: Dict[str, Any]) -> tuple:
         return (
-            item.get("run_id") == new_entry["run_id"]
-            and item.get("dataset_name") == new_entry["dataset_name"]
-            and item.get("model_name") == new_entry["model_name"]
-            and item.get("temperature") == new_entry["temperature"]
-            and item.get("prompt_family") == new_entry["prompt_family"]
-            and item.get("prompt_style") == new_entry["prompt_style"]
-            and item.get("variant_type") == new_entry["variant_type"]
-            and item.get("variant_name") == new_entry["variant_name"]
-            and item.get("alpha") == new_entry["alpha"]
-            and item.get("beta") == new_entry["beta"]
-            and item.get("threshold") == new_entry["threshold"]
+            item.get("run_id"),
+            item.get("dataset_name"),
+            item.get("model_name"),
+            item.get("temperature"),
+            item.get("prompt_family"),
+            item.get("prompt_style"),
+            item.get("variant_type"),
+            item.get("variant_name"),
+            item.get("alpha"),
+            item.get("beta"),
+            item.get("threshold"),
         )
 
-    items = [item for item in items if not _same_key(item)]
-    items.append(new_entry)
+    replacement_keys = {_entry_key(entry) for entry in new_entries}
+    items = [item for item in items if _entry_key(item) not in replacement_keys]
+    items.extend(new_entries)
     items.sort(
         key=lambda item: (
             item["dataset_name"],
@@ -347,16 +351,16 @@ def evaluate_run(
     beta_values: List[float],
     threshold_values: List[float],
 ) -> None:
-    # One run folder represents one model + prompt style and contains all temperatures/variants.
+    # One run folder represents one dataset + prompt family + variant + prompt style + model.
     raw_config = _load_json(run_dir / "config.json")
     dataset_name = raw_config["dataset_name"]
     run_id = raw_config["run_id"]
     dataset_dir = raw_config["dataset_dir"]
     _, _, gt_edges = load_dataset(dataset_dir)
 
-    raw_root = out_root / raw_config.get("prompt_family", "")
+    raw_root = out_root / "runs"
     relative_run_dir = run_dir.relative_to(raw_root)
-    eval_dir = out_root / "EvaluatedResults" / raw_config.get("prompt_family", "") / relative_run_dir
+    eval_dir = out_root / "evaluations" / relative_run_dir
     eval_config = {
         "dataset_name": dataset_name,
         "dataset_dir": dataset_dir,
@@ -376,13 +380,16 @@ def evaluate_run(
     save_json(str(eval_dir / "config.json"), eval_config)
 
     slug_to_model = _model_lookup(raw_config.get("models", []))
-    model_slug = next(iter(slug_to_model), run_dir.parent.name)
+    model_slug = next(iter(slug_to_model), run_dir.name)
     model_name = slug_to_model.get(model_slug, model_slug)
     raw_predictions_path = run_dir / "raw_predictions.csv"
     if not raw_predictions_path.exists():
         return
 
     raw_predictions = pd.read_csv(raw_predictions_path)
+    aggregate_edge_rows: List[Dict[str, Any]] = []
+    aggregate_summary_rows: List[Dict[str, Any]] = []
+    manifest_entries: List[Dict[str, Any]] = []
     grouping_columns = [
         "temperature",
         "variant_type",
@@ -393,7 +400,7 @@ def evaluate_run(
     for group_values, raw_group in raw_predictions.groupby(grouping_columns, dropna=False, sort=True):
         temperature, variant_type, variant_name, metadata_file, sampled_data_file = group_values
         sampled_data_file = "" if pd.isna(sampled_data_file) else sampled_data_file
-        slice_slug = f"temp_{_float_slug(temperature)}__{variant_type}__{variant_name}"
+        slice_slug = f"temp_{_float_slug(temperature)}"
         for threshold in threshold_values:
             evaluated = _evaluate_model(
                 raw_frame=raw_group,
@@ -442,7 +449,7 @@ def evaluate_run(
                     }
                 )
             append_csv(edge_rows, str(eval_dir / f"evaluated_edges__{slice_slug}__thr_{threshold:g}.csv"))
-            append_csv(edge_rows, str(out_root / "all_evaluated_edges.csv"))
+            aggregate_edge_rows.extend(edge_rows)
 
             summary_rows = []
             metric_items = []
@@ -476,14 +483,13 @@ def evaluate_run(
                 )
 
             evaluated["metric_grid"] = metric_items
-            eval_path = eval_dir / f"ternaryEval__{slice_slug}__thr_{threshold:g}.json"
+            eval_path = eval_dir / "evaluated_json" / f"ternaryEval__{slice_slug}__thr_{threshold:g}.json"
             save_json(str(eval_path), evaluated)
             append_csv(summary_rows, str(eval_dir / "evaluation_summary.csv"))
-            append_csv(summary_rows, str(out_root / "all_evaluation_summary.csv"))
+            aggregate_summary_rows.extend(summary_rows)
 
             for summary_row, metric_item in zip(summary_rows, metric_items):
-                _upsert_manifest_entry(
-                    out_root / "all_evaluations.json",
+                manifest_entries.append(
                     {
                         "run_id": run_id,
                         "dataset_name": dataset_name,
@@ -499,7 +505,7 @@ def evaluate_run(
                         "evaluation_timestamp": evaluated_at,
                         "source_file": str(eval_path),
                         "adjusted_metrics": metric_item["adjusted_metrics"],
-                    },
+                    }
                 )
 
             _print_metrics_summary(
@@ -508,6 +514,10 @@ def evaluate_run(
                 model_name=model_name,
                 metrics=metric_items[0]["adjusted_metrics"],
             )
+
+    append_csv(aggregate_edge_rows, str(out_root / "all_evaluated_edges.csv"))
+    append_csv(aggregate_summary_rows, str(out_root / "all_evaluation_summary.csv"))
+    _upsert_manifest_entries(out_root / "all_evaluations.json", manifest_entries)
 
 
 def main() -> None:
@@ -526,10 +536,12 @@ def main() -> None:
     if not eval_run_ids:
         raise ValueError("config.yaml must define a non-empty 'eval_run_ids' list when evaluation is enabled.")
 
-    raw_root = out_root / str(experiment.get("prompt_family", "metaData"))
+    raw_root = out_root / "runs"
 
-    _ = experiment  # reserved for future filtering by prompt family/style if needed
     for run_dir in _iter_run_dirs(raw_root, [str(run_id) for run_id in eval_run_ids]):
+        raw_config = _load_json(run_dir / "config.json")
+        if raw_config.get("prompt_family") != str(experiment.get("prompt_family", "metaData")):
+            continue
         evaluate_run(
             run_dir=run_dir,
             out_root=out_root,

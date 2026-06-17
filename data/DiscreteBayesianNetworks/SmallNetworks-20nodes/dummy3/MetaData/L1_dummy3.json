@@ -1,0 +1,19 @@
+{
+  "reference": "Synthetic three-node smoke-test dataset.",
+  "field": "synthetic education",
+  "context": "",
+  "variables": [
+    {
+      "name": "StudyEffort",
+      "description": ""
+    },
+    {
+      "name": "ExamScore",
+      "description": ""
+    },
+    {
+      "name": "PassCourse",
+      "description": ""
+    }
+  ]
+}
