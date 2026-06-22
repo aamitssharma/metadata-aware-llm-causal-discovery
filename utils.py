@@ -67,10 +67,25 @@ def load_metadata_schema(metadata_file: str | Path) -> Dict[str, Any]:
     with metadata_path.open("r") as f:
         desc = json.load(f)
 
+    if isinstance(desc, list):
+        return {
+            "dataset_field": "",
+            "dataset_context": "",
+            "variables": {
+                v["name"]: v.get("description") or v.get("label") or ""
+                for v in desc
+                if isinstance(v, dict) and "name" in v
+            },
+        }
+
     return {
         "dataset_field": desc.get("field", ""),
         "dataset_context": desc.get("context", ""),
-        "variables": {v["name"]: v.get("description", "") for v in desc.get("variables", [])},
+        "variables": {
+            v["name"]: v.get("description") or v.get("label") or ""
+            for v in desc.get("variables", [])
+            if isinstance(v, dict) and "name" in v
+        },
     }
 
 
@@ -104,7 +119,12 @@ def resolve_experiment_variants(
 
     if prompt_family == "dataMetaData":
         ci_test_source = _normalize_ci_test_source(ci_test_source)
-        metadata_file = _find_dataset_file(dataset_path, dataset_name, "description", "json")
+        metadata_file = _find_metadata_level_file(dataset_path, "L3") or _find_dataset_file(
+            dataset_path,
+            dataset_name,
+            "description",
+            "json",
+        )
         ci_test_files = sorted((dataset_path / "CITestsResults").glob(f"{dataset_name}_filtered_seed*.csv"))
         corrupt_ci_test_files = sorted((dataset_path / "CorruptData").glob(f"{dataset_name}_filtered_seed*.csv"))
 
@@ -153,6 +173,14 @@ def _normalize_ci_test_source(raw_value: str) -> str:
             f"(received {raw_value!r})"
         )
     return source
+
+
+def _find_metadata_level_file(dataset_path: Path, level: str) -> Optional[Path]:
+    metadata_dir = dataset_path / "MetaData"
+    matches = sorted(metadata_dir.glob(f"{level}_*.json"))
+    if matches:
+        return matches[0]
+    return None
 
 
 def _find_dataset_file(dataset_path: Path, dataset_name: str, suffix: str, extension: str) -> Path:

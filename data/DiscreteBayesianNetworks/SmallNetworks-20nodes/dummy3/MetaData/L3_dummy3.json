@@ -1,7 +1,6 @@
 {
-  "reference": "Synthetic three-node smoke-test dataset.",
   "field": "synthetic education",
-  "context": "A toy causal system where preparation, exam performance, and course completion are measured for a student.",
+  "context": "A toy causal system for validating metadata-only causal discovery runs. Study effort affects exam score, and exam score affects course pass status.",
   "variables": [
     {
       "name": "StudyEffort",

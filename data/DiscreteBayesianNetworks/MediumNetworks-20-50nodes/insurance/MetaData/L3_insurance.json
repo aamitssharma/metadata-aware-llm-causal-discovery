@@ -1,280 +1,284 @@
-[
-  {
-    "name": "GoodStudent",
-    "label": "Good student status",
-    "levels": [
-      "False",
-      "True"
-    ],
-    "description": "Whether the driver qualifies as a good student (GPA \u2265 3.0 or equivalent)."
-  },
-  {
-    "name": "Age",
-    "label": "Driver age group",
-    "levels": [
-      "Adolescent",
-      "Adult",
-      "Senior"
-    ],
-    "description": "Driver's age bracket; the most broadly connected demographic root node."
-  },
-  {
-    "name": "SocioEcon",
-    "label": "Socio-economic status",
-    "levels": [
-      "Prole",
-      "Middle",
-      "UpperMiddle",
-      "Wealthy"
-    ],
-    "description": "Household socio-economic tier; shapes vehicle and neighbourhood choices."
-  },
-  {
-    "name": "RiskAversion",
-    "label": "Risk aversion tendency",
-    "levels": [
-      "Psychopath",
-      "Adventurous",
-      "Normal",
-      "Cautious"
-    ],
-    "description": "Dispositional risk attitude; primary behavioural input to driving quality."
-  },
-  {
-    "name": "VehicleYear",
-    "label": "Vehicle model year",
-    "levels": [
-      "Current",
-      "older"
-    ],
-    "description": "Vehicle recency; proxy for safety technology availability."
-  },
-  {
-    "name": "ThisCarDam",
-    "label": "Damage to insured car",
-    "levels": [
-      "None",
-      "Mild",
-      "Moderate",
-      "Severe"
-    ],
-    "description": "Physical damage severity to the insured vehicle."
-  },
-  {
-    "name": "RuggedAuto",
-    "label": "Vehicle structural ruggedness",
-    "levels": [
-      "EggShell",
-      "Football",
-      "Tank"
-    ],
-    "description": "Structural crashworthiness category; moderates accident-to-damage translation."
-  },
-  {
-    "name": "Accident",
-    "label": "Accident severity",
-    "levels": [
-      "None",
-      "Mild",
-      "Moderate",
-      "Severe"
-    ],
-    "description": "Overall accident severity; the central loss event node."
-  },
-  {
-    "name": "MakeModel",
-    "label": "Car make/model class",
-    "levels": [
-      "SportsCar",
-      "Economy",
-      "FamilySedan",
-      "Luxury",
-      "SuperLuxury"
-    ],
-    "description": "Vehicle class; the primary vehicle-side root determining all vehicle attributes."
-  },
-  {
-    "name": "DrivQuality",
-    "label": "Driving quality",
-    "levels": [
-      "Poor",
-      "Normal",
-      "Excellent"
-    ],
-    "description": "Synthesized driving performance; the proximate cause of accident risk."
-  },
-  {
-    "name": "Mileage",
-    "label": "Annual mileage bucket",
-    "levels": [
-      "FiveThou",
-      "TwentyThou",
-      "FiftyThou",
-      "Domino"
-    ],
-    "description": "Annual miles driven; pure exposure multiplier on accident risk."
-  },
-  {
-    "name": "Antilock",
-    "label": "Antilock braking system (ABS)",
-    "levels": [
-      "False",
-      "True"
-    ],
-    "description": "ABS presence; active safety system reducing accident severity."
-  },
-  {
-    "name": "DrivingSkill",
-    "label": "Driver skill level",
-    "levels": [
-      "SubStandard",
-      "Normal",
-      "Expert"
-    ],
-    "description": "Technical driving competency; the skill component of driving quality."
-  },
-  {
-    "name": "SeniorTrain",
-    "label": "Senior driver training",
-    "levels": [
-      "False",
-      "True"
-    ],
-    "description": "Completion of senior driver refresher program; Age-conditional intervention."
-  },
-  {
-    "name": "ThisCarCost",
-    "label": "Insured car claim cost",
-    "levels": [
-      "Thousand",
-      "TenThou",
-      "HundredThou",
-      "Million"
-    ],
-    "description": "Total financial cost for the insured vehicle (repair or total loss)."
-  },
-  {
-    "name": "Theft",
-    "label": "Vehicle theft",
-    "levels": [
-      "False",
-      "True"
-    ],
-    "description": "Whether the insured vehicle was stolen."
-  },
-  {
-    "name": "CarValue",
-    "label": "Insured car value",
-    "levels": [
-      "FiveThou",
-      "TenThou",
-      "TwentyThou",
-      "FiftyThou",
-      "Million"
-    ],
-    "description": "Market value of the insured vehicle; the financial scale parameter for all property costs."
-  },
-  {
-    "name": "HomeBase",
-    "label": "Home neighbourhood type",
-    "levels": [
-      "Secure",
-      "City",
-      "Suburb",
-      "Rural"
-    ],
-    "description": "Residential neighbourhood type; ambient risk environment."
-  },
-  {
-    "name": "AntiTheft",
-    "label": "Anti-theft system",
-    "levels": [
-      "False",
-      "True"
-    ],
-    "description": "Anti-theft device; primary deterrent reducing theft probability."
-  },
-  {
-    "name": "PropCost",
-    "label": "Proportional cost comparison",
-    "levels": [
-      "Thousand",
-      "TenThou",
-      "HundredThou",
-      "Million"
-    ],
-    "description": "Relative cost summary comparing insured-car to other-car costs."
-  },
-  {
-    "name": "OtherCarCost",
-    "label": "Other car claim cost",
-    "levels": [
-      "Thousand",
-      "TenThou",
-      "HundredThou",
-      "Million"
-    ],
-    "description": "Third-party vehicle cost; liability cost for the other vehicle."
-  },
-  {
-    "name": "OtherCar",
-    "label": "Other vehicle involved",
-    "levels": [
-      "False",
-      "True"
-    ],
-    "description": "Whether a second vehicle participates in the incident."
-  },
-  {
-    "name": "MedCost",
-    "label": "Medical treatment cost",
-    "levels": [
-      "Thousand",
-      "TenThou",
-      "HundredThou",
-      "Million"
-    ],
-    "description": "Medical cost of accident-related injuries."
-  },
-  {
-    "name": "Cushioning",
-    "label": "Occupant cushioning quality",
-    "levels": [
-      "Poor",
-      "Fair",
-      "Good",
-      "Excellent"
-    ],
-    "description": "Integrated occupant protection quality; modulates injury severity given accident."
-  },
-  {
-    "name": "Airbag",
-    "label": "Airbag present",
-    "levels": [
-      "False",
-      "True"
-    ],
-    "description": "Airbag availability; primary active occupant protection system."
-  },
-  {
-    "name": "ILiCost",
-    "label": "Injury / liability cost",
-    "levels": [
-      "Thousand",
-      "TenThou",
-      "HundredThou",
-      "Million"
-    ],
-    "description": "Total injury and legal liability cost; terminal liability cost leaf."
-  },
-  {
-    "name": "DrivHist",
-    "label": "Prior driving incidents",
-    "levels": [
-      "Zero",
-      "One",
-      "Many"
-    ],
-    "description": "Bucketed count of prior at-fault accidents or moving violations."
-  }
-]
+{
+  "field": "insurance",
+  "context": "Insurance is a synthetic Bayesian network for evaluating car insurance risks. It describes driver demographics and behavior, vehicle characteristics and safety features, accident/theft outcomes, and resulting cost buckets.",
+  "variables": [
+    {
+      "name": "GoodStudent",
+      "label": "Good student status",
+      "levels": [
+        "False",
+        "True"
+      ],
+      "description": "Whether the driver qualifies as a good student (GPA ≥ 3.0 or equivalent)."
+    },
+    {
+      "name": "Age",
+      "label": "Driver age group",
+      "levels": [
+        "Adolescent",
+        "Adult",
+        "Senior"
+      ],
+      "description": "Driver's age bracket; the most broadly connected demographic root node."
+    },
+    {
+      "name": "SocioEcon",
+      "label": "Socio-economic status",
+      "levels": [
+        "Prole",
+        "Middle",
+        "UpperMiddle",
+        "Wealthy"
+      ],
+      "description": "Household socio-economic tier; shapes vehicle and neighbourhood choices."
+    },
+    {
+      "name": "RiskAversion",
+      "label": "Risk aversion tendency",
+      "levels": [
+        "Psychopath",
+        "Adventurous",
+        "Normal",
+        "Cautious"
+      ],
+      "description": "Dispositional risk attitude; primary behavioural input to driving quality."
+    },
+    {
+      "name": "VehicleYear",
+      "label": "Vehicle model year",
+      "levels": [
+        "Current",
+        "older"
+      ],
+      "description": "Vehicle recency; proxy for safety technology availability."
+    },
+    {
+      "name": "ThisCarDam",
+      "label": "Damage to insured car",
+      "levels": [
+        "None",
+        "Mild",
+        "Moderate",
+        "Severe"
+      ],
+      "description": "Physical damage severity to the insured vehicle."
+    },
+    {
+      "name": "RuggedAuto",
+      "label": "Vehicle structural ruggedness",
+      "levels": [
+        "EggShell",
+        "Football",
+        "Tank"
+      ],
+      "description": "Structural crashworthiness category; moderates accident-to-damage translation."
+    },
+    {
+      "name": "Accident",
+      "label": "Accident severity",
+      "levels": [
+        "None",
+        "Mild",
+        "Moderate",
+        "Severe"
+      ],
+      "description": "Overall accident severity; the central loss event node."
+    },
+    {
+      "name": "MakeModel",
+      "label": "Car make/model class",
+      "levels": [
+        "SportsCar",
+        "Economy",
+        "FamilySedan",
+        "Luxury",
+        "SuperLuxury"
+      ],
+      "description": "Vehicle class; the primary vehicle-side root determining all vehicle attributes."
+    },
+    {
+      "name": "DrivQuality",
+      "label": "Driving quality",
+      "levels": [
+        "Poor",
+        "Normal",
+        "Excellent"
+      ],
+      "description": "Synthesized driving performance; the proximate cause of accident risk."
+    },
+    {
+      "name": "Mileage",
+      "label": "Annual mileage bucket",
+      "levels": [
+        "FiveThou",
+        "TwentyThou",
+        "FiftyThou",
+        "Domino"
+      ],
+      "description": "Annual miles driven; pure exposure multiplier on accident risk."
+    },
+    {
+      "name": "Antilock",
+      "label": "Antilock braking system (ABS)",
+      "levels": [
+        "False",
+        "True"
+      ],
+      "description": "ABS presence; active safety system reducing accident severity."
+    },
+    {
+      "name": "DrivingSkill",
+      "label": "Driver skill level",
+      "levels": [
+        "SubStandard",
+        "Normal",
+        "Expert"
+      ],
+      "description": "Technical driving competency; the skill component of driving quality."
+    },
+    {
+      "name": "SeniorTrain",
+      "label": "Senior driver training",
+      "levels": [
+        "False",
+        "True"
+      ],
+      "description": "Completion of senior driver refresher program; Age-conditional intervention."
+    },
+    {
+      "name": "ThisCarCost",
+      "label": "Insured car claim cost",
+      "levels": [
+        "Thousand",
+        "TenThou",
+        "HundredThou",
+        "Million"
+      ],
+      "description": "Total financial cost for the insured vehicle (repair or total loss)."
+    },
+    {
+      "name": "Theft",
+      "label": "Vehicle theft",
+      "levels": [
+        "False",
+        "True"
+      ],
+      "description": "Whether the insured vehicle was stolen."
+    },
+    {
+      "name": "CarValue",
+      "label": "Insured car value",
+      "levels": [
+        "FiveThou",
+        "TenThou",
+        "TwentyThou",
+        "FiftyThou",
+        "Million"
+      ],
+      "description": "Market value of the insured vehicle; the financial scale parameter for all property costs."
+    },
+    {
+      "name": "HomeBase",
+      "label": "Home neighbourhood type",
+      "levels": [
+        "Secure",
+        "City",
+        "Suburb",
+        "Rural"
+      ],
+      "description": "Residential neighbourhood type; ambient risk environment."
+    },
+    {
+      "name": "AntiTheft",
+      "label": "Anti-theft system",
+      "levels": [
+        "False",
+        "True"
+      ],
+      "description": "Anti-theft device; primary deterrent reducing theft probability."
+    },
+    {
+      "name": "PropCost",
+      "label": "Proportional cost comparison",
+      "levels": [
+        "Thousand",
+        "TenThou",
+        "HundredThou",
+        "Million"
+      ],
+      "description": "Relative cost summary comparing insured-car to other-car costs."
+    },
+    {
+      "name": "OtherCarCost",
+      "label": "Other car claim cost",
+      "levels": [
+        "Thousand",
+        "TenThou",
+        "HundredThou",
+        "Million"
+      ],
+      "description": "Third-party vehicle cost; liability cost for the other vehicle."
+    },
+    {
+      "name": "OtherCar",
+      "label": "Other vehicle involved",
+      "levels": [
+        "False",
+        "True"
+      ],
+      "description": "Whether a second vehicle participates in the incident."
+    },
+    {
+      "name": "MedCost",
+      "label": "Medical treatment cost",
+      "levels": [
+        "Thousand",
+        "TenThou",
+        "HundredThou",
+        "Million"
+      ],
+      "description": "Medical cost of accident-related injuries."
+    },
+    {
+      "name": "Cushioning",
+      "label": "Occupant cushioning quality",
+      "levels": [
+        "Poor",
+        "Fair",
+        "Good",
+        "Excellent"
+      ],
+      "description": "Integrated occupant protection quality; modulates injury severity given accident."
+    },
+    {
+      "name": "Airbag",
+      "label": "Airbag present",
+      "levels": [
+        "False",
+        "True"
+      ],
+      "description": "Airbag availability; primary active occupant protection system."
+    },
+    {
+      "name": "ILiCost",
+      "label": "Injury / liability cost",
+      "levels": [
+        "Thousand",
+        "TenThou",
+        "HundredThou",
+        "Million"
+      ],
+      "description": "Total injury and legal liability cost; terminal liability cost leaf."
+    },
+    {
+      "name": "DrivHist",
+      "label": "Prior driving incidents",
+      "levels": [
+        "Zero",
+        "One",
+        "Many"
+      ],
+      "description": "Bucketed count of prior at-fault accidents or moving violations."
+    }
+  ]
+}

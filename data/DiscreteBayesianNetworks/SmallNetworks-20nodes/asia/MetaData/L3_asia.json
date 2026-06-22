@@ -1,74 +1,78 @@
-[
-  {
-    "name": "dysp",
-    "label": "Dyspnoea",
-    "levels": [
-      "yes",
-      "no"
-    ],
-    "description": "Shortness of breath; a terminal symptom node in the network."
-  },
-  {
-    "name": "tub",
-    "label": "Tuberculosis",
-    "levels": [
-      "yes",
-      "no"
-    ],
-    "description": "Pulmonary tuberculosis; an infectious disease node with a geographic risk factor as its sole parent."
-  },
-  {
-    "name": "lung",
-    "label": "Lung cancer",
-    "levels": [
-      "yes",
-      "no"
-    ],
-    "description": "Primary lung malignancy; caused solely by smoking in this model."
-  },
-  {
-    "name": "bronc",
-    "label": "Bronchitis",
-    "levels": [
-      "yes",
-      "no"
-    ],
-    "description": "Bronchial inflammation; the second smoking-caused disease in the network."
-  },
-  {
-    "name": "asia",
-    "label": "Visit to Asia",
-    "levels": [
-      "yes",
-      "no"
-    ],
-    "description": "Recent travel to Asia; a root node and sole external risk factor for tuberculosis."
-  },
-  {
-    "name": "smoke",
-    "label": "Smoking",
-    "levels": [
-      "yes",
-      "no"
-    ],
-    "description": "Tobacco smoking status; the central common cause in the network."
-  },
-  {
-    "name": "xray",
-    "label": "Chest X-ray abnormal",
-    "levels": [
-      "yes",
-      "no"
-    ],
-    "description": "Chest radiograph result; a terminal observation node driven exclusively by the 'either' node."
-  },
-  {
-    "name": "either",
-    "label": "Tuberculosis or lung cancer present",
-    "levels": [
-      "yes",
-      "no"
-    ],
-    "description": "Deterministic logical OR of tuberculosis and lung cancer; an intermediate aggregation node."
-  }
-]
+{
+  "field": "medicine",
+  "context": "Small synthetic dataset about lung diseases (tuberculosis, lung cancer, bronchitis) and shortness of breath (dyspnoea). A recent visit to Asia increases the chance of tuberculosis, while smoking is a risk factor for lung cancer and bronchitis. Chest X-ray and dyspnoea do not discriminate well between lung cancer and tuberculosis in this toy model.",
+  "variables": [
+    {
+      "name": "dysp",
+      "label": "Dyspnoea",
+      "levels": [
+        "yes",
+        "no"
+      ],
+      "description": "Shortness of breath; a terminal symptom node in the network."
+    },
+    {
+      "name": "tub",
+      "label": "Tuberculosis",
+      "levels": [
+        "yes",
+        "no"
+      ],
+      "description": "Pulmonary tuberculosis; an infectious disease node with a geographic risk factor as its sole parent."
+    },
+    {
+      "name": "lung",
+      "label": "Lung cancer",
+      "levels": [
+        "yes",
+        "no"
+      ],
+      "description": "Primary lung malignancy; caused solely by smoking in this model."
+    },
+    {
+      "name": "bronc",
+      "label": "Bronchitis",
+      "levels": [
+        "yes",
+        "no"
+      ],
+      "description": "Bronchial inflammation; the second smoking-caused disease in the network."
+    },
+    {
+      "name": "asia",
+      "label": "Visit to Asia",
+      "levels": [
+        "yes",
+        "no"
+      ],
+      "description": "Recent travel to Asia; a root node and sole external risk factor for tuberculosis."
+    },
+    {
+      "name": "smoke",
+      "label": "Smoking",
+      "levels": [
+        "yes",
+        "no"
+      ],
+      "description": "Tobacco smoking status; the central common cause in the network."
+    },
+    {
+      "name": "xray",
+      "label": "Chest X-ray abnormal",
+      "levels": [
+        "yes",
+        "no"
+      ],
+      "description": "Chest radiograph result; a terminal observation node driven exclusively by the 'either' node."
+    },
+    {
+      "name": "either",
+      "label": "Tuberculosis or lung cancer present",
+      "levels": [
+        "yes",
+        "no"
+      ],
+      "description": "Deterministic logical OR of tuberculosis and lung cancer; an intermediate aggregation node."
+    }
+  ]
+}

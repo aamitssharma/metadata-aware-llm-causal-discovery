@@ -70,7 +70,7 @@ experiment:
   prompt_style: vanilla
 
   # Set to 1 to run inference.
-  run_inference: 0
+  run_inference: 1
 
   # Set to 1 to run evaluation.
   run_evaluation: 1
