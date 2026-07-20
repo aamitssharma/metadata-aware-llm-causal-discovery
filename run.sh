@@ -14,7 +14,7 @@ fi
 
 read_config_flag() {
   # Ask Python to read config.yaml so bash does not need YAML parsing logic.
-  python3 - "$1" <<'PY'
+  python - "$1" <<'PY'
 import sys
 from utils import load_project_config
 
@@ -30,9 +30,9 @@ RUN_EVALUATION="$(read_config_flag run_evaluation)"
 
 # Keep shell logic tiny: config decides which Python entrypoints to run.
 if [[ "$RUN_INFERENCE" == "1" ]]; then
-  python3 main.py
+  python main.py
 fi
 
 if [[ "$RUN_EVALUATION" == "1" ]]; then
-  python3 evaluation.py
+  python evaluation.py
 fi
